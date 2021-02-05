@@ -2,6 +2,7 @@ package com.example.group.web.controller;
 
 import com.example.group.service.GroupService;
 import com.example.group.web.model.GroupDto;
+import com.example.group.web.model.RoleDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -43,6 +44,13 @@ public class GroupController {
     public ResponseEntity<?> deleteById(@PathVariable Long groupId){
         groupService.deleteById(groupId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+
+    /*----------------- Roles from Group Ids -------------------*/
+    @GetMapping("/{groupId}/roles")
+    public ResponseEntity<Set<RoleDto>> getGroups(@PathVariable Long groupId){
+        return new ResponseEntity<>(groupService.getRolesByGroupId(groupId), HttpStatus.OK);
     }
 
 }

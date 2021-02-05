@@ -1,4 +1,4 @@
-package com.example.group.web.model;
+package com.example.role.web.model;
 
 import lombok.ToString;
 

@@ -1,11 +1,19 @@
 package com.example.group.service;
 
 import com.example.group.domain.Group;
+import com.example.group.domain.GroupRoleMapping;
 import com.example.group.repository.GroupRepository;
+import com.example.group.repository.GroupRoleRepository;
 import com.example.group.web.exception.GroupNotFoundException;
 import com.example.group.web.mapper.GroupMapper;
+import com.example.group.web.mapper.GroupRoleMapper;
 import com.example.group.web.model.GroupDto;
+import com.example.group.web.model.GroupRoleMappingDto;
+import com.example.group.web.model.RoleDto;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -16,10 +24,13 @@ import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class GroupServiceImpl implements GroupService {
 
     private final GroupRepository groupRepository;
+    private final GroupRoleRepository groupRoleRepository;
     private final GroupMapper groupMapper;
+    private final GroupRoleMapper groupRoleMapper;
     private final RestTemplate restTemplate;
 
 
@@ -93,5 +104,31 @@ public class GroupServiceImpl implements GroupService {
         }
 
         groupRepository.deleteById(groupId);
+    }
+
+    /*----------------- Roles from Group Ids -------------------*/
+    @Override
+    public Set<RoleDto> getRolesByGroupId(Long groupId) {
+        Optional<Group> groupOptional = groupRepository.findById(groupId);
+        if(!groupOptional.isPresent()){
+            throw new GroupNotFoundException("Invalid Group Id :"+ groupId);
+        }
+        Set<GroupRoleMappingDto> groupRoles = new HashSet<>();
+
+        groupRoleRepository.findByGroupId(groupId).forEach(groupRoleMapping -> {
+            groupRoles.add(groupRoleMapper.groupRoleMappingToGroupRoleMappingDto(groupRoleMapping));
+        });
+
+        log.debug("Loading Roles for group id: "+groupId);
+        for(GroupRoleMappingDto groupRoleMappingDto: groupRoles){
+            log.debug(groupRoleMappingDto.toString());
+        }
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<Object> requestEntity = new HttpEntity<Object>(groupRoles,headers);
+        ResponseEntity<Set<RoleDto>> responseEntity = restTemplate.exchange("http://localhost:8080/roles/group-roles/", HttpMethod.POST, requestEntity,new ParameterizedTypeReference<Set<RoleDto>>() {});
+
+        return responseEntity.getBody();
     }
 }

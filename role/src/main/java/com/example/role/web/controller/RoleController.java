@@ -3,6 +3,7 @@ package com.example.role.web.controller;
 import com.example.role.domain.Role;
 import com.example.role.repository.RoleRepository;
 import com.example.role.service.RoleService;
+import com.example.role.web.model.GroupRoleMappingDto;
 import com.example.role.web.model.RoleDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -50,12 +51,17 @@ public class RoleController {
     }
 
 
-    @GetMapping("/group-roles/{groupId}")
-    public ResponseEntity<?> getRolesByGroupId(@PathVariable Long groupId){
+    @PostMapping("/group-roles")
+    public ResponseEntity<Set<RoleDto>> getRolesByGroupId(@RequestBody Set<GroupRoleMappingDto> groupRoleMappingDtos){
         Set<Role> roleList = new HashSet<>();
 
-         //todo get roles using group id
+        Set<RoleDto> roleDtoSet = new HashSet<>();
 
-        return null;
+        groupRoleMappingDtos.forEach(groupRoleMappingDto -> {
+            roleDtoSet.add(roleService.getRoleById(groupRoleMappingDto.getRoleId()));
+        });
+
+
+        return new ResponseEntity<>(roleDtoSet, HttpStatus.OK);
     }
 }
