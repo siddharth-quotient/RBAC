@@ -26,6 +26,7 @@ public class DataLoader implements ApplicationListener<ContextRefreshedEvent> {
     private void loadRoleObjects() {
         if(roleRepository.count()==0){
 
+
             roleRepository.save(
                     Role.builder()
                             .roleName("User")
@@ -33,10 +34,12 @@ public class DataLoader implements ApplicationListener<ContextRefreshedEvent> {
                         .build()
             );
 
+
             roleRepository.save(
                     Role.builder()
                             .roleName("Admin")
                             .roleDescription("Permission to CRUD.")
+
                             .build()
             );
         }

@@ -1,4 +1,5 @@
-package com.example.role.domain;
+package com.example.group.domain;
+
 
 import lombok.*;
 
@@ -10,14 +11,16 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Builder
 @Entity
-public class Role {
+@Table(name = "GROUP_TABLE")
+public class Group {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long roleId;
+    private Long groupId;
+
 
     @Column(unique = true)
-    private String roleName;
+    private String groupName;
 
-    private String roleDescription;
+    private String groupDescription;
 }

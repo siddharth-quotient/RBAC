@@ -12,7 +12,8 @@ import javax.validation.constraints.Null;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class RoleDto {
+public class
+RoleDto {
 
     @Null(message = "Role ID should be null")
     private Long roleId;
