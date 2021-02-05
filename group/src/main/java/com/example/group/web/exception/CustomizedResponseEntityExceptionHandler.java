@@ -30,4 +30,11 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
         return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(GroupRoleNotFoundException.class)
+    public final ResponseEntity<Object> groupRoleNotFoundException(Exception groupRoleNotFoundException, WebRequest request){
+        ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), groupRoleNotFoundException.getMessage(), request.getDescription(false));
+
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);
+    }
+
 }
