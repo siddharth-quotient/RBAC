@@ -15,6 +15,7 @@
     <description>Group Microservice</description>
     <properties>
         <java.version>1.8</java.version>
+        <spring-cloud.version>2020.0.0</spring-cloud.version>
         <mapstruct.version>1.4.1.Final</mapstruct.version>
         <javax-validation.version>2.0.1.Final</javax-validation.version>
         <hibernate-validator.version>6.0.11.Final</hibernate-validator.version>
@@ -86,7 +87,38 @@
             <artifactId>springfox-boot-starter</artifactId>
             <version>${spring-fox.version}</version>
         </dependency>
+
+        <!-- Eureka Client -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+        </dependency>
     </dependencies>
+
+
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+
+    <repositories>
+        <repository>
+            <id>spring-milestones</id>
+            <name>Spring Milestones</name>
+            <url>https://repo.spring.io/milestone</url>
+        </repository>
+    </repositories>
+
+
 
     <build>
         <plugins>

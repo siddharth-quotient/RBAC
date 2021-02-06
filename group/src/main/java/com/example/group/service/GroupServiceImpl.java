@@ -121,7 +121,7 @@ public class GroupServiceImpl implements GroupService {
             groupRoles.add(groupRoleMapper.groupRoleMappingToGroupRoleMappingDto(groupRoleMapping));
         });
 
-        ResponseEntity<RolesList> rolesListResponseEntity = restTemplate.postForEntity("http://localhost:8200/roles/group-roles/", groupRoles, RolesList.class);
+        ResponseEntity<RolesList> rolesListResponseEntity = restTemplate.postForEntity("http://role-service/roles/group-roles/", groupRoles, RolesList.class);
         RolesList rolesList = rolesListResponseEntity.getBody();
         rolesList.setGroupDto(groupMapper.groupToGroupDto(groupOptional.get()));
         return rolesList;
