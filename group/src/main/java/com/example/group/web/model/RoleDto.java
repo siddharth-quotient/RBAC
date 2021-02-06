@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.OffsetDateTime;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -12,9 +14,9 @@ import lombok.Setter;
 public class RoleDto {
 
     private Long roleId;
-
+    private OffsetDateTime createDate;
+    private OffsetDateTime lastModifiedDate;
     private String roleName;
-
     private String roleDescription;
 
 }
