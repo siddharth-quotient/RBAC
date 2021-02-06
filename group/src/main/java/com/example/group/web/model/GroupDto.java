@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Null;
+import java.time.OffsetDateTime;
 
 @Data
 @NoArgsConstructor
@@ -13,6 +14,12 @@ public class GroupDto {
 
     @Null(message = "Group ID should be null")
     private Long groupId;
+
+    @Null
+    private OffsetDateTime createDate;
+
+    @Null
+    private OffsetDateTime lastModifiedDate;
 
     @NotBlank(message = "Group Name cannot be blank")
     private String groupName;
