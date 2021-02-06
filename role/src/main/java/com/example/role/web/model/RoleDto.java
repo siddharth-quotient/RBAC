@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Null;
+import java.time.OffsetDateTime;
 
 @Data
 @NoArgsConstructor
@@ -17,6 +18,12 @@ RoleDto {
 
     @Null(message = "Role ID should be null")
     private Long roleId;
+
+    @Null
+    private OffsetDateTime createDate;
+
+    @Null
+    private OffsetDateTime lastModifiedDate;
 
     @NotBlank(message = "Role Name cannot be blank")
     private String roleName;

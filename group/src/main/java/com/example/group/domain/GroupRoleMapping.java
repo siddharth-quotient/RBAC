@@ -11,7 +11,7 @@ import javax.persistence.*;
 @Builder
 @Entity
 @Table(
-        name = "group_role_mapping",
+        name = "GROUP_ROLE_MAPPING_TABLE",
         uniqueConstraints = {@UniqueConstraint(columnNames = {"group_id", "role_id"})}
 )
 public class GroupRoleMapping {

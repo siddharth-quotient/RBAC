@@ -4,7 +4,7 @@ import com.example.role.domain.Role;
 import com.example.role.web.model.RoleDto;
 import org.mapstruct.Mapper;
 
-@Mapper
+@Mapper(uses = {DateMapper.class})
 public interface RoleMapper {
     Role roleDtoToRole(RoleDto roleDto);
     RoleDto roleToRoleDto(Role role);
