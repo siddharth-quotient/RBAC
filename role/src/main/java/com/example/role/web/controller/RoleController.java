@@ -3,8 +3,10 @@ package com.example.role.web.controller;
 import com.example.role.domain.Role;
 import com.example.role.repository.RoleRepository;
 import com.example.role.service.RoleService;
+import com.example.role.web.mapper.RoleMapper;
 import com.example.role.web.model.GroupRoleMappingDto;
 import com.example.role.web.model.RoleDto;
+import com.example.role.web.model.RolesList;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -52,16 +54,16 @@ public class RoleController {
 
 
     @PostMapping("/group-roles")
-    public ResponseEntity<Set<RoleDto>> getRolesByGroupId(@RequestBody Set<GroupRoleMappingDto> groupRoleMappingDtos){
-        Set<Role> roleList = new HashSet<>();
-
+    public ResponseEntity<RolesList> getRolesByGroupId(@RequestBody Set<GroupRoleMappingDto> groupRoleMappingDtos){
         Set<RoleDto> roleDtoSet = new HashSet<>();
 
         groupRoleMappingDtos.forEach(groupRoleMappingDto -> {
-            roleDtoSet.add(roleService.getRoleById(groupRoleMappingDto.getRoleId()));
+
+            roleDtoSet.add( roleService.getRoleById(groupRoleMappingDto.getRoleId()));
         });
 
-
-        return new ResponseEntity<>(roleDtoSet, HttpStatus.OK);
+        RolesList rolesList =new RolesList();
+        rolesList.setRolesSet(roleDtoSet);
+        return new ResponseEntity<>(rolesList, HttpStatus.OK);
     }
 }

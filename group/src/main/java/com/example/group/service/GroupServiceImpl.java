@@ -10,6 +10,7 @@ import com.example.group.web.mapper.GroupRoleMapper;
 import com.example.group.web.model.GroupDto;
 import com.example.group.web.model.GroupRoleMappingDto;
 import com.example.group.web.model.RoleDto;
+import com.example.group.web.model.RolesList;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.ParameterizedTypeReference;
@@ -107,8 +108,9 @@ public class GroupServiceImpl implements GroupService {
     }
 
     /*----------------- Roles from Group Ids -------------------*/
+
     @Override
-    public Set<RoleDto> getRolesByGroupId(Long groupId) {
+    public RolesList getRolesByGroupId(Long groupId) {
         Optional<Group> groupOptional = groupRepository.findById(groupId);
         if(!groupOptional.isPresent()){
             throw new GroupNotFoundException("Invalid Group Id :"+ groupId);
@@ -119,16 +121,10 @@ public class GroupServiceImpl implements GroupService {
             groupRoles.add(groupRoleMapper.groupRoleMappingToGroupRoleMappingDto(groupRoleMapping));
         });
 
-        log.debug("Loading Roles for group id: "+groupId);
-        for(GroupRoleMappingDto groupRoleMappingDto: groupRoles){
-            log.debug(groupRoleMappingDto.toString());
-        }
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<Object> requestEntity = new HttpEntity<Object>(groupRoles,headers);
-        ResponseEntity<Set<RoleDto>> responseEntity = restTemplate.exchange("http://localhost:8080/roles/group-roles/", HttpMethod.POST, requestEntity,new ParameterizedTypeReference<Set<RoleDto>>() {});
-
-        return responseEntity.getBody();
+        ResponseEntity<RolesList> rolesListResponseEntity = restTemplate.postForEntity("http://localhost:8080/roles/group-roles/", groupRoles, RolesList.class);
+        RolesList rolesList = rolesListResponseEntity.getBody();
+        rolesList.setGroupDto(groupMapper.groupToGroupDto(groupOptional.get()));
+        return rolesList;
     }
+
 }

@@ -3,6 +3,7 @@ package com.example.group.web.controller;
 import com.example.group.service.GroupService;
 import com.example.group.web.model.GroupDto;
 import com.example.group.web.model.RoleDto;
+import com.example.group.web.model.RolesList;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -48,8 +49,13 @@ public class GroupController {
 
 
     /*----------------- Roles from Group Ids -------------------*/
-    @GetMapping("/{groupId}/roles")
+    /*@GetMapping("/{groupId}/roles")
     public ResponseEntity<Set<RoleDto>> getGroups(@PathVariable Long groupId){
+        return new ResponseEntity<>(groupService.getRolesByGroupId(groupId), HttpStatus.OK);
+    }*/
+
+    @GetMapping("/{groupId}/roles")
+    public ResponseEntity<RolesList> getGroups(@PathVariable Long groupId){
         return new ResponseEntity<>(groupService.getRolesByGroupId(groupId), HttpStatus.OK);
     }
 
