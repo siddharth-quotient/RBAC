@@ -20,6 +20,8 @@
         <javax-validation.version>2.0.1.Final</javax-validation.version>
         <hibernate-validator.version>6.0.11.Final</hibernate-validator.version>
         <spring-fox.version>3.0.0</spring-fox.version>
+        <hystrix.version>2.2.1.RELEASE</hystrix.version>
+
     </properties>
     <dependencies>
         <dependency>
@@ -92,6 +94,19 @@
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+        </dependency>
+
+        <!-- Hystrix Circuit Breaker -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
+            <version>${hystrix.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-hystrix-dashboard</artifactId>
+            <version>${hystrix.version}</version>
         </dependency>
     </dependencies>
 

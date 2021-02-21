@@ -1,5 +1,6 @@
 package com.example.group.web.model;
 
+import lombok.Getter;
 import lombok.ToString;
 
 import javax.validation.constraints.NotNull;
@@ -11,6 +12,7 @@ import javax.validation.constraints.Null;
  * @author Siddharth Mehta
  */
 @ToString
+@Getter
 public class GroupRoleMappingDto {
 
     @Null(message = "Group-Role ID is self generated - should be null")
