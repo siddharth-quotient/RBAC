@@ -7,6 +7,11 @@ import lombok.Setter;
 
 import java.time.OffsetDateTime;
 
+/**
+ *Data transfer object representing a roles to corresponding group.
+ *
+ * @author Siddharth Mehta
+ */
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter

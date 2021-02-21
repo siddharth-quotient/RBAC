@@ -4,6 +4,11 @@ import lombok.*;
 
 import javax.persistence.*;
 
+/**
+ * Simple JavaBean domain object representing a GroupRoleMapping.
+ *
+ * @author Siddharth Mehta
+ */
 @Getter
 @Setter
 @NoArgsConstructor

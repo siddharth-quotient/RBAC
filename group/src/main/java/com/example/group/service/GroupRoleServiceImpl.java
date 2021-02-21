@@ -7,15 +7,16 @@ import com.example.group.repository.GroupRoleRepository;
 import com.example.group.web.exception.GroupNotFoundException;
 import com.example.group.web.exception.GroupRoleNotFoundException;
 import com.example.group.web.mapper.GroupRoleMapper;
-import com.example.group.web.model.GroupDto;
 import com.example.group.web.model.GroupRoleMappingDto;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class GroupRoleServiceImpl implements GroupRoleService {
@@ -38,12 +39,14 @@ public class GroupRoleServiceImpl implements GroupRoleService {
     public GroupRoleMappingDto getGroupRoleMappingById(Long groupRoleId) {
         if(groupRoleId==null){
             throw new GroupRoleNotFoundException("Group-Role Mapping cannot be Null");
+
         }
 
         Optional<GroupRoleMapping> groupRoleOptional = groupRoleRepository.findById(groupRoleId);
         if(groupRoleOptional.isPresent()){
             return groupRoleMapper.groupRoleMappingToGroupRoleMappingDto(groupRoleOptional.get());
         }
+        log.error("Invalid Group-Role Mapping Id provided while using getGroupRoleMappingById: "+ groupRoleId);
         throw new GroupRoleNotFoundException("Invalid Group-Role Mapping with Id :"+ groupRoleId);
     }
 
@@ -72,7 +75,7 @@ public class GroupRoleServiceImpl implements GroupRoleService {
 
             return groupRoleMapper.groupRoleMappingToGroupRoleMappingDto(groupRoleRepository.save(groupRoleMapping));
         }
-
+        log.error("Invalid Group-Role Mapping Id provided while using updateGroupRoleMappingById: "+ groupRoleId);
         throw new GroupRoleNotFoundException("Invalid Group-Role Mapping with Id :"+ groupRoleId);
     }
 
@@ -104,6 +107,7 @@ public class GroupRoleServiceImpl implements GroupRoleService {
         Optional<GroupRoleMapping> groupRoleOptional = groupRoleRepository.findById(groupRoleId);
 
         if(!groupRoleOptional.isPresent()){
+            log.error("Invalid Group-Role Mapping Id provided while using deleteById: "+ groupRoleId);
             throw new GroupRoleNotFoundException("Invalid Group-Role Mapping with Id :"+ groupRoleId);
         }
 

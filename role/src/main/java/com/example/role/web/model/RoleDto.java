@@ -19,15 +19,15 @@ RoleDto {
     @Null(message = "Role ID should be null")
     private Long roleId;
 
-    @Null
+    @Null(message = "Creation date is self generated - should be null")
     private OffsetDateTime createDate;
 
-    @Null
+    @Null(message = "Last Modified date is self generated - should be null")
     private OffsetDateTime lastModifiedDate;
 
-    @NotBlank(message = "Role Name cannot be blank")
+    @NotBlank(message = "Role Name cannot be Null")
     private String roleName;
 
-    @NotBlank(message = "Role Description Cannot be blank")
+    @NotBlank(message = "Role Description cannot be Null")
     private String roleDescription;
 }

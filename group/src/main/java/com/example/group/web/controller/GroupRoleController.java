@@ -1,8 +1,6 @@
 package com.example.group.web.controller;
 
-import com.example.group.domain.GroupRoleMapping;
 import com.example.group.service.GroupRoleService;
-import com.example.group.web.model.GroupDto;
 import com.example.group.web.model.GroupRoleMappingDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

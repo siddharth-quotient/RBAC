@@ -25,6 +25,7 @@ public class DataLoader implements ApplicationListener<ContextRefreshedEvent> {
 
     private void loadGroupObjects() {
         if (groupRepository.count() == 0) {
+            log.info("Loading Group Bootstrap Data");
 
             groupRepository.save(
                     Group.builder()
@@ -47,6 +48,6 @@ public class DataLoader implements ApplicationListener<ContextRefreshedEvent> {
                             .build()
             );
         }
-        log.debug("Loading Group Bootstrap Data");
+
     }
 }

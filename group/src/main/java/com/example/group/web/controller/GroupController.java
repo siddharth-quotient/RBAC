@@ -55,7 +55,7 @@ public class GroupController {
     }*/
 
     @GetMapping("/{groupId}/roles")
-    public ResponseEntity<RolesList> getGroups(@PathVariable Long groupId){
+    public ResponseEntity<RolesList> getRolesByGroupId(@PathVariable Long groupId){
         return new ResponseEntity<>(groupService.getRolesByGroupId(groupId), HttpStatus.OK);
     }
 

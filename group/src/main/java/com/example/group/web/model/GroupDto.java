@@ -6,19 +6,24 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Null;
 import java.time.OffsetDateTime;
 
+/**
+ *Data transfer object representing a group.
+ *
+ * @author Siddharth Mehta
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class GroupDto {
 
-    @Null(message = "Group ID should be null")
+    @Null(message = "Group ID is self generated - should be null")
     private Long groupId;
 
-    @Null
+    @Null(message = "Creation date is self generated - should be null")
     private OffsetDateTime createDate;
 
-    @Null
+    @Null(message = "Last Modified date is self generated - should be null")
     private OffsetDateTime lastModifiedDate;
 
     @NotBlank(message = "Group Name cannot be blank")

@@ -56,6 +56,7 @@ public class GroupServiceImpl implements GroupService {
         if(groupOptional.isPresent()){
             return groupMapper.groupToGroupDto(groupOptional.get());
         }
+        log.error("Invalid Group Id provided while using getGroupById: "+ groupId);
         throw new GroupNotFoundException("Invalid Group Id: "+ groupId);
     }
 
@@ -77,7 +78,7 @@ public class GroupServiceImpl implements GroupService {
 
             return groupMapper.groupToGroupDto(groupRepository.save(group));
         }
-
+        log.error("Invalid Group Id provided while using updateGroupById: "+ groupId);
         throw new GroupNotFoundException("Invalid Group Id :"+ groupId);
     }
 
@@ -101,6 +102,7 @@ public class GroupServiceImpl implements GroupService {
         Optional<Group> groupOptional = groupRepository.findById(groupId);
 
         if(!groupOptional.isPresent()){
+            log.error("Invalid Group Id provided while using deleteById: "+ groupId);
             throw new GroupNotFoundException("Invalid Group Id :"+ groupId);
         }
 
@@ -113,6 +115,7 @@ public class GroupServiceImpl implements GroupService {
     public RolesList getRolesByGroupId(Long groupId) {
         Optional<Group> groupOptional = groupRepository.findById(groupId);
         if(!groupOptional.isPresent()){
+            log.error("Invalid Group Id provided while using getRolesByGroupId: "+ groupId);
             throw new GroupNotFoundException("Invalid Group Id :"+ groupId);
         }
         Set<GroupRoleMappingDto> groupRoles = new HashSet<>();

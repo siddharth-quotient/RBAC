@@ -9,6 +9,12 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 import java.sql.Timestamp;
 
+
+/**
+ * Simple JavaBean domain object representing a group.
+ *
+ * @author Siddharth Mehta
+ */
 @Getter
 @Setter
 @NoArgsConstructor
@@ -23,7 +29,7 @@ public class Group {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long groupId;
 
-    @Column(updatable = false) //false (by default)
+    @Column(updatable = false)
     @CreationTimestamp
     private Timestamp createDate;
 
