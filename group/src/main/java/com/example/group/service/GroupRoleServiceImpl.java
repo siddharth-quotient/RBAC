@@ -47,7 +47,7 @@ public class GroupRoleServiceImpl implements GroupRoleService {
             return groupRoleMapper.groupRoleMappingToGroupRoleMappingDto(groupRoleOptional.get());
         }
         log.error("Invalid Group-Role Mapping Id provided while using getGroupRoleMappingById: "+ groupRoleId);
-        throw new GroupRoleNotFoundException("Invalid Group-Role Mapping with Id :"+ groupRoleId);
+        throw new GroupRoleNotFoundException("Invalid Group-Role Mapping with Id: "+ groupRoleId);
     }
 
     @Override
@@ -108,7 +108,7 @@ public class GroupRoleServiceImpl implements GroupRoleService {
 
         if(!groupRoleOptional.isPresent()){
             log.error("Invalid Group-Role Mapping Id provided while using deleteById: "+ groupRoleId);
-            throw new GroupRoleNotFoundException("Invalid Group-Role Mapping with Id :"+ groupRoleId);
+            throw new GroupRoleNotFoundException("Invalid Group-Role Mapping with Id: "+ groupRoleId);
         }
 
         groupRoleRepository.deleteById(groupRoleId);
@@ -117,9 +117,6 @@ public class GroupRoleServiceImpl implements GroupRoleService {
 
     public boolean validateGroupId(Long groupId){
         Optional<Group> groupOptional = groupRepository.findById(groupId);
-        if(!groupOptional.isPresent()){
-            return false;
-        }
-        return true;
+        return (groupOptional.isPresent());
     }
 }

@@ -34,7 +34,6 @@ public class GroupRoleController {
     }
 
     @PostMapping
-    @Transactional
     public ResponseEntity<GroupRoleMappingDto> createGroupRoleMapping(@Valid @RequestBody GroupRoleMappingDto groupRoleMappingDto){
         return new ResponseEntity<>(groupRoleService.createGroupRoleMapping(groupRoleMappingDto), HttpStatus.CREATED);
     }
