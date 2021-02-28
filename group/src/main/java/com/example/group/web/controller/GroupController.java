@@ -35,7 +35,6 @@ public class GroupController {
     }
 
     @PostMapping
-    @Transactional
     public ResponseEntity<GroupDto> createGroup(@Valid @RequestBody GroupDto groupDto){
         return new ResponseEntity<>(groupService.createGroup(groupDto), HttpStatus.CREATED);
     }

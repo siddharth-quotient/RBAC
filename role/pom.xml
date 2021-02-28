@@ -12,14 +12,13 @@
     <artifactId>role</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>role</name>
-    <description>Role MicroService</description>
+    <description>Role Service</description>
     <properties>
         <java.version>1.8</java.version>
         <spring-cloud.version>2020.0.0</spring-cloud.version>
         <mapstruct.version>1.4.1.Final</mapstruct.version>
         <javax-validation.version>2.0.1.Final</javax-validation.version>
         <hibernate-validator.version>6.0.11.Final</hibernate-validator.version>
-        <spring-fox.version>3.0.0</spring-fox.version>
     </properties>
     <dependencies>
         <dependency>
@@ -83,12 +82,6 @@
             <version>${mapstruct.version}</version>
         </dependency>
 
-        <!-- Swagger -->
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-boot-starter</artifactId>
-            <version>${spring-fox.version}</version>
-        </dependency>
 
         <!-- Eureka Client -->
         <dependency>

@@ -1,7 +1,6 @@
 package com.example.group.service;
 
 import com.example.group.web.model.GroupDto;
-import com.example.group.web.model.RoleDto;
 import com.example.group.web.model.RolesList;
 
 import java.util.Set;

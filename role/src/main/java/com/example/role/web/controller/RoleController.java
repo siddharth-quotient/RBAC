@@ -41,7 +41,6 @@ public class RoleController {
     }
 
     @PostMapping
-    @Transactional
     public ResponseEntity<RoleDto> createRole(@Valid @RequestBody RoleDto roleDto){
         return new ResponseEntity<>(roleService.createRole(roleDto), HttpStatus.CREATED);
     }
