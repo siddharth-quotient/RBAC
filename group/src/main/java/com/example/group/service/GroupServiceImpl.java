@@ -118,6 +118,7 @@ public class GroupServiceImpl implements GroupService {
             log.error("Invalid Group Id provided while using getRolesByGroupId: "+ groupId);
             throw new GroupNotFoundException("Invalid Group Id :"+ groupId);
         }
+        Group group = groupOptional.get();
         Set<GroupRoleMappingDto> groupRoles = new HashSet<>();
 
         groupRoleRepository.findByGroupId(groupId).forEach(groupRoleMapping -> {
@@ -126,7 +127,7 @@ public class GroupServiceImpl implements GroupService {
 
         ResponseEntity<RolesList> rolesListResponseEntity = restTemplate.postForEntity("http://role-service/roles/group-roles/", groupRoles, RolesList.class);
         RolesList rolesList = rolesListResponseEntity.getBody();
-        rolesList.setGroupDto(groupMapper.groupToGroupDto(groupOptional.get()));
+        rolesList.setGroupDto(groupMapper.groupToGroupDto(group));
         return rolesList;
     }
 
@@ -149,45 +150,4 @@ public class GroupServiceImpl implements GroupService {
         fallBackRoleList.setRolesSet(roleDtoHashSet);
         return fallBackRoleList;
     }
-
-    /*@Override
-    public RolesList getRolesByGroupId(Long groupId) {
-        Optional<Group> groupOptional = groupRepository.findById(groupId);
-        if(!groupOptional.isPresent()){
-            log.error("Invalid Group Id provided while using getRolesByGroupId: "+ groupId);
-            throw new GroupNotFoundException("Invalid Group Id :"+ groupId);
-        }
-        Set<GroupRoleMappingDto> groupRoles = new HashSet<>();
-
-        groupRoleRepository.findByGroupId(groupId).forEach(groupRoleMapping -> {
-            groupRoles.add(groupRoleMapper.groupRoleMappingToGroupRoleMappingDto(groupRoleMapping));
-        });
-
-        //Obtain response from roles microservice
-        ResponseEntity<RolesList> rolesListResponseEntity = getRolesListResponseBody(groupRoles);
-        RolesList rolesList = rolesListResponseEntity.getBody();
-        rolesList.setGroupDto(groupMapper.groupToGroupDto(groupOptional.get()));
-        return rolesList;
-    }
-
-    @HystrixCommand(fallbackMethod = "getFallbackRolesByGroupId")
-    public ResponseEntity<RolesList> getRolesListResponseBody(Set<GroupRoleMappingDto> groupRoles){
-        return restTemplate.postForEntity("http://role-service/roles/group-roles/", groupRoles, RolesList.class);
-
-    }
-
-    public ResponseEntity<RolesList> getFallbackRolesByGroupId(Set<GroupRoleMappingDto> groupRoles) {
-
-        Optional<Group> groupOptional = groupRepository.findById(groupRoles.stream().findFirst().get().getGroupId());
-
-        RolesList fallBackRoleList = new RolesList();
-        Set<RoleDto> roleDtoHashSet = new HashSet<>();
-
-        groupRoleRepository.findByGroupId(groupOptional.get().getGroupId()).forEach(groupRoleMapping -> {
-            roleDtoHashSet.add(new RoleDto(groupRoleMapping.getRoleId(), null, null,
-                    "Role Name unavailable", "Role Description Unavailable"));
-        });
-        fallBackRoleList.setRolesSet(roleDtoHashSet);
-        return new ResponseEntity<RolesList>(fallBackRoleList, HttpStatus.OK);
-    }*/
 }
