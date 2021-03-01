@@ -16,27 +16,29 @@ To create the project we use **Spring Cloud Gateway**, **Hystrix Cloud Circuit B
 
 ---
 ## [Deliverables](#deliverables)
--[x] Create User_Table (user_id, create_date, last_modified_date, user_name, first_name, last_name)
--[x] Create User_Group_Mapping_Table (user_group_id, user_id, group_id)
--[x] Create Group_Table (group_id, create_date, last_modified_date, group_name, group_description)
--[x] Create Group_Role_Mapping_Table (group_role_id, group_id, role_id)
--[x] Create Roles_Table (role_id, create_date, last_modified_date, role_name, role_description)
--[x] Modify basic profile of a User based on user_name
--[x] Modify basic details of a Group based on group_id
--[x] Modify basic details of a Role based on role_id
--[x] Delete a User, Group, Role
--[x] Add one or more Roles to a Group
--[x] Remove one or more Roles from a Group
--[x] Add a User to one or more Groups
--[x] Remove a User from one or more Groups
--[x] Get all Users, Groups, Roles
--[x] Given a user_name, return the basic profile
--[x] Given a user_name/userid, return the basic profile & list of group names
--[x] Given a group_id, return the basic group details
--[x] Given a group_id, return the basic group details & the list of role names
--[x] Given a role_id, return the basic role details
--[ ] Given a user_name and group_id return true or false depending on whether the group is assigned to user
--[ ] Given a user_name and role_id, return true or false depending on whether the role is assigned to user
+
+- [x] Create User_Table (user_id, create_date, last_modified_date, user_name, first_name, last_name)
+- [x] Create User_Group_Mapping_Table (user_group_id, user_id, group_id)
+- [x] Create Group_Table (group_id, create_date, last_modified_date, group_name, group_description)
+- [x] Create Group_Role_Mapping_Table (group_role_id, group_id, role_id)
+- [x] Create Roles_Table (role_id, create_date, last_modified_date, role_name, role_description)
+- [x] Modify basic profile of a User based on user_name
+- [x] Modify basic details of a Group based on group_id
+- [x] Modify basic details of a Role based on role_id
+- [x] Delete a User, Group, Role
+- [x] Add one or more Roles to a Group
+- [x] Remove one or more Roles from a Group
+- [x] Add a User to one or more Groups
+- [x] Remove a User from one or more Groups
+- [x] Get all Users, Groups, Roles
+- [x] Given a user_name, return the basic profile
+- [x] Given a user_name/userid, return the basic profile & list of group names
+- [x] Given a group_id, return the basic group details
+- [x] Given a group_id, return the basic group details & the list of role names
+- [x] Given a role_id, return the basic role details
+- [ ] Given a user_name and group_id return true or false depending on whether the group is assigned to user
+- [ ] Given a user_name and role_id, return true or false depending on whether the role is assigned to user
+
 ---
 ## [Database configuration](#database-configuration)
 
