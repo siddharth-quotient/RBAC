@@ -14,6 +14,8 @@ To create the project we use **Spring Cloud Gateway**, **Hystrix Cloud Circuit B
 ---
 ## [Architecture diagram of RBAC Microservices](#diagram-rbac)
 
+![RBAC_Architecture](https://user-images.githubusercontent.com/76997642/109539969-eb617980-7ae7-11eb-87e9-562e6263ca77.jpg)
+
 ---
 ## [Deliverables](#deliverables)
 
@@ -73,6 +75,8 @@ alter table role_table add constraint UK_kqtgs1ar590vxi6vvfti5sej9 unique (role_
 ```
 ---
 ## [Database Schema](#database-schema)
+
+![RBAC_DB_Schema](https://user-images.githubusercontent.com/76997642/109540066-0502c100-7ae8-11eb-976e-a5fa544fe4dd.JPG)
 
 ---
 
