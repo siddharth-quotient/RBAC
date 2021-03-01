@@ -8,14 +8,11 @@ import com.example.group.web.mapper.GroupMapper;
 import com.example.group.web.mapper.GroupRoleMapper;
 import com.example.group.web.model.GroupDto;
 import com.example.group.web.model.GroupRoleMappingDto;
-import com.example.group.web.model.RoleDto;
 import com.example.group.web.model.RolesList;
-import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import javax.transaction.Transactional;
 import java.util.HashSet;
@@ -31,7 +28,7 @@ public class GroupServiceImpl implements GroupService {
     private final GroupRoleRepository groupRoleRepository;
     private final GroupMapper groupMapper;
     private final GroupRoleMapper groupRoleMapper;
-    private final RestTemplate restTemplate;
+    private final RoleHystrix roleHystrix;
 
 
     @Override
@@ -110,7 +107,7 @@ public class GroupServiceImpl implements GroupService {
 
     /*----------------- Roles from Group Id -------------------*/
 
-    @Override
+    /*@Override
     @Transactional
     @HystrixCommand(fallbackMethod = "getFallbackRolesByGroupId")
     public RolesList getRolesByGroupId(Long groupId) {
@@ -150,5 +147,28 @@ public class GroupServiceImpl implements GroupService {
         });
         fallBackRoleList.setRolesSet(roleDtoHashSet);
         return fallBackRoleList;
+    }
+    */
+
+    @Override
+    @Transactional
+    public RolesList getRolesByGroupId(Long groupId) {
+        Optional<Group> groupOptional = groupRepository.findById(groupId);
+        if(!groupOptional.isPresent()){
+            log.error("Invalid Group Id provided while using getRolesByGroupId: "+ groupId);
+            throw new GroupNotFoundException("Invalid Group Id: "+ groupId);
+        }
+        Group group = groupOptional.get();
+
+        Set<GroupRoleMappingDto> groupRoleMappingDtos = new HashSet<>();
+
+        groupRoleRepository.findByGroupId(groupId).forEach(userGroupMappingDto -> {
+            groupRoleMappingDtos.add(groupRoleMapper.groupRoleMappingToGroupRoleMappingDto(userGroupMappingDto));
+        });
+
+        ResponseEntity<RolesList>  rolesListResponseEntity = roleHystrix.getRoleListByGroupId(groupRoleMappingDtos);
+        RolesList rolesList = rolesListResponseEntity.getBody();
+        rolesList.setGroupDto(groupMapper.groupToGroupDto(group));
+        return rolesList;
     }
 }

@@ -42,7 +42,7 @@ public class GroupHystrix {
 
         userGroupRepository.findByUserId(userId).forEach(userGroupMapping -> {
             groupDtoHashSet.add(new GroupDto(userGroupMapping.getGroupId(), null, null,
-                    "Group Name unavailable", "Group Description Unavailable"));
+                    "Group Name Unavailable", "Group Description Unavailable"));
         });
 
         fallBackGroupList.setGroupDtoSet(groupDtoHashSet);
