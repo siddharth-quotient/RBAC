@@ -106,50 +106,6 @@ public class GroupServiceImpl implements GroupService {
     }
 
     /*----------------- Roles from Group Id -------------------*/
-
-    /*@Override
-    @Transactional
-    @HystrixCommand(fallbackMethod = "getFallbackRolesByGroupId")
-    public RolesList getRolesByGroupId(Long groupId) {
-        Optional<Group> groupOptional = groupRepository.findById(groupId);
-        if(!groupOptional.isPresent()){
-            log.error("Invalid Group Id provided while using getRolesByGroupId: "+ groupId);
-            throw new GroupNotFoundException("Invalid Group Id: "+ groupId);
-        }
-        Group group = groupOptional.get();
-        Set<GroupRoleMappingDto> groupRoles = new HashSet<>();
-
-        groupRoleRepository.findByGroupId(groupId).forEach(groupRoleMapping -> {
-            groupRoles.add(groupRoleMapper.groupRoleMappingToGroupRoleMappingDto(groupRoleMapping));
-        });
-
-        ResponseEntity<RolesList> rolesListResponseEntity = restTemplate.postForEntity("http://role-service/roles/group-roles/", groupRoles, RolesList.class);
-        RolesList rolesList = rolesListResponseEntity.getBody();
-        rolesList.setGroupDto(groupMapper.groupToGroupDto(group));
-        return rolesList;
-    }
-
-    public RolesList getFallbackRolesByGroupId(Long groupId) {
-
-        Optional<Group> groupOptional = groupRepository.findById(groupId);
-        if(!groupOptional.isPresent()){
-            log.error("Invalid Group Id provided while using getRolesByGroupId: "+ groupId);
-            throw new GroupNotFoundException("Invalid Group Id :"+ groupId);
-        }
-
-        RolesList fallBackRoleList = new RolesList();
-        Set<RoleDto> roleDtoHashSet = new HashSet<>();
-
-        fallBackRoleList.setGroupDto(groupMapper.groupToGroupDto(groupOptional.get()));
-        groupRoleRepository.findByGroupId(groupId).forEach(groupRoleMapping -> {
-            roleDtoHashSet.add(new RoleDto(groupRoleMapping.getRoleId(), null, null,
-                    "Role Name unavailable", "Role Description Unavailable"));
-        });
-        fallBackRoleList.setRolesSet(roleDtoHashSet);
-        return fallBackRoleList;
-    }
-    */
-
     @Override
     @Transactional
     public RolesList getRolesByGroupId(Long groupId) {
