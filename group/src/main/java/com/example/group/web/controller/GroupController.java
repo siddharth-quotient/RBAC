@@ -2,14 +2,16 @@ package com.example.group.web.controller;
 
 import com.example.group.service.GroupService;
 import com.example.group.web.model.GroupDto;
+import com.example.group.web.model.GroupsList;
 import com.example.group.web.model.RolesList;
+import com.example.group.web.model.UserGroupMappingDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.transaction.Transactional;
 import javax.validation.Valid;
+import java.util.HashSet;
 import java.util.Set;
 
 @RestController
@@ -46,10 +48,24 @@ public class GroupController {
     }
 
 
-    /*----------------- Roles from Group Ids -------------------*/
+    /*----------------- Roles from Group Id -------------------*/
     @GetMapping("/{groupId}/roles")
     public ResponseEntity<RolesList> getRolesByGroupId(@PathVariable Long groupId){
         return new ResponseEntity<>(groupService.getRolesByGroupId(groupId), HttpStatus.OK);
+    }
+
+    /*----------------- Groups from User Name -------------------*/
+    @PostMapping("/user-groups")
+    public ResponseEntity<GroupsList> getGroupsByUserId(@RequestBody Set<UserGroupMappingDto> userGroupMappingDtos){
+        Set<GroupDto> groupDtoSet = new HashSet<>();
+
+        userGroupMappingDtos.forEach(userGroupMappingDto -> {
+            groupDtoSet.add( groupService.getGroupById(userGroupMappingDto.getGroupId()));
+        });
+
+        GroupsList groupsList =new GroupsList();
+        groupsList.setGroupDtoSet(groupDtoSet);
+        return new ResponseEntity<>(groupsList, HttpStatus.OK);
     }
 
 }

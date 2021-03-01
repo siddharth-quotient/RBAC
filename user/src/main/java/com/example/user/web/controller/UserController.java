@@ -1,6 +1,7 @@
 package com.example.user.web.controller;
 
 import com.example.user.service.UserService;
+import com.example.user.web.model.GroupsList;
 import com.example.user.web.model.UserDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -42,5 +43,11 @@ public class UserController {
     public ResponseEntity<?> deleteByName(@PathVariable String userName){
         userService.deleteByName(userName);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    /*----------------- Groups from User Name -------------------*/
+    @GetMapping("/{userName}/groups")
+    public ResponseEntity<GroupsList> getGroupsByUserName(@PathVariable String userName){
+        return new ResponseEntity<>(userService.getGroupsByUserName(userName), HttpStatus.OK);
     }
 }

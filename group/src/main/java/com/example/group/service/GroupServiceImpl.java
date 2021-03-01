@@ -108,15 +108,16 @@ public class GroupServiceImpl implements GroupService {
         groupRepository.deleteById(groupId);
     }
 
-    /*----------------- Roles from Group Ids -------------------*/
+    /*----------------- Roles from Group Id -------------------*/
 
     @Override
+    @Transactional
     @HystrixCommand(fallbackMethod = "getFallbackRolesByGroupId")
     public RolesList getRolesByGroupId(Long groupId) {
         Optional<Group> groupOptional = groupRepository.findById(groupId);
         if(!groupOptional.isPresent()){
             log.error("Invalid Group Id provided while using getRolesByGroupId: "+ groupId);
-            throw new GroupNotFoundException("Invalid Group Id :"+ groupId);
+            throw new GroupNotFoundException("Invalid Group Id: "+ groupId);
         }
         Group group = groupOptional.get();
         Set<GroupRoleMappingDto> groupRoles = new HashSet<>();

@@ -12,6 +12,6 @@ public interface GroupService {
     GroupDto createGroup(GroupDto groupDto);
     void deleteById(Long groupId);
 
-    /*----------------- Roles from Group Ids -------------------*/
+    /*----------------- Roles from Group Id -------------------*/
     RolesList getRolesByGroupId(Long groupId);
 }

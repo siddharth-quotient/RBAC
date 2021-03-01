@@ -1,13 +1,23 @@
 package com.example.user.service;
 
 import com.example.user.domain.User;
+import com.example.user.repository.UserGroupRepository;
 import com.example.user.repository.UserRepository;
+import com.example.user.web.exception.UserGroupNotFoundException;
 import com.example.user.web.exception.UserNotFoundException;
+import com.example.user.web.mapper.UserGroupMapper;
 import com.example.user.web.mapper.UserMapper;
+import com.example.user.web.model.GroupDto;
+import com.example.user.web.model.GroupsList;
 import com.example.user.web.model.UserDto;
+import com.example.user.web.model.UserGroupMappingDto;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import javax.transaction.Transactional;
 import java.util.HashSet;
@@ -20,7 +30,11 @@ import java.util.Set;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final UserGroupRepository userGroupRepository;
+    private final UserGroupMapper userGroupMapper;
     private final UserMapper userMapper;
+    private final RestTemplate restTemplate;
+    private final GroupHystrix groupHystrix;
 
     @Override
     public Set<UserDto> getUsers() {
@@ -91,6 +105,29 @@ public class UserServiceImpl implements UserService {
         }
 
         userRepository.deleteByUserName(userName);
+    }
+
+    /*----------------- Groups from User Name -------------------*/
+    @Override
+    @Transactional
+    public GroupsList getGroupsByUserName(String userName) {
+        Optional<User> userOptional = userRepository.findByUserName(userName);
+        if(!userOptional.isPresent()){
+            log.error("Invalid User Name provided while using getGroupsByUserName: "+ userName);
+            throw new UserNotFoundException("Invalid UserName: "+ userName);
+        }
+        User user = userOptional.get();
+        Long userId = user.getUserId();
+        Set<UserGroupMappingDto> userGroupMappingDtos = new HashSet<>();
+
+        userGroupRepository.findByUserId(userId).forEach(userGroupMapping -> {
+            userGroupMappingDtos.add(userGroupMapper.userGroupMappingToUserGroupDto(userGroupMapping));
+        });
+
+        ResponseEntity<GroupsList>  groupsListResponseEntity = groupHystrix.getGroupListByUserId(userGroupMappingDtos);
+        GroupsList groupsList = groupsListResponseEntity.getBody();
+        groupsList.setUserDto(userMapper.userToUserDto(user));
+        return groupsList;
     }
 
 }
