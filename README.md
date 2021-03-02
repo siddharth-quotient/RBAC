@@ -4,7 +4,7 @@
 To create the project we use **Spring Cloud Gateway**, **Hystrix Cloud Circuit Breaker**, **Eureka Service Discovery** from the Spring Cloud Netflix technology stack.
 
 ---
-## [Services Port](#services-port)
+## Services Port
 
 - #### User Service : [http://localhost:8000](http://localhost:8000)
 - #### Group Service : [http://localhost:8100](http://localhost:8100)
@@ -12,12 +12,12 @@ To create the project we use **Spring Cloud Gateway**, **Hystrix Cloud Circuit B
 - #### Eureka Discovery Service : [http://localhost:8761](http://localhost:8761)
 - #### Spring Cloud Gateway : [http://localhost:8765](http://localhost:8765)
 ---
-## [Architecture diagram of RBAC Microservices](#diagram-rbac)
+## Architecture diagram of RBAC Microservices
 
 ![RBAC_Architecture](https://user-images.githubusercontent.com/76997642/109539969-eb617980-7ae7-11eb-87e9-562e6263ca77.jpg)
 
 ---
-## [Deliverables](#deliverables)
+## Deliverables
 
 - [x] Create User_Table (user_id, create_date, last_modified_date, user_name, first_name, last_name)
 - [x] Create User_Group_Mapping_Table (user_group_id, user_id, group_id)
@@ -42,7 +42,7 @@ To create the project we use **Spring Cloud Gateway**, **Hystrix Cloud Circuit B
 - [ ] Given a user_name and role_id, return true or false depending on whether the role is assigned to user
 
 ---
-## [Database configuration](#database-configuration)
+## Database configuration
 
 - #### User Table :
 ```
@@ -74,7 +74,7 @@ create table role_table (role_id bigint not null auto_increment, create_date dat
 alter table role_table add constraint UK_kqtgs1ar590vxi6vvfti5sej9 unique (role_name);
 ```
 ---
-## [Database Schema](#database-schema)
+## Database Schema
 
 ![RBAC_DB_Schema](https://user-images.githubusercontent.com/76997642/109540066-0502c100-7ae8-11eb-976e-a5fa544fe4dd.JPG)
 
