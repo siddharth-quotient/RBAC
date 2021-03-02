@@ -6,8 +6,6 @@ import com.example.user.web.model.GroupDto;
 import com.example.user.web.model.GroupsList;
 import com.example.user.web.model.UserGroupMappingDto;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

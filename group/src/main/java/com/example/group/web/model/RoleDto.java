@@ -1,9 +1,6 @@
 package com.example.group.web.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.OffsetDateTime;
 
@@ -16,6 +13,7 @@ import java.time.OffsetDateTime;
 @AllArgsConstructor
 @Getter
 @Setter
+@ToString
 public class RoleDto {
 
     private Long roleId;

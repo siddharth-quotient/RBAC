@@ -6,11 +6,14 @@ import com.example.group.repository.GroupRepository;
 import com.example.group.repository.GroupRoleRepository;
 import com.example.group.web.exception.GroupNotFoundException;
 import com.example.group.web.exception.GroupRoleNotFoundException;
+import com.example.group.web.exception.RoleNotFoundException;
 import com.example.group.web.mapper.GroupRoleMapper;
 import com.example.group.web.model.GroupRoleMappingDto;
+import com.example.group.web.model.RoleDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.HashSet;
 import java.util.Optional;
@@ -24,6 +27,7 @@ public class GroupRoleServiceImpl implements GroupRoleService {
     private final GroupRoleRepository groupRoleRepository;
     private final GroupRepository groupRepository;
     private final GroupRoleMapper groupRoleMapper;
+    private final RestTemplate restTemplate;
 
     @Override
     public Set<GroupRoleMappingDto> getGroupRoleMapping() {
@@ -62,13 +66,20 @@ public class GroupRoleServiceImpl implements GroupRoleService {
             GroupRoleMapping groupRoleMapping = groupRoleOptional.get();
 
             Long groupId = groupRoleMappingDto.getGroupId();
+            Long roleId = groupRoleMappingDto.getRoleId();
 
             /* Check for valid group_id */
             if(!validateGroupId(groupId)){
                 throw new GroupNotFoundException("Invalid Group Id: "+ groupId);
             }
 
-            //todo How to implement validation for role id?
+            /* Check for valid role_id */
+            try {
+                RoleDto roleDto = restTemplate.getForObject("http://role-service/roles/" + roleId, RoleDto.class);
+            }
+            catch (Exception ex){
+                throw new RoleNotFoundException("Invalid Role Id: "+roleId);
+            }
 
             groupRoleMapping.setGroupId( groupRoleMappingDto.getGroupId() );
             groupRoleMapping.setRoleId( groupRoleMappingDto.getRoleId() );
@@ -94,6 +105,7 @@ public class GroupRoleServiceImpl implements GroupRoleService {
         }
 
         //todo How to implement validation for role id?
+
 
         return groupRoleMapper.groupRoleMappingToGroupRoleMappingDto(groupRoleRepository.save(groupRoleMapper.groupRoleMappingDtoToGroupRoleMapping(groupRoleMappingDto)));
     }

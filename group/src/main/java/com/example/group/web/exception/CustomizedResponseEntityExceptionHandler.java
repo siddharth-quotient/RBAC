@@ -28,6 +28,13 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
         return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(RoleNotFoundException.class)
+    public final ResponseEntity<Object> roleNotFoundException(Exception roleNotFoundException, WebRequest request){
+        ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), roleNotFoundException.getMessage(), request.getDescription(false));
+
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);
+    }
+
     @ExceptionHandler(GroupRoleNotFoundException.class)
     public final ResponseEntity<Object> groupRoleNotFoundException(Exception groupRoleNotFoundException, WebRequest request){
         ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), groupRoleNotFoundException.getMessage(), request.getDescription(false));

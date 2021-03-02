@@ -57,7 +57,6 @@ public class RoleController {
         Set<RoleDto> roleDtoSet = new HashSet<>();
 
         groupRoleMappingDtos.forEach(groupRoleMappingDto -> {
-
             roleDtoSet.add( roleService.getRoleById(groupRoleMappingDto.getRoleId()));
         });
 

@@ -28,7 +28,7 @@ public class GroupServiceImpl implements GroupService {
     private final GroupRoleRepository groupRoleRepository;
     private final GroupMapper groupMapper;
     private final GroupRoleMapper groupRoleMapper;
-    private final RoleHystrix roleHystrix;
+    private final RoleListByGroupIdHystrix roleListByGroupIdHystrix;
 
 
     @Override
@@ -122,7 +122,7 @@ public class GroupServiceImpl implements GroupService {
             groupRoleMappingDtos.add(groupRoleMapper.groupRoleMappingToGroupRoleMappingDto(userGroupMappingDto));
         });
 
-        ResponseEntity<RolesList>  rolesListResponseEntity = roleHystrix.getRoleListByGroupId(groupRoleMappingDtos);
+        ResponseEntity<RolesList>  rolesListResponseEntity = roleListByGroupIdHystrix.getRoleListByGroupId(groupRoleMappingDtos);
         RolesList rolesList = rolesListResponseEntity.getBody();
         rolesList.setGroupDto(groupMapper.groupToGroupDto(group));
         return rolesList;
