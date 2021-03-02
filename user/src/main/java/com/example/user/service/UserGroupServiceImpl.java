@@ -1,16 +1,20 @@
 package com.example.user.service;
 
+import com.example.user.domain.GroupDto;
 import com.example.user.domain.User;
 import com.example.user.domain.UserGroupMapping;
 import com.example.user.repository.UserGroupRepository;
 import com.example.user.repository.UserRepository;
+import com.example.user.web.exception.GroupNotFoundException;
 import com.example.user.web.exception.UserGroupNotFoundException;
 import com.example.user.web.mapper.UserGroupMapper;
 import com.example.user.web.model.UserGroupMappingDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
+import javax.transaction.Transactional;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -23,6 +27,7 @@ public class UserGroupServiceImpl implements UserGroupService {
     private final UserGroupRepository userGroupRepository;
     private final UserRepository userRepository;
     private final UserGroupMapper userGroupMapper;
+    private final RestTemplate restTemplate;
 
     @Override
     public Set<UserGroupMappingDto> getUserGroupMappings() {
@@ -49,6 +54,7 @@ public class UserGroupServiceImpl implements UserGroupService {
     }
 
     @Override
+    @Transactional
     public UserGroupMappingDto updateUserGroupMappingById(Long userGroupId, UserGroupMappingDto userGroupMappingDto) {
         if(userGroupId==null){
             throw new UserGroupNotFoundException("User-Group Mapping cannot be Null");
@@ -60,13 +66,20 @@ public class UserGroupServiceImpl implements UserGroupService {
             UserGroupMapping userGroupMapping = userGroupMappingOptional.get();
 
             Long userId = userGroupMappingDto.getUserId();
+            Long groupId = userGroupMappingDto.getGroupId();
 
             /* Check for valid user_id */
             if(!validateUserId(userId)){
                 throw new UserGroupNotFoundException("Invalid User Id: "+ userId);
             }
 
-            //todo How to implement validation for group id?
+            /* Check for valid group_id */
+            try {
+                GroupDto groupDto = restTemplate.getForObject("http://group-service/groups/" + groupId, GroupDto.class);
+            }
+            catch (Exception ex){
+                throw new GroupNotFoundException("Invalid Group Id: "+groupId);
+            }
 
             userGroupMapping.setUserId( userGroupMappingDto.getUserId() );
             userGroupMapping.setGroupId( userGroupMappingDto.getGroupId() );
@@ -78,19 +91,27 @@ public class UserGroupServiceImpl implements UserGroupService {
     }
 
     @Override
+    @Transactional
     public UserGroupMappingDto createUserGroupMapping(UserGroupMappingDto userGroupMappingDto) {
         if(userGroupMappingDto == null){
             throw new UserGroupNotFoundException("User-Group Mapping cannot be Null");
         }
 
         Long userId = userGroupMappingDto.getUserId();
+        Long groupId = userGroupMappingDto.getGroupId();
 
         /* Check for valid user_id */
         if(!validateUserId(userId)){
             throw new UserGroupNotFoundException("Invalid User Id: "+ userId);
         }
 
-        //todo How to implement validation for group id?
+        /* Check for valid group_id */
+        try {
+            GroupDto groupDto = restTemplate.getForObject("http://group-service/groups/" + groupId, GroupDto.class);
+        }
+        catch (Exception ex){
+            throw new GroupNotFoundException("Invalid Group Id: "+groupId);
+        }
 
         return userGroupMapper.userGroupMappingToUserGroupDto(userGroupRepository.save(userGroupMapper.userGroupMappingDtoToUserGroup(userGroupMappingDto)));
     }

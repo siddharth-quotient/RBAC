@@ -24,6 +24,13 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
         return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(GroupNotFoundException.class)
+    public final ResponseEntity<Object> groupNotFoundException(Exception groupNotFoundException, WebRequest request){
+        ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), groupNotFoundException.getMessage(), request.getDescription(false));
+
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);
+    }
+
     @ExceptionHandler(UserGroupNotFoundException.class)
     public final ResponseEntity<Object> userGroupNotFoundException(Exception userGroupNotFoundException, WebRequest request){
         ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), userGroupNotFoundException.getMessage(), request.getDescription(false));

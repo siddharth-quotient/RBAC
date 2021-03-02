@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import javax.transaction.Transactional;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -55,6 +56,7 @@ public class GroupRoleServiceImpl implements GroupRoleService {
     }
 
     @Override
+    @Transactional
     public GroupRoleMappingDto updateGroupRoleMappingById(Long groupRoleId, GroupRoleMappingDto groupRoleMappingDto) {
         if(groupRoleId==null){
             throw new GroupRoleNotFoundException("Group-Role Mapping cannot be Null");
@@ -91,6 +93,7 @@ public class GroupRoleServiceImpl implements GroupRoleService {
     }
 
     @Override
+    @Transactional
     public GroupRoleMappingDto createGroupRoleMapping(GroupRoleMappingDto groupRoleMappingDto) {
 
         if(groupRoleMappingDto == null){
@@ -98,13 +101,20 @@ public class GroupRoleServiceImpl implements GroupRoleService {
         }
 
         Long groupId = groupRoleMappingDto.getGroupId();
+        Long roleId = groupRoleMappingDto.getRoleId();
 
         /* Check for valid group_id */
         if(!validateGroupId(groupId)){
             throw new GroupNotFoundException("Invalid Group Id: "+ groupId);
         }
 
-        //todo How to implement validation for role id?
+        /* Check for valid role_id */
+        try {
+            RoleDto roleDto = restTemplate.getForObject("http://role-service/roles/" + roleId, RoleDto.class);
+        }
+        catch (Exception ex){
+            throw new RoleNotFoundException("Invalid Role Id: "+roleId);
+        }
 
 
         return groupRoleMapper.groupRoleMappingToGroupRoleMappingDto(groupRoleRepository.save(groupRoleMapper.groupRoleMappingDtoToGroupRoleMapping(groupRoleMappingDto)));
