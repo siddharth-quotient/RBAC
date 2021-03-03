@@ -38,7 +38,7 @@ To create the project we use **Spring Cloud Gateway**, **Hystrix Cloud Circuit B
 - [x] Given a group_id, return the basic group details
 - [x] Given a group_id, return the basic group details & the list of role names
 - [x] Given a role_id, return the basic role details
-- [ ] Given a user_name and group_id return true or false depending on whether the group is assigned to user
+- [x] Given a user_name and group_id return true or false depending on whether the group is assigned to user
 - [ ] Given a user_name and role_id, return true or false depending on whether the role is assigned to user
 
 ---

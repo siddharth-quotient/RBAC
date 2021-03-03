@@ -17,7 +17,7 @@ import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
-public class GroupHystrix {
+public class GroupListByUserIdHystrix {
 
     private final RestTemplate restTemplate;
     private final UserGroupRepository userGroupRepository;

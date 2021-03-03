@@ -4,9 +4,7 @@ import com.example.role.domain.Role;
 import com.example.role.repository.RoleRepository;
 import com.example.role.web.exception.RoleNotFoundException;
 import com.example.role.web.mapper.RoleMapper;
-import com.example.role.web.model.GroupRoleMappingDto;
 import com.example.role.web.model.RoleDto;
-import com.example.role.web.model.RolesList;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

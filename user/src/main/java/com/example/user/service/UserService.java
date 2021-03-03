@@ -14,4 +14,7 @@ public interface UserService {
 
     /*----------------- Groups from UserName -------------------*/
     GroupsList getGroupsByUserName(String userName);
+
+    /*-------------- Check if a User belongs to Group ---------------*/
+    Boolean checkGroupIdForUserName(String userName, Long groupId);
 }

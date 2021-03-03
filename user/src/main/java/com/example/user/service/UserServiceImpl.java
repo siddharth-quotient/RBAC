@@ -1,8 +1,10 @@
 package com.example.user.service;
 
 import com.example.user.domain.User;
+import com.example.user.domain.UserGroupMapping;
 import com.example.user.repository.UserGroupRepository;
 import com.example.user.repository.UserRepository;
+import com.example.user.web.exception.GroupNotFoundException;
 import com.example.user.web.exception.UserNotFoundException;
 import com.example.user.web.mapper.UserGroupMapper;
 import com.example.user.web.mapper.UserMapper;
@@ -13,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import javax.transaction.Transactional;
 import java.util.HashSet;
@@ -28,7 +31,9 @@ public class UserServiceImpl implements UserService {
     private final UserGroupRepository userGroupRepository;
     private final UserGroupMapper userGroupMapper;
     private final UserMapper userMapper;
-    private final GroupHystrix groupHystrix;
+    private final GroupListByUserIdHystrix groupListByUserIdHystrix;
+    private final GroupByUserIdRestTemplateErrorHandler groupByUserIdRestTemplateErrorHandler;
+    private final RestTemplate restTemplate;
 
     @Override
     public Set<UserDto> getUsers() {
@@ -118,10 +123,31 @@ public class UserServiceImpl implements UserService {
             userGroupMappingDtos.add(userGroupMapper.userGroupMappingToUserGroupDto(userGroupMapping));
         });
 
-        ResponseEntity<GroupsList>  groupsListResponseEntity = groupHystrix.getGroupListByUserId(userGroupMappingDtos);
+        ResponseEntity<GroupsList>  groupsListResponseEntity = groupListByUserIdHystrix.getGroupListByUserId(userGroupMappingDtos);
         GroupsList groupsList = groupsListResponseEntity.getBody();
         groupsList.setUserDto(userMapper.userToUserDto(user));
         return groupsList;
+    }
+
+    /*-------------- Check if a User belongs to Group ---------------*/
+    @Override
+    public Boolean checkGroupIdForUserName(String userName, Long groupId) {
+        Optional<User> userOptional = userRepository.findByUserName(userName);
+        if(!userOptional.isPresent()){
+            log.error("Invalid User Name provided while using getGroupsByUserName: "+ userName);
+            throw new UserNotFoundException("Invalid UserName: "+ userName);
+        }
+
+        User user = userOptional.get();
+        Long userId = user.getUserId();
+
+        groupByUserIdRestTemplateErrorHandler.checkGroupExist(groupId);
+
+
+        Optional<UserGroupMapping> userGroupMappingOptional = userGroupRepository
+                .findUserGroupMappingByUserIdAndGroupId(userId, groupId);
+
+        return userGroupMappingOptional.isPresent();
     }
 
 }

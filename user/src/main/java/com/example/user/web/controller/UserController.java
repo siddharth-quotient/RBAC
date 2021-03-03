@@ -50,4 +50,16 @@ public class UserController {
     public ResponseEntity<GroupsList> getGroupsByUserName(@PathVariable String userName){
         return new ResponseEntity<>(userService.getGroupsByUserName(userName), HttpStatus.OK);
     }
+
+    /*-------------- Check if a User belongs to Group ---------------*/
+    @GetMapping("/{userName}/groups/{groupId}/check")
+    public ResponseEntity<?> checkGroupIdForUserName(@PathVariable String userName, @PathVariable Long groupId){
+        Boolean isValid = userService.checkGroupIdForUserName(userName, groupId);
+        if(isValid){
+            return new ResponseEntity<>(HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
 }
