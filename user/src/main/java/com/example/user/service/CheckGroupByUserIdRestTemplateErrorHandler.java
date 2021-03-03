@@ -16,7 +16,7 @@ import static org.springframework.http.HttpStatus.Series.SERVER_ERROR;
 
 @Service
 @RequiredArgsConstructor
-public class GroupByUserIdRestTemplateErrorHandler {
+public class CheckGroupByUserIdRestTemplateErrorHandler {
 
     private final RestTemplate restTemplate;
 

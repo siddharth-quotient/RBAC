@@ -57,14 +57,8 @@ public class GroupController {
     /*----------------- Groups from User Name -------------------*/
     @PostMapping("/user-groups")
     public ResponseEntity<GroupsList> getGroupsByUserId(@RequestBody Set<UserGroupMappingDto> userGroupMappingDtos){
-        Set<GroupDto> groupDtoSet = new HashSet<>();
-
-        userGroupMappingDtos.forEach(userGroupMappingDto -> {
-            groupDtoSet.add( groupService.getGroupById(userGroupMappingDto.getGroupId()));
-        });
-
         GroupsList groupsList =new GroupsList();
-        groupsList.setGroupDtoSet(groupDtoSet);
+        groupsList.setGroupDtoSet(groupService.getGroupsByUserId(userGroupMappingDtos));
         return new ResponseEntity<>(groupsList, HttpStatus.OK);
     }
 

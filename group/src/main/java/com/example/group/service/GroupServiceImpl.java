@@ -6,9 +6,7 @@ import com.example.group.repository.GroupRoleRepository;
 import com.example.group.web.exception.GroupNotFoundException;
 import com.example.group.web.mapper.GroupMapper;
 import com.example.group.web.mapper.GroupRoleMapper;
-import com.example.group.web.model.GroupDto;
-import com.example.group.web.model.GroupRoleMappingDto;
-import com.example.group.web.model.RolesList;
+import com.example.group.web.model.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.*;
@@ -126,5 +124,17 @@ public class GroupServiceImpl implements GroupService {
         RolesList rolesList = rolesListResponseEntity.getBody();
         rolesList.setGroupDto(groupMapper.groupToGroupDto(group));
         return rolesList;
+    }
+
+    /*----------------- Groups from User Name -------------------*/
+    @Override
+    public Set<GroupDto> getGroupsByUserId(Set<UserGroupMappingDto> userGroupMappingDtos) {
+        Set<GroupDto> groupDtoSet = new HashSet<>();
+
+        userGroupMappingDtos.forEach(userGroupMappingDto -> {
+            groupDtoSet.add( this.getGroupById(userGroupMappingDto.getGroupId()));
+        });
+
+        return groupDtoSet;
     }
 }

@@ -4,7 +4,6 @@ import com.example.user.domain.User;
 import com.example.user.domain.UserGroupMapping;
 import com.example.user.repository.UserGroupRepository;
 import com.example.user.repository.UserRepository;
-import com.example.user.web.exception.GroupNotFoundException;
 import com.example.user.web.exception.UserNotFoundException;
 import com.example.user.web.mapper.UserGroupMapper;
 import com.example.user.web.mapper.UserMapper;
@@ -15,7 +14,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import javax.transaction.Transactional;
 import java.util.HashSet;
@@ -32,8 +30,7 @@ public class UserServiceImpl implements UserService {
     private final UserGroupMapper userGroupMapper;
     private final UserMapper userMapper;
     private final GroupListByUserIdHystrix groupListByUserIdHystrix;
-    private final GroupByUserIdRestTemplateErrorHandler groupByUserIdRestTemplateErrorHandler;
-    private final RestTemplate restTemplate;
+    private final CheckGroupByUserIdRestTemplateErrorHandler checkGroupByUserIdRestTemplateErrorHandler;
 
     @Override
     public Set<UserDto> getUsers() {
@@ -47,17 +44,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto getUserByName(String userName) {
-        if(userName==null || userName.isEmpty()){
-            throw new UserNotFoundException("User cannot be null");
-        }
-
-        Optional<User> userOptional = userRepository.findByUserName(userName);
-
-        if(userOptional.isPresent()){
-            return userMapper.userToUserDto(userOptional.get());
-        }
-        log.error("Invalid User Name provided while using getUserByName: "+ userName);
-        throw new UserNotFoundException("Invalid User Name: "+ userName);
+        User user = getUserByUserName(userName);
+        return  userMapper.userToUserDto(user);
     }
 
     @Override
@@ -81,6 +69,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public UserDto createUser(UserDto userDto) {
         if(userDto ==  null){
             throw new UserNotFoundException("New User cannot be null");
@@ -110,12 +99,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public GroupsList getGroupsByUserName(String userName) {
-        Optional<User> userOptional = userRepository.findByUserName(userName);
-        if(!userOptional.isPresent()){
-            log.error("Invalid User Name provided while using getGroupsByUserName: "+ userName);
-            throw new UserNotFoundException("Invalid UserName: "+ userName);
-        }
-        User user = userOptional.get();
+        User user = getUserByUserName(userName);
         Long userId = user.getUserId();
         Set<UserGroupMappingDto> userGroupMappingDtos = new HashSet<>();
 
@@ -132,22 +116,27 @@ public class UserServiceImpl implements UserService {
     /*-------------- Check if a User belongs to Group ---------------*/
     @Override
     public Boolean checkGroupIdForUserName(String userName, Long groupId) {
-        Optional<User> userOptional = userRepository.findByUserName(userName);
-        if(!userOptional.isPresent()){
-            log.error("Invalid User Name provided while using getGroupsByUserName: "+ userName);
-            throw new UserNotFoundException("Invalid UserName: "+ userName);
-        }
-
-        User user = userOptional.get();
+        User user = getUserByUserName(userName);
         Long userId = user.getUserId();
 
-        groupByUserIdRestTemplateErrorHandler.checkGroupExist(groupId);
+        checkGroupByUserIdRestTemplateErrorHandler.checkGroupExist(groupId);
 
 
         Optional<UserGroupMapping> userGroupMappingOptional = userGroupRepository
                 .findUserGroupMappingByUserIdAndGroupId(userId, groupId);
 
         return userGroupMappingOptional.isPresent();
+    }
+
+    User getUserByUserName(String userName){
+        Optional<User> userOptional = userRepository.findByUserName(userName);
+
+        if(!userOptional.isPresent()) {
+            log.error("Invalid User Name: "+ userName);
+            throw new UserNotFoundException("Invalid User Name: "+ userName);
+        }
+
+        return userOptional.get();
     }
 
 }
