@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import javax.transaction.Transactional;
 import java.util.HashSet;
@@ -31,6 +32,7 @@ public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
     private final GroupListByUserIdHystrix groupListByUserIdHystrix;
     private final CheckGroupByUserIdRestTemplateErrorHandler checkGroupByUserIdRestTemplateErrorHandler;
+    private final RestTemplate restTemplate;
 
     @Override
     public Set<UserDto> getUsers() {
@@ -128,6 +130,16 @@ public class UserServiceImpl implements UserService {
         return userGroupMappingOptional.isPresent();
     }
 
+    /*-------------- Check if a User has a Role ---------------*/
+    @Override
+    public Boolean checkRoleIdForUserName(String userName, Long roleId) {
+        User user = getUserByUserName(userName);
+        Long userId = user.getUserId();
+        return restTemplate.getForObject("http://group-service/groups/userId/"+userId+"/roleId/"+roleId+"/check",
+                Boolean.class);
+    }
+
+    //Helper function
     User getUserByUserName(String userName){
         Optional<User> userOptional = userRepository.findByUserName(userName);
 

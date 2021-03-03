@@ -1,6 +1,7 @@
 package com.example.group.web.controller;
 
 import com.example.group.service.GroupService;
+import com.example.group.service.UserGroupService;
 import com.example.group.web.model.GroupDto;
 import com.example.group.web.model.GroupsList;
 import com.example.group.web.model.RolesList;
@@ -11,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.HashSet;
 import java.util.Set;
 
 @RestController
@@ -20,6 +20,7 @@ import java.util.Set;
 public class GroupController {
 
     private final GroupService groupService;
+    private final UserGroupService userGroupService;
 
     @GetMapping
     public ResponseEntity<Set<GroupDto>> getGroups(){
@@ -60,6 +61,12 @@ public class GroupController {
         GroupsList groupsList =new GroupsList();
         groupsList.setGroupDtoSet(groupService.getGroupsByUserId(userGroupMappingDtos));
         return new ResponseEntity<>(groupsList, HttpStatus.OK);
+    }
+
+    @GetMapping("userId/{userId}/roleId/{roleId}/check")
+    public Boolean checkRoleIdForUserName(@PathVariable Long userId, @PathVariable Long roleId){
+        Set<Long> groupIds = userGroupService.getGroupIdsForUserId(userId);
+        return userGroupService.getRoleIdsForGroupIds(groupIds, roleId);
     }
 
 }

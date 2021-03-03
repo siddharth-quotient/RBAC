@@ -1,9 +1,7 @@
 package com.example.user.service;
 
-import com.example.user.domain.GroupDto;
 import com.example.user.web.exception.GroupNotFoundException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.example.user.web.model.GroupDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.client.ClientHttpResponse;

@@ -17,4 +17,7 @@ public interface UserService {
 
     /*-------------- Check if a User belongs to Group ---------------*/
     Boolean checkGroupIdForUserName(String userName, Long groupId);
+
+    /*-------------- Check if a User has a Role ---------------*/
+    Boolean checkRoleIdForUserName(String userName, Long roleId);
 }

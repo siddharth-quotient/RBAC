@@ -5,7 +5,7 @@ import lombok.*;
 import javax.persistence.*;
 
 /**
- * Simple JavaBean domain object representing a GroupRoleMapping.
+ * Simple JavaBean domain object representing a UserGroupMapping.
  *
  * @author Siddharth Mehta
  */
@@ -15,18 +15,18 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Builder
 @Entity
-@ToString
 @Table(
-        name = "GROUP_ROLE_MAPPING_TABLE",
-        uniqueConstraints = {@UniqueConstraint(columnNames = {"group_id", "role_id"})}
+        name = "USER_GROUP_MAPPING_TABLE",
+        uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id" ,"group_id"})}
 )
-public class GroupRoleMapping {
+public class UserGroupMapping {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long groupRoleId;
+    private Long userGroupId;
 
+    @Column(name="user_id")
+    private Long userId;
     @Column(name="group_id")
     private Long groupId;
-    @Column(name="role_id")
-    private Long roleId;
+
 }

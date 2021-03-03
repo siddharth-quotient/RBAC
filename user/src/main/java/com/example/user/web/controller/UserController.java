@@ -62,4 +62,16 @@ public class UserController {
         }
     }
 
+    /*-------------- Check if a User has a Role ---------------*/
+    @GetMapping("/{userName}/roles/{roleId}/check")
+    public ResponseEntity<?> checkRoleIdForUserName(@PathVariable String userName, @PathVariable Long roleId){
+        Boolean isValid = userService.checkRoleIdForUserName(userName, roleId);
+        if(isValid){
+            return new ResponseEntity<>(HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+
 }

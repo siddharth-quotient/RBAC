@@ -1,6 +1,5 @@
 package com.example.user.service;
 
-import com.example.user.domain.GroupDto;
 import com.example.user.domain.User;
 import com.example.user.domain.UserGroupMapping;
 import com.example.user.repository.UserGroupRepository;
@@ -8,6 +7,7 @@ import com.example.user.repository.UserRepository;
 import com.example.user.web.exception.GroupNotFoundException;
 import com.example.user.web.exception.UserGroupNotFoundException;
 import com.example.user.web.mapper.UserGroupMapper;
+import com.example.user.web.model.GroupDto;
 import com.example.user.web.model.UserGroupMappingDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -78,7 +78,7 @@ public class UserGroupServiceImpl implements UserGroupService {
                 GroupDto groupDto = restTemplate.getForObject("http://group-service/groups/" + groupId, GroupDto.class);
             }
             catch (Exception ex){
-                throw new GroupNotFoundException("Invalid Group Id: "+groupId);
+                throw new GroupNotFoundException("Invalid Group Id: " +groupId+ " or service unavailable!");
             }
 
             userGroupMapping.setUserId( userGroupMappingDto.getUserId() );
@@ -110,7 +110,7 @@ public class UserGroupServiceImpl implements UserGroupService {
             GroupDto groupDto = restTemplate.getForObject("http://group-service/groups/" + groupId, GroupDto.class);
         }
         catch (Exception ex){
-            throw new GroupNotFoundException("Invalid Group Id: "+groupId);
+            throw new GroupNotFoundException("Invalid Group Id: " +groupId+ " or service unavailable!");
         }
 
         return userGroupMapper.userGroupMappingToUserGroupDto(userGroupRepository.save(userGroupMapper.userGroupMappingDtoToUserGroup(userGroupMappingDto)));
