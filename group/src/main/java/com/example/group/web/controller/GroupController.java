@@ -63,8 +63,9 @@ public class GroupController {
         return new ResponseEntity<>(groupsList, HttpStatus.OK);
     }
 
+    /*-------------- Check if a User has a Role ---------------*/
     @GetMapping("userId/{userId}/roleId/{roleId}/check")
-    public Boolean checkRoleIdForUserName(@PathVariable Long userId, @PathVariable Long roleId){
+    public Boolean checkRoleIdForUserId(@PathVariable Long userId, @PathVariable Long roleId){
         Set<Long> groupIds = userGroupService.getGroupIdsForUserId(userId);
         return userGroupService.getRoleIdsForGroupIds(groupIds, roleId);
     }

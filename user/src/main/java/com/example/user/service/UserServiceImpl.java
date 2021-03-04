@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
     private final GroupListByUserIdHystrix groupListByUserIdHystrix;
     private final CheckGroupByUserIdRestTemplateErrorHandler checkGroupByUserIdRestTemplateErrorHandler;
-    private final RestTemplate restTemplate;
+    private final CheckRoleByUserIdRestTemplateErrorHandler checkRoleByUserIdRestTemplateErrorHandler;
 
     @Override
     public Set<UserDto> getUsers() {
@@ -135,8 +135,8 @@ public class UserServiceImpl implements UserService {
     public Boolean checkRoleIdForUserName(String userName, Long roleId) {
         User user = getUserByUserName(userName);
         Long userId = user.getUserId();
-        return restTemplate.getForObject("http://group-service/groups/userId/"+userId+"/roleId/"+roleId+"/check",
-                Boolean.class);
+
+        return checkRoleByUserIdRestTemplateErrorHandler.checkRolePermissionExistForUser(userId, roleId);
     }
 
     //Helper function

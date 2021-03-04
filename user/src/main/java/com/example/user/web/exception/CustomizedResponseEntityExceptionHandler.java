@@ -52,4 +52,11 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
         ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), "Unique constraint violation", e.getMessage());
         return new ResponseEntity<>(exceptionResponse, HttpStatus.CONFLICT);
     }
+
+    @ExceptionHandler(GroupServiceDownException.class)
+    public final ResponseEntity<Object> groupServiceDownException(Exception groupServiceDownException, WebRequest request){
+        ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), "Please try again later", groupServiceDownException.getMessage());
+
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 }

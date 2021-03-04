@@ -1,8 +1,6 @@
 package com.example.group.service;
 
 
-import com.example.group.web.model.UserGroupMappingDto;
-
 import java.util.Set;
 
 public interface UserGroupService {

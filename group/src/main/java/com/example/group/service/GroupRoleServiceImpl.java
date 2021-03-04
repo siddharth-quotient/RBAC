@@ -28,6 +28,7 @@ public class GroupRoleServiceImpl implements GroupRoleService {
     private final GroupRoleRepository groupRoleRepository;
     private final GroupRepository groupRepository;
     private final GroupRoleMapper groupRoleMapper;
+    private final CheckRoleId checkRoleId;
     private final RestTemplate restTemplate;
 
     @Override
@@ -75,13 +76,11 @@ public class GroupRoleServiceImpl implements GroupRoleService {
                 throw new GroupNotFoundException("Invalid Group Id: "+ groupId);
             }
 
-            /* Check for valid role_id */
-            try {
-                RoleDto roleDto = restTemplate.getForObject("http://role-service/roles/" + roleId, RoleDto.class);
+            /*Check for valid role_id*/
+            if(!checkRoleId.checkRoleExist(roleId)){
+                throw new RoleNotFoundException("Invalid Role Id: "+ roleId);
             }
-            catch (Exception ex){
-                throw new RoleNotFoundException("Invalid Role Id: "+roleId);
-            }
+
 
             groupRoleMapping.setGroupId( groupRoleMappingDto.getGroupId() );
             groupRoleMapping.setRoleId( groupRoleMappingDto.getRoleId() );
@@ -108,12 +107,9 @@ public class GroupRoleServiceImpl implements GroupRoleService {
             throw new GroupNotFoundException("Invalid Group Id: "+ groupId);
         }
 
-        /* Check for valid role_id */
-        try {
-            RoleDto roleDto = restTemplate.getForObject("http://role-service/roles/" + roleId, RoleDto.class);
-        }
-        catch (Exception ex){
-            throw new RoleNotFoundException("Invalid Role Id: "+roleId);
+        /*Check for valid role_id*/
+        if(!checkRoleId.checkRoleExist(roleId)){
+            throw new RoleNotFoundException("Invalid Role Id: "+ roleId);
         }
 
 

@@ -1,12 +1,15 @@
 package com.example.user.service;
 
 import com.example.user.web.exception.GroupNotFoundException;
+import com.example.user.web.exception.GroupServiceDownException;
+import com.example.user.web.exception.RoleNotFoundException;
 import com.example.user.web.model.GroupDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.*;
+import org.springframework.web.client.ResponseErrorHandler;
+import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
 
@@ -14,11 +17,11 @@ import static org.springframework.http.HttpStatus.Series.SERVER_ERROR;
 
 @Service
 @RequiredArgsConstructor
-public class CheckGroupByUserIdRestTemplateErrorHandler {
+public class CheckRoleByUserIdRestTemplateErrorHandler {
 
     private final RestTemplate restTemplate;
 
-    Boolean checkGroupExist(Long groupId){
+    Boolean checkRolePermissionExistForUser(Long userId, Long roleId){
 
         restTemplate.setErrorHandler(new ResponseErrorHandler() {
             @Override
@@ -33,29 +36,25 @@ public class CheckGroupByUserIdRestTemplateErrorHandler {
                 if (httpResponse.getStatusCode()
                         .series() == HttpStatus.Series.SERVER_ERROR) {
                     // handle SERVER_ERROR (Group Service Down)
-                    checkFallbackGroupExist();
+                    throw new GroupServiceDownException("Group Service Down!");
                 } else if (httpResponse.getStatusCode()
                         .series() == HttpStatus.Series.CLIENT_ERROR) {
                     // handle CLIENT_ERROR
                     if (httpResponse.getStatusCode() == HttpStatus.NOT_FOUND) {
-                        throw new GroupNotFoundException("Invalid Group Id: "+ groupId);
+                        throw new RoleNotFoundException("Invalid Role Id: "+ roleId);
                     }
                 }
             }
         });
 
-        GroupDto groupDto =null;
+
         try {
-            groupDto = restTemplate.getForObject("http://group-service/groups/" + groupId, GroupDto.class);
+            return restTemplate.getForObject("http://group-service/groups/userId/" + userId + "/roleId/" + roleId + "/check",
+                    Boolean.class);
         }
         catch (IllegalStateException e) {
             //Caught when Group Service is Down - (No way to check Group Validity - pass True)
-            return checkFallbackGroupExist();
+            throw new GroupServiceDownException("Group Service Down!");
         }
-        return (!(groupDto==null));
-    }
-
-    Boolean checkFallbackGroupExist(){
-        return true;
     }
 }
