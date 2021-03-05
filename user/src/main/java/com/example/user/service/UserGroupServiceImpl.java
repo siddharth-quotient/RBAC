@@ -4,10 +4,8 @@ import com.example.user.domain.User;
 import com.example.user.domain.UserGroupMapping;
 import com.example.user.repository.UserGroupRepository;
 import com.example.user.repository.UserRepository;
-import com.example.user.web.exception.GroupNotFoundException;
 import com.example.user.web.exception.UserGroupNotFoundException;
 import com.example.user.web.mapper.UserGroupMapper;
-import com.example.user.web.model.GroupDto;
 import com.example.user.web.model.UserGroupMappingDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +25,7 @@ public class UserGroupServiceImpl implements UserGroupService {
     private final UserGroupRepository userGroupRepository;
     private final UserRepository userRepository;
     private final UserGroupMapper userGroupMapper;
+    private final ValidateGroupForUserGroupMapping validateGroupForUserGroupMapping;
     private final RestTemplate restTemplate;
 
     @Override
@@ -74,12 +73,7 @@ public class UserGroupServiceImpl implements UserGroupService {
             }
 
             /* Check for valid group_id */
-            try {
-                GroupDto groupDto = restTemplate.getForObject("http://group-service/groups/" + groupId, GroupDto.class);
-            }
-            catch (Exception ex){
-                throw new GroupNotFoundException("Invalid Group Id: " +groupId+ " or service unavailable!");
-            }
+            validateGroupForUserGroupMapping.checkGroupExist(groupId);
 
             userGroupMapping.setUserId( userGroupMappingDto.getUserId() );
             userGroupMapping.setGroupId( userGroupMappingDto.getGroupId() );
@@ -106,12 +100,7 @@ public class UserGroupServiceImpl implements UserGroupService {
         }
 
         /* Check for valid group_id */
-        try {
-            GroupDto groupDto = restTemplate.getForObject("http://group-service/groups/" + groupId, GroupDto.class);
-        }
-        catch (Exception ex){
-            throw new GroupNotFoundException("Invalid Group Id: " +groupId+ " or service unavailable!");
-        }
+        validateGroupForUserGroupMapping.checkGroupExist(groupId);
 
         return userGroupMapper.userGroupMappingToUserGroupDto(userGroupRepository.save(userGroupMapper.userGroupMappingDtoToUserGroup(userGroupMappingDto)));
     }

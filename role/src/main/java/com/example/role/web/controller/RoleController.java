@@ -1,9 +1,7 @@
 package com.example.role.web.controller;
 
-import com.example.role.domain.Role;
-import com.example.role.repository.RoleRepository;
+
 import com.example.role.service.RoleService;
-import com.example.role.web.mapper.RoleMapper;
 import com.example.role.web.model.GroupRoleMappingDto;
 import com.example.role.web.model.RoleDto;
 import com.example.role.web.model.RolesList;
@@ -13,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.util.HashSet;
 import java.util.Set;

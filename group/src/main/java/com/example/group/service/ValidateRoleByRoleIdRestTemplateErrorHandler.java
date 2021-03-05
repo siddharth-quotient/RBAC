@@ -1,7 +1,9 @@
-package com.example.user.service;
+package com.example.group.service;
 
-import com.example.user.web.exception.GroupServiceDownException;
-import com.example.user.web.exception.RoleNotFoundException;
+
+import com.example.group.web.exception.RoleNotFoundException;
+import com.example.group.web.exception.RoleServiceDownException;
+import com.example.group.web.model.RoleDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.client.ClientHttpResponse;
@@ -15,11 +17,10 @@ import static org.springframework.http.HttpStatus.Series.SERVER_ERROR;
 
 @Service
 @RequiredArgsConstructor
-public class CheckRoleByUserIdRestTemplateErrorHandler {
-
+public class ValidateRoleByRoleIdRestTemplateErrorHandler {
     private final RestTemplate restTemplate;
 
-    Boolean checkRolePermissionExistForUser(Long userId, Long roleId){
+    void checkRoleExist(Long roleId){
 
         restTemplate.setErrorHandler(new ResponseErrorHandler() {
             @Override
@@ -33,8 +34,8 @@ public class CheckRoleByUserIdRestTemplateErrorHandler {
 
                 if (httpResponse.getStatusCode()
                         .series() == HttpStatus.Series.SERVER_ERROR) {
-                    // handle SERVER_ERROR (Group Service Down)
-                    throw new GroupServiceDownException("Group Service Down!");
+                    // handle SERVER_ERROR (Role Service Down)
+                    throw new RoleServiceDownException("Role Service Down!");
                 } else if (httpResponse.getStatusCode()
                         .series() == HttpStatus.Series.CLIENT_ERROR) {
                     // handle CLIENT_ERROR
@@ -47,12 +48,11 @@ public class CheckRoleByUserIdRestTemplateErrorHandler {
 
 
         try {
-            return restTemplate.getForObject("http://group-service/groups/userId/" + userId + "/roleId/" + roleId + "/check",
-                    Boolean.class);
+            RoleDto roleDto = restTemplate.getForObject("http://role-service/roles/" + roleId, RoleDto.class);
         }
         catch (IllegalStateException e) {
-            //Caught when Group Service is Down - (No way to check Group Validity - pass True)
-            throw new GroupServiceDownException("Group Service Down!");
+            //Caught when Role Service is Down
+            throw new RoleServiceDownException("Role Service Down!");
         }
     }
 }

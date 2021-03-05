@@ -6,14 +6,11 @@ import com.example.group.repository.GroupRepository;
 import com.example.group.repository.GroupRoleRepository;
 import com.example.group.web.exception.GroupNotFoundException;
 import com.example.group.web.exception.GroupRoleNotFoundException;
-import com.example.group.web.exception.RoleNotFoundException;
 import com.example.group.web.mapper.GroupRoleMapper;
 import com.example.group.web.model.GroupRoleMappingDto;
-import com.example.group.web.model.RoleDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import javax.transaction.Transactional;
 import java.util.HashSet;
@@ -28,8 +25,7 @@ public class GroupRoleServiceImpl implements GroupRoleService {
     private final GroupRoleRepository groupRoleRepository;
     private final GroupRepository groupRepository;
     private final GroupRoleMapper groupRoleMapper;
-    private final CheckRoleId checkRoleId;
-    private final RestTemplate restTemplate;
+    private final ValidateRoleByRoleIdRestTemplateErrorHandler validateRoleByRoleIdRestTemplateErrorHandler;
 
     @Override
     public Set<GroupRoleMappingDto> getGroupRoleMapping() {
@@ -77,9 +73,7 @@ public class GroupRoleServiceImpl implements GroupRoleService {
             }
 
             /*Check for valid role_id*/
-            if(!checkRoleId.checkRoleExist(roleId)){
-                throw new RoleNotFoundException("Invalid Role Id: "+ roleId);
-            }
+            validateRoleByRoleIdRestTemplateErrorHandler.checkRoleExist(roleId);
 
 
             groupRoleMapping.setGroupId( groupRoleMappingDto.getGroupId() );
@@ -108,9 +102,8 @@ public class GroupRoleServiceImpl implements GroupRoleService {
         }
 
         /*Check for valid role_id*/
-        if(!checkRoleId.checkRoleExist(roleId)){
-            throw new RoleNotFoundException("Invalid Role Id: "+ roleId);
-        }
+        validateRoleByRoleIdRestTemplateErrorHandler.checkRoleExist(roleId);
+
 
 
         return groupRoleMapper.groupRoleMappingToGroupRoleMappingDto(groupRoleRepository.save(groupRoleMapper.groupRoleMappingDtoToGroupRoleMapping(groupRoleMappingDto)));

@@ -42,6 +42,13 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
         return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(RoleServiceDownException.class)
+    public final ResponseEntity<Object> roleServiceDownException(Exception roleServiceDownException, WebRequest request){
+        ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), roleServiceDownException.getMessage(), request.getDescription(false));
+
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
                                                                   HttpHeaders headers, HttpStatus status, WebRequest request) {

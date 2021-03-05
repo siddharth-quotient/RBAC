@@ -30,8 +30,8 @@ public class UserServiceImpl implements UserService {
     private final UserGroupMapper userGroupMapper;
     private final UserMapper userMapper;
     private final GroupListByUserIdHystrix groupListByUserIdHystrix;
-    private final CheckGroupByUserIdRestTemplateErrorHandler checkGroupByUserIdRestTemplateErrorHandler;
-    private final CheckRoleByUserIdRestTemplateErrorHandler checkRoleByUserIdRestTemplateErrorHandler;
+    private final ValidateGroupForUserId validateGroupForUserId;
+    private final ValidateRoleForUserId validateRoleForUserId;
 
     @Override
     public Set<UserDto> getUsers() {
@@ -120,7 +120,7 @@ public class UserServiceImpl implements UserService {
         User user = getUserByUserName(userName);
         Long userId = user.getUserId();
 
-        checkGroupByUserIdRestTemplateErrorHandler.checkGroupExist(groupId);
+        validateGroupForUserId.checkGroupExist(groupId);
 
 
         Optional<UserGroupMapping> userGroupMappingOptional = userGroupRepository
@@ -135,7 +135,7 @@ public class UserServiceImpl implements UserService {
         User user = getUserByUserName(userName);
         Long userId = user.getUserId();
 
-        return checkRoleByUserIdRestTemplateErrorHandler.checkRolePermissionExistForUser(userId, roleId);
+        return validateRoleForUserId.checkRolePermissionExistForUser(userId, roleId);
     }
 
     //Helper function

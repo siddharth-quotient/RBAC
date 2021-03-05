@@ -1,7 +1,6 @@
 package com.example.group.service;
 
 import com.example.group.repository.GroupRoleRepository;
-import com.example.group.web.exception.GroupRoleNotFoundException;
 import com.example.group.web.model.GroupRoleMappingDto;
 import com.example.group.web.model.RoleDto;
 import com.example.group.web.model.RolesList;
