@@ -25,7 +25,7 @@ public class GroupRoleServiceImpl implements GroupRoleService {
     private final GroupRoleRepository groupRoleRepository;
     private final GroupRepository groupRepository;
     private final GroupRoleMapper groupRoleMapper;
-    private final ValidateRoleByRoleIdRestTemplateErrorHandler validateRoleByRoleIdRestTemplateErrorHandler;
+    private final ValidateRole validateRole;
 
     @Override
     public Set<GroupRoleMappingDto> getGroupRoleMapping() {
@@ -73,7 +73,7 @@ public class GroupRoleServiceImpl implements GroupRoleService {
             }
 
             /*Check for valid role_id*/
-            validateRoleByRoleIdRestTemplateErrorHandler.checkRoleExist(roleId);
+            validateRole.checkRoleExist(roleId);
 
 
             groupRoleMapping.setGroupId( groupRoleMappingDto.getGroupId() );
@@ -102,7 +102,7 @@ public class GroupRoleServiceImpl implements GroupRoleService {
         }
 
         /*Check for valid role_id*/
-        validateRoleByRoleIdRestTemplateErrorHandler.checkRoleExist(roleId);
+        validateRole.checkRoleExist(roleId);
 
 
 

@@ -1,7 +1,7 @@
-package com.example.user.restTemplate;
+package com.example.group.restTemplate;
 
-import com.example.user.web.exception.GroupServiceDownException;
-import com.example.user.web.exception.RoleNotFoundException;
+import com.example.group.web.exception.RoleNotFoundException;
+import com.example.group.web.exception.RoleServiceDownException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.stereotype.Component;
@@ -24,8 +24,8 @@ public class RoleRestTemplateResponseErrorHandler implements ResponseErrorHandle
 
         if (httpResponse.getStatusCode()
                 .series() == HttpStatus.Series.SERVER_ERROR) {
-            // handle SERVER_ERROR (Group Service Down)
-            throw new GroupServiceDownException("Group Service Down!");
+            // handle SERVER_ERROR (Role Service Down)
+            throw new RoleServiceDownException("Role Service Down!");
         } else if (httpResponse.getStatusCode()
                 .series() == HttpStatus.Series.CLIENT_ERROR) {
             // handle CLIENT_ERROR
