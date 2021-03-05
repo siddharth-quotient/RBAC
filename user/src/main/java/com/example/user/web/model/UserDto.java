@@ -19,21 +19,21 @@ import java.time.OffsetDateTime;
 @AllArgsConstructor
 @Builder
 public class UserDto {
-    @Null(message = "User ID is self generated - should be null")
+    @Null(message = "User ID is auto generated - should be null")
     private Long userId;
 
-    @Null(message = "Creation date is self generated - should be null")
+    @Null(message = "Creation date is auto generated - should be null")
     private OffsetDateTime createDate;
 
-    @Null(message = "Last Modified date is self generated - should be null")
+    @Null(message = "Last Modified date is auto generated - should be null")
     private OffsetDateTime lastModifiedDate;
 
-    @NotBlank(message = "User Name cannot be blank")
+    @NotBlank(message = "User Name cannot be Null")
     private String userName;
 
-    @NotBlank(message = "First Name Cannot be blank")
+    @NotBlank(message = "First Name cannot be Null")
     private String firstName;
 
-    @NotBlank(message = "Last Name Cannot be blank")
+    @NotBlank(message = "Last Name cannot be Null")
     private String lastName;
 }

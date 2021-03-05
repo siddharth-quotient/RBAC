@@ -29,20 +29,15 @@ public class RoleListByGroupIdHystrix {
     }
 
     public ResponseEntity<RolesList> getFallBackRoleListByGroupId(Set<GroupRoleMappingDto> groupRoleMappingDtos){
-        if(groupRoleMappingDtos.isEmpty()){
-            throw new GroupRoleNotFoundException("Empty Group-Role Mapping Set in getFallBackRoleListByGroupId");
-        }
-
-        Long groupId = groupRoleMappingDtos.stream().findAny().get().getGroupId();
-
-
         RolesList fallBackRolesList = new RolesList();
         Set<RoleDto> roleDtoHashSet = new HashSet<>();
 
-        groupRoleRepository.findByGroupId(groupId).forEach(groupRoleMapping -> {
-            roleDtoHashSet.add(new RoleDto(groupRoleMapping.getRoleId(), null, null,
-                    "Role Name Unavailable", "Role Description Unavailable"));
-        });
+        if(!groupRoleMappingDtos.isEmpty()){
+            groupRoleMappingDtos.forEach(groupRoleMappingDto -> {
+                roleDtoHashSet.add(new RoleDto(groupRoleMappingDto.getRoleId(), null, null,
+                        "Role Name Unavailable", "Role Description Unavailable"));
+            });
+        }
 
         fallBackRolesList.setRolesSet(roleDtoHashSet);
         return new ResponseEntity<>(fallBackRolesList, HttpStatus.OK);

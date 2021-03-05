@@ -132,7 +132,7 @@ public class GroupServiceImpl implements GroupService {
         Set<GroupDto> groupDtoSet = new HashSet<>();
 
         userGroupMappingDtos.forEach(userGroupMappingDto -> {
-            groupDtoSet.add( this.getGroupById(userGroupMappingDto.getGroupId()));
+            groupDtoSet.add(this.getGroupById(userGroupMappingDto.getGroupId()));
         });
 
         return groupDtoSet;

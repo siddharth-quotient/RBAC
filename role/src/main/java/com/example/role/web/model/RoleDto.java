@@ -16,13 +16,13 @@ import java.time.OffsetDateTime;
 public class
 RoleDto {
 
-    @Null(message = "Role ID should be null")
+    @Null(message = "Role ID is auto generated - should be Null")
     private Long roleId;
 
-    @Null(message = "Creation date is self generated - should be null")
+    @Null(message = "Creation date is auto generated - should be Null")
     private OffsetDateTime createDate;
 
-    @Null(message = "Last Modified date is self generated - should be null")
+    @Null(message = "Last Modified date is auto generated - should be Null")
     private OffsetDateTime lastModifiedDate;
 
     @NotBlank(message = "Role Name cannot be Null")

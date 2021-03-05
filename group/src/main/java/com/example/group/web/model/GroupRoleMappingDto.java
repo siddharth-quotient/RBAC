@@ -17,12 +17,12 @@ import javax.validation.constraints.Null;
 @Setter
 public class GroupRoleMappingDto {
 
-    @Null(message = "Group-Role ID is self generated - should be null")
+    @Null(message = "Group-Role ID is auto generated - should be null")
     private Long groupRoleId;
 
-    @NotNull(message = "Group ID should be specified")
+    @NotNull(message = "Group ID cannot be Null")
     private Long groupId;
 
-    @NotNull(message = "Role ID should be specified")
+    @NotNull(message = "Role ID cannot be Null")
     private Long roleId;
 }

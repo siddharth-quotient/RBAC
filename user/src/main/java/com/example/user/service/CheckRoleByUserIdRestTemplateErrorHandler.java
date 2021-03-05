@@ -1,9 +1,7 @@
 package com.example.user.service;
 
-import com.example.user.web.exception.GroupNotFoundException;
 import com.example.user.web.exception.GroupServiceDownException;
 import com.example.user.web.exception.RoleNotFoundException;
-import com.example.user.web.model.GroupDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.client.ClientHttpResponse;

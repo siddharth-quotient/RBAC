@@ -1,7 +1,6 @@
 package com.example.user.service;
 
-import com.example.user.repository.UserGroupRepository;
-import com.example.user.web.exception.UserGroupNotFoundException;
+
 import com.example.user.web.model.GroupDto;
 import com.example.user.web.model.GroupsList;
 import com.example.user.web.model.UserGroupMappingDto;
@@ -20,7 +19,6 @@ import java.util.Set;
 public class GroupListByUserIdHystrix {
 
     private final RestTemplate restTemplate;
-    private final UserGroupRepository userGroupRepository;
 
     @HystrixCommand(fallbackMethod = "getFallBackGroupListByUserId")
     public ResponseEntity<GroupsList> getGroupListByUserId(Set<UserGroupMappingDto> userGroupMappingDtos){
@@ -29,19 +27,15 @@ public class GroupListByUserIdHystrix {
     }
 
     public ResponseEntity<GroupsList> getFallBackGroupListByUserId(Set<UserGroupMappingDto> userGroupMappingDtos){
-        if(userGroupMappingDtos.isEmpty()){
-            throw new UserGroupNotFoundException("Empty User-Group Mapping Set in getFallBackGroupListByUserId");
-        }
-
-        Long userId = userGroupMappingDtos.stream().findAny().get().getUserId();
-
         GroupsList fallBackGroupList = new GroupsList();
         Set<GroupDto> groupDtoHashSet = new HashSet<>();
 
-        userGroupRepository.findByUserId(userId).forEach(userGroupMapping -> {
-            groupDtoHashSet.add(new GroupDto(userGroupMapping.getGroupId(), null, null,
-                    "Group Name Unavailable", "Group Description Unavailable"));
-        });
+        if(!userGroupMappingDtos.isEmpty()){
+            userGroupMappingDtos.forEach(userGroupMappingDto -> {
+                groupDtoHashSet.add(new GroupDto(userGroupMappingDto.getGroupId(), null, null,
+                        "Group Name Unavailable", "Group Description Unavailable"));
+            });
+        }
 
         fallBackGroupList.setGroupDtoSet(groupDtoHashSet);
         return new ResponseEntity<>(fallBackGroupList, HttpStatus.OK);
