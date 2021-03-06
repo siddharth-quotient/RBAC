@@ -6,10 +6,12 @@ import com.example.group.repository.GroupRepository;
 import com.example.group.repository.GroupRoleRepository;
 import com.example.group.web.exception.GroupNotFoundException;
 import com.example.group.web.exception.GroupRoleNotFoundException;
+import com.example.group.web.exception.GroupRoleNotUniqueException;
 import com.example.group.web.mapper.GroupRoleMapper;
 import com.example.group.web.model.GroupRoleMappingDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -104,9 +106,11 @@ public class GroupRoleServiceImpl implements GroupRoleService {
         /*Check for valid role_id*/
         validateRole.checkRoleExist(roleId);
 
-
-
-        return groupRoleMapper.groupRoleMappingToGroupRoleMappingDto(groupRoleRepository.save(groupRoleMapper.groupRoleMappingDtoToGroupRoleMapping(groupRoleMappingDto)));
+        try {
+            return groupRoleMapper.groupRoleMappingToGroupRoleMappingDto(groupRoleRepository.save(groupRoleMapper.groupRoleMappingDtoToGroupRoleMapping(groupRoleMappingDto)));
+        }catch (DataIntegrityViolationException ex){
+            throw new GroupRoleNotUniqueException("GroupId: "+groupId+" and RoleId: "+roleId+" lookup value already exist");
+        }
     }
 
     @Override

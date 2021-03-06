@@ -3,12 +3,14 @@ package com.example.group.service;
 import com.example.group.domain.Group;
 import com.example.group.repository.GroupRepository;
 import com.example.group.repository.GroupRoleRepository;
+import com.example.group.web.exception.GroupNameNotUniqueException;
 import com.example.group.web.exception.GroupNotFoundException;
 import com.example.group.web.mapper.GroupMapper;
 import com.example.group.web.mapper.GroupRoleMapper;
 import com.example.group.web.model.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 
@@ -79,11 +81,14 @@ public class GroupServiceImpl implements GroupService {
     @Override
     @Transactional
     public GroupDto createGroup(GroupDto groupDto) {
-        if(groupDto == null){
+        if (groupDto == null) {
             throw new GroupNotFoundException("New Group cannot be Null");
         }
-
-        return groupMapper.groupToGroupDto(groupRepository.save(groupMapper.groupDtoToGroup(groupDto)));
+        try {
+            return groupMapper.groupToGroupDto(groupRepository.save(groupMapper.groupDtoToGroup(groupDto)));
+        }catch (DataIntegrityViolationException ex){
+            throw new GroupNameNotUniqueException("GroupName " +groupDto.getGroupName() +" already exists!");
+        }
     }
 
     @Override
