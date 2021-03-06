@@ -5,10 +5,12 @@ import com.example.user.domain.UserGroupMapping;
 import com.example.user.repository.UserGroupRepository;
 import com.example.user.repository.UserRepository;
 import com.example.user.web.exception.UserGroupNotFoundException;
+import com.example.user.web.exception.UserGroupNotUniqueException;
 import com.example.user.web.mapper.UserGroupMapper;
 import com.example.user.web.model.UserGroupMappingDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -87,7 +89,7 @@ public class UserGroupServiceImpl implements UserGroupService {
     @Override
     @Transactional
     public UserGroupMappingDto createUserGroupMapping(UserGroupMappingDto userGroupMappingDto) {
-        if(userGroupMappingDto == null){
+        if (userGroupMappingDto == null) {
             throw new UserGroupNotFoundException("User-Group Mapping cannot be Null");
         }
 
@@ -95,14 +97,19 @@ public class UserGroupServiceImpl implements UserGroupService {
         Long groupId = userGroupMappingDto.getGroupId();
 
         /* Check for valid user_id */
-        if(!validateUserId(userId)){
-            throw new UserGroupNotFoundException("Invalid User Id: "+ userId);
+        if (!validateUserId(userId)) {
+            throw new UserGroupNotFoundException("Invalid User Id: " + userId);
         }
 
         /* Check for valid group_id */
         validateGroupForUserGroupMapping.checkGroupExist(groupId);
 
-        return userGroupMapper.userGroupMappingToUserGroupDto(userGroupRepository.save(userGroupMapper.userGroupMappingDtoToUserGroup(userGroupMappingDto)));
+        try {
+            return userGroupMapper.userGroupMappingToUserGroupDto(userGroupRepository.save(userGroupMapper.userGroupMappingDtoToUserGroup(userGroupMappingDto)));
+        }
+        catch (DataIntegrityViolationException ex){
+            throw new UserGroupNotUniqueException("UserId: "+userId+" and GroupId: "+groupId+" lookup value already exist");
+        }
     }
 
     @Override

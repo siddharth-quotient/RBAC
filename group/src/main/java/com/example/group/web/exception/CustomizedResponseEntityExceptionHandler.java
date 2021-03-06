@@ -53,14 +53,14 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
                                                                   HttpHeaders headers, HttpStatus status, WebRequest request) {
         String errorMessage = ex.getBindingResult().getFieldErrors().get(0).getDefaultMessage();
-        ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), "Failed Validation in Transaction", errorMessage);
+        ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), "Failed Validation of Request Body", errorMessage);
         return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<Object> uniqueKeyDatabaseException(HttpServletRequest req, DataIntegrityViolationException e) {
 
-        ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), "Unique constraint violation", e.getMessage());
+        ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), "Unique Constraint Violation", e.getMessage());
         return new ResponseEntity<>(exceptionResponse, HttpStatus.CONFLICT);
     }
 

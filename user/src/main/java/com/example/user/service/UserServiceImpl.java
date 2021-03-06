@@ -4,6 +4,7 @@ import com.example.user.domain.User;
 import com.example.user.domain.UserGroupMapping;
 import com.example.user.repository.UserGroupRepository;
 import com.example.user.repository.UserRepository;
+import com.example.user.web.exception.UserNameNotUniqueException;
 import com.example.user.web.exception.UserNotFoundException;
 import com.example.user.web.mapper.UserGroupMapper;
 import com.example.user.web.mapper.UserMapper;
@@ -12,6 +13,7 @@ import com.example.user.web.model.UserDto;
 import com.example.user.web.model.UserGroupMappingDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -75,8 +77,13 @@ public class UserServiceImpl implements UserService {
         if(userDto ==  null){
             throw new UserNotFoundException("New User cannot be null");
         }
+        try {
+            return userMapper.userToUserDto(userRepository.save(userMapper.userDtoToUser(userDto)));
+        }
+        catch (DataIntegrityViolationException ex){
+            throw new UserNameNotUniqueException("Username " +userDto.getUserName() +" already exists!");
+        }
 
-        return userMapper.userToUserDto(userRepository.save(userMapper.userDtoToUser(userDto)));
     }
 
     @Override
