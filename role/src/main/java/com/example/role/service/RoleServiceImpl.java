@@ -1,11 +1,14 @@
 package com.example.role.service;
 
 import com.example.role.domain.Role;
+import com.example.role.repository.GroupRoleRepository;
 import com.example.role.repository.RoleRepository;
+import com.example.role.web.exception.RoleNameNotUniqueException;
 import com.example.role.web.exception.RoleNotFoundException;
 import com.example.role.web.mapper.RoleMapper;
 import com.example.role.web.model.RoleDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -18,6 +21,7 @@ import java.util.Set;
 public class RoleServiceImpl implements RoleService {
 
     private final RoleRepository roleRepository;
+    private final GroupRoleRepository groupRoleRepository;
     private final RoleMapper roleMapper;
 
     @Override
@@ -72,7 +76,12 @@ public class RoleServiceImpl implements RoleService {
             throw new RoleNotFoundException("New Role cannot be Null");
         }
 
-        return roleMapper.roleToRoleDto(roleRepository.save(roleMapper.roleDtoToRole(roleDto)));
+        try {
+            return roleMapper.roleToRoleDto(roleRepository.save(roleMapper.roleDtoToRole(roleDto)));
+        }
+        catch (DataIntegrityViolationException ex){
+            throw new RoleNameNotUniqueException("RoleName " +roleDto.getRoleName() +" already exists!");
+        }
     }
 
 
@@ -90,6 +99,9 @@ public class RoleServiceImpl implements RoleService {
         }
 
         roleRepository.deleteById(roleId);
+
+        /*Delete all Group-Role Mappings for the deleted roleId */
+        groupRoleRepository.deleteByRoleId(roleId);
     }
 
 }

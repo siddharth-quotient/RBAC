@@ -11,4 +11,5 @@ import java.util.Set;
 public interface UserGroupRepository extends JpaRepository<UserGroupMapping, Long> {
     Set<UserGroupMapping> findByUserId(Long userId);
     Optional<UserGroupMapping> findUserGroupMappingByUserIdAndGroupId(Long userId, Long groupId);
+    void deleteByUserId(Long userId);
 }

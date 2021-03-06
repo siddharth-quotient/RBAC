@@ -3,6 +3,7 @@ package com.example.group.service;
 import com.example.group.domain.Group;
 import com.example.group.repository.GroupRepository;
 import com.example.group.repository.GroupRoleRepository;
+import com.example.group.repository.UserGroupRepository;
 import com.example.group.web.exception.GroupNameNotUniqueException;
 import com.example.group.web.exception.GroupNotFoundException;
 import com.example.group.web.mapper.GroupMapper;
@@ -26,6 +27,7 @@ public class GroupServiceImpl implements GroupService {
 
     private final GroupRepository groupRepository;
     private final GroupRoleRepository groupRoleRepository;
+    private final UserGroupRepository userGroupRepository;
     private final GroupMapper groupMapper;
     private final GroupRoleMapper groupRoleMapper;
     private final RoleListByGroupIdHystrix roleListByGroupIdHystrix;
@@ -106,6 +108,10 @@ public class GroupServiceImpl implements GroupService {
         }
 
         groupRepository.deleteById(groupId);
+
+        /*Delete all User-Group Mappings and Group-Role Mappings for the deleted groupId */
+        userGroupRepository.deleteByGroupId(groupId);
+        groupRoleRepository.deleteByGroupId(groupId);
     }
 
     /*----------------- Roles from Group Id -------------------*/

@@ -32,7 +32,6 @@ public class UserServiceImpl implements UserService {
     private final UserGroupMapper userGroupMapper;
     private final UserMapper userMapper;
     private final GroupListByUserIdHystrix groupListByUserIdHystrix;
-    private final ValidateGroupForUserId validateGroupForUserId;
     private final ValidateRoleForUserId validateRoleForUserId;
 
     @Override
@@ -100,7 +99,11 @@ public class UserServiceImpl implements UserService {
             throw new UserNotFoundException("Invalid User Name: "+ userName);
         }
 
+        Long userId = userOptional.get().getUserId();
         userRepository.deleteByUserName(userName);
+
+        /*Delete all User-Group Mappings for the deleted userId */
+        userGroupRepository.deleteByUserId(userId);
     }
 
     /*----------------- Groups from User Name -------------------*/
@@ -126,9 +129,6 @@ public class UserServiceImpl implements UserService {
     public Boolean checkGroupIdForUserName(String userName, Long groupId) {
         User user = getUserByUserName(userName);
         Long userId = user.getUserId();
-
-        validateGroupForUserId.checkGroupExist(groupId);
-
 
         Optional<UserGroupMapping> userGroupMappingOptional = userGroupRepository
                 .findUserGroupMappingByUserIdAndGroupId(userId, groupId);
