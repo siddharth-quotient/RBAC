@@ -64,7 +64,7 @@ public class RoleServiceImpl implements RoleService {
         if(roleOpt.isPresent()){
             Role role = roleOpt.get();
 
-            /*Check if group with given groupName already exists*/
+            /*Check if role with given roleName already exists*/
             String dtoRoleName = roleDto.getRoleName();
             Optional<Role> dtoRoleOptional = roleRepository.findByRoleName(dtoRoleName);
 
