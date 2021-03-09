@@ -6,6 +6,7 @@ import com.example.user.repository.UserGroupRepository;
 import com.example.user.repository.UserRepository;
 import com.example.user.web.exception.UserGroupNotFoundException;
 import com.example.user.web.exception.UserGroupNotUniqueException;
+import com.example.user.web.exception.UserNotFoundException;
 import com.example.user.web.mapper.UserGroupMapper;
 import com.example.user.web.model.UserGroupMappingDto;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +29,6 @@ public class UserGroupServiceImpl implements UserGroupService {
     private final UserRepository userRepository;
     private final UserGroupMapper userGroupMapper;
     private final ValidateGroupForUserGroupMapping validateGroupForUserGroupMapping;
-    private final RestTemplate restTemplate;
 
     @Override
     public Set<UserGroupMappingDto> getUserGroupMappings() {
@@ -71,7 +71,7 @@ public class UserGroupServiceImpl implements UserGroupService {
 
             /* Check for valid user_id */
             if(!validateUserId(userId)){
-                throw new UserGroupNotFoundException("Invalid User Id: "+ userId);
+                throw new UserNotFoundException("Invalid User Id: "+ userId);
             }
 
             /* Check for valid group_id */
@@ -98,7 +98,7 @@ public class UserGroupServiceImpl implements UserGroupService {
 
         /* Check for valid user_id */
         if (!validateUserId(userId)) {
-            throw new UserGroupNotFoundException("Invalid User Id: " + userId);
+            throw new UserNotFoundException("Invalid User Id: " + userId);
         }
 
         /* Check for valid group_id */
