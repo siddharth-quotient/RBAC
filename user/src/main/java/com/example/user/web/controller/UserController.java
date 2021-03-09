@@ -47,9 +47,9 @@ public class UserController {
 
     @Transactional
     @DeleteMapping("/{userName}")
-    public ResponseEntity<?> deleteByName(@PathVariable String userName){
-        userService.deleteByName(userName);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    public ResponseEntity<UserDto> deleteByName(@PathVariable String userName){
+
+        return new ResponseEntity<>(userService.deleteByName(userName), HttpStatus.OK);
     }
 
     /*----------------- Groups from User Name -------------------*/

@@ -130,7 +130,7 @@ public class UserGroupServiceImpl implements UserGroupService {
     }
 
     @Override
-    public void deleteById(Long userGroupId) {
+    public UserGroupMappingDto deleteById(Long userGroupId) {
         if(userGroupId==null){
             throw new UserGroupNotFoundException("User-Group Mapping cannot be Null");
         }
@@ -143,6 +143,7 @@ public class UserGroupServiceImpl implements UserGroupService {
         }
 
         userGroupRepository.deleteById(userGroupId);
+        return userGroupMapper.userGroupMappingToUserGroupDto(userGroupMappingOptional.get());
     }
 
     public boolean validateUserId(Long userId) {

@@ -43,8 +43,7 @@ public class UserGroupController {
     }
 
     @DeleteMapping("/{userGroupId}")
-    public ResponseEntity<?> deleteById(@PathVariable Long userGroupId){
-        userGroupService.deleteById(userGroupId);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    public ResponseEntity<UserGroupMappingDto> deleteById(@PathVariable Long userGroupId){
+        return new ResponseEntity<>(userGroupService.deleteById(userGroupId), HttpStatus.OK);
     }
 }

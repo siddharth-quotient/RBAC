@@ -15,7 +15,7 @@ public interface UserService {
     UserDto getUserByName(String userName);
     UserDto updateUserByName(String userName, UserDto userDto);
     UserDto createUser(UserDto userDto);
-    void deleteByName(String userName);
+    UserDto deleteByName(String userName);
 
     /*----------------- Groups from UserName -------------------*/
     GroupsList getGroupsByUserName(String userName);

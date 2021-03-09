@@ -102,14 +102,14 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     @Transactional
-    public void deleteById(Long roleId) {
+    public RoleDto deleteById(Long roleId) {
         if(roleId==null){
             throw new RoleNotFoundException("Role cannot be null");
         }
 
-        Optional<Role> roleOpt = roleRepository.findById(roleId);
+        Optional<Role> roleOptional = roleRepository.findById(roleId);
 
-        if(!roleOpt.isPresent()){
+        if(!roleOptional.isPresent()){
             throw new RoleNotFoundException("Invalid Role Id :"+ roleId);
         }
 
@@ -117,6 +117,8 @@ public class RoleServiceImpl implements RoleService {
 
         /*Delete all Group-Role Mappings for the deleted roleId */
         groupRoleRepository.deleteByRoleId(roleId);
+
+        return roleMapper.roleToRoleDto(roleOptional.get());
     }
 
 }

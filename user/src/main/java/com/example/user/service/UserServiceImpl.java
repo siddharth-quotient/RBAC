@@ -104,7 +104,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void deleteByName(String userName) {
+    public UserDto deleteByName(String userName) {
         if(userName==null || userName.isEmpty()){
             throw new UserNotFoundException("User cannot be null");
         }
@@ -121,6 +121,8 @@ public class UserServiceImpl implements UserService {
 
         /*Delete all User-Group Mappings for the deleted userId */
         userGroupRepository.deleteByUserId(userId);
+
+        return userMapper.userToUserDto(userOptional.get());
     }
 
     /*----------------- Groups from User Name -------------------*/

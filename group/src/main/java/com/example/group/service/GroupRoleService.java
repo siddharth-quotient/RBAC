@@ -14,5 +14,5 @@ public interface GroupRoleService {
     GroupRoleMappingDto getGroupRoleMappingById(Long groupRoleId);
     GroupRoleMappingDto updateGroupRoleMappingById(Long groupRoleId, GroupRoleMappingDto groupRoleMappingDtoDto);
     GroupRoleMappingDto createGroupRoleMapping(GroupRoleMappingDto groupRoleMappingDto);
-    void deleteById(Long groupRoleId);
+    GroupRoleMappingDto deleteById(Long groupRoleId);
 }

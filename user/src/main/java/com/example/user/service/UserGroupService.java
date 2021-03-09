@@ -14,5 +14,5 @@ public interface UserGroupService {
     UserGroupMappingDto getUserGroupMappingById(Long userGroupId);
     UserGroupMappingDto updateUserGroupMappingById(Long userGroupId, UserGroupMappingDto userGroupMappingDto);
     UserGroupMappingDto createUserGroupMapping(UserGroupMappingDto userGroupMappingDto);
-    void deleteById(Long userGroupId);
+    UserGroupMappingDto deleteById(Long userGroupId);
 }

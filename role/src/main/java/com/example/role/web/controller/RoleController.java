@@ -51,8 +51,7 @@ public class RoleController {
     @Transactional
     @DeleteMapping("/{roleId}")
     public ResponseEntity<?> deleteById(@PathVariable Long roleId){
-        roleService.deleteById(roleId);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(roleService.deleteById(roleId), HttpStatus.OK);
     }
 
 

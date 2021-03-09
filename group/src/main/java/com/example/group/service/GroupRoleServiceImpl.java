@@ -130,7 +130,7 @@ public class GroupRoleServiceImpl implements GroupRoleService {
     }
 
     @Override
-    public void deleteById(Long groupRoleId) {
+    public GroupRoleMappingDto deleteById(Long groupRoleId) {
         if(groupRoleId==null){
             throw new GroupRoleNotFoundException("Group-Role Mapping cannot be Null");
         }
@@ -143,6 +143,7 @@ public class GroupRoleServiceImpl implements GroupRoleService {
         }
 
         groupRoleRepository.deleteById(groupRoleId);
+        return groupRoleMapper.groupRoleMappingToGroupRoleMappingDto(groupRoleOptional.get());
     }
 
 

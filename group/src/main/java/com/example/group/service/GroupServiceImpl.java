@@ -92,7 +92,7 @@ public class GroupServiceImpl implements GroupService {
             return groupMapper.groupToGroupDto(groupRepository.save(group));
         }
         log.error("Invalid Group Id provided while using updateGroupById: "+ groupId);
-        throw new GroupNotFoundException("Invalid Group Id :"+ groupId);
+        throw new GroupNotFoundException("Invalid Group Id: "+ groupId);
     }
 
     @Override
@@ -110,7 +110,7 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     @Transactional
-    public void deleteById(Long groupId) {
+    public GroupDto deleteById(Long groupId) {
         if(groupId==null){
             throw new GroupNotFoundException("Group cannot be null");
         }
@@ -127,6 +127,8 @@ public class GroupServiceImpl implements GroupService {
         /*Delete all User-Group Mappings and Group-Role Mappings for the deleted groupId */
         userGroupRepository.deleteByGroupId(groupId);
         groupRoleRepository.deleteByGroupId(groupId);
+
+        return groupMapper.groupToGroupDto(groupOptional.get());
     }
 
     /*----------------- Roles from Group Id -------------------*/

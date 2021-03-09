@@ -50,9 +50,8 @@ public class GroupController {
 
     @Transactional
     @DeleteMapping("/{groupId}")
-    public ResponseEntity<?> deleteById(@PathVariable Long groupId){
-        groupService.deleteById(groupId);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    public ResponseEntity<GroupDto> deleteById(@PathVariable Long groupId){
+        return new ResponseEntity<>(groupService.deleteById(groupId), HttpStatus.OK);
     }
 
 

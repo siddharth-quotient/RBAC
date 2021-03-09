@@ -43,9 +43,8 @@ public class GroupRoleController {
     }
 
     @DeleteMapping("/{groupRoleId}")
-    public ResponseEntity<?> deleteById(@PathVariable Long groupRoleId){
-        groupRoleService.deleteById(groupRoleId);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    public ResponseEntity<GroupRoleMappingDto> deleteById(@PathVariable Long groupRoleId){
+        return new ResponseEntity<>(groupRoleService.deleteById(groupRoleId), HttpStatus.OK);
     }
 
 }
