@@ -29,8 +29,8 @@ public class RoleController {
     private final RoleService roleService;
 
     @GetMapping
-    public ResponseEntity<Set<RoleDto>> getRoles(){
-        return new ResponseEntity<>(roleService.getRoles(), HttpStatus.OK);
+    public ResponseEntity<Set<RoleDto>> getAllRoles(){
+        return new ResponseEntity<>(roleService.getAllRoles(), HttpStatus.OK);
     }
 
     @GetMapping("/{roleId}")

@@ -20,9 +20,10 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "USER_TABLE")
+@Table(name = User.USER_TABLE_NAME)
 @EntityListeners(AuditingEntityListener.class)
 public class User {
+    public static final String USER_TABLE_NAME = "USER_TABLE";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

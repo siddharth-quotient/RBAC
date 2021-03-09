@@ -23,8 +23,8 @@ public class GroupRoleController {
     private final GroupRoleService groupRoleService;
 
     @GetMapping
-    public ResponseEntity<Set<GroupRoleMappingDto>> getGroupRoles(){
-        return new ResponseEntity<>(groupRoleService.getGroupRoleMapping(), HttpStatus.OK);
+    public ResponseEntity<Set<GroupRoleMappingDto>> getAllGroupRoles(){
+        return new ResponseEntity<>(groupRoleService.getAllGroupRoleMapping(), HttpStatus.OK);
     }
 
     @GetMapping("/{groupRoleId}")

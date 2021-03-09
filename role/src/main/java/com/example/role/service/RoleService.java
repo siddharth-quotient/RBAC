@@ -10,7 +10,7 @@ import java.util.Set;
  * @author Siddharth Mehta
  */
 public interface RoleService {
-    Set<RoleDto> getRoles();
+    Set<RoleDto> getAllRoles();
     RoleDto getRoleById(Long roleId);
     RoleDto updateRoleById(Long roleId, RoleDto roleDto);
     RoleDto createRole(RoleDto roleDto);

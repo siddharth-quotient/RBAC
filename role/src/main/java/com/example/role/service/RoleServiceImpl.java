@@ -42,7 +42,7 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public Set<RoleDto> getRoles(){
+    public Set<RoleDto> getAllRoles(){
         Set<RoleDto> roles = new HashSet<>();
 
         roleRepository.findAll().forEach(role -> {

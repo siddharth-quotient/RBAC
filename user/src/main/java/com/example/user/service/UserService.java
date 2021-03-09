@@ -11,7 +11,7 @@ import java.util.Set;
  * @author Siddharth Mehta
  */
 public interface UserService {
-    Set<UserDto> getUsers();
+    Set<UserDto> getAllUsers();
     UserDto getUserByName(String userName);
     UserDto updateUserByName(String userName, UserDto userDto);
     UserDto createUser(UserDto userDto);

@@ -35,7 +35,7 @@ public class UserGroupServiceImpl implements UserGroupService {
     private final ValidateGroupForUserGroupMapping validateGroupForUserGroupMapping;
 
     @Override
-    public Set<UserGroupMappingDto> getUserGroupMappings() {
+    public Set<UserGroupMappingDto> getAllUserGroupMappings() {
         Set<UserGroupMappingDto> userGroups = new HashSet<>();
 
         userGroupRepository.findAll().forEach(userGroupMapping -> {

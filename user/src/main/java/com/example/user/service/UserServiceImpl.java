@@ -40,7 +40,7 @@ public class UserServiceImpl implements UserService {
     private final ValidateRoleForUserId validateRoleForUserId;
 
     @Override
-    public Set<UserDto> getUsers() {
+    public Set<UserDto> getAllUsers() {
         Set<UserDto> users = new HashSet<>();
 
         userRepository.findAll().forEach(user -> {

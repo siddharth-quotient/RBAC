@@ -23,8 +23,8 @@ public class UserGroupController {
     private final UserGroupService userGroupService;
 
     @GetMapping
-    public ResponseEntity<Set<UserGroupMappingDto>> getUserGroups(){
-        return new ResponseEntity<>(userGroupService.getUserGroupMappings(), HttpStatus.OK);
+    public ResponseEntity<Set<UserGroupMappingDto>> getAllUserGroups(){
+        return new ResponseEntity<>(userGroupService.getAllUserGroupMappings(), HttpStatus.OK);
     }
 
     @GetMapping("/{userGroupId}")

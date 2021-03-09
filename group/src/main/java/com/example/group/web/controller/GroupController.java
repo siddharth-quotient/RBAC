@@ -29,8 +29,8 @@ public class GroupController {
     private final UserGroupService userGroupService;
 
     @GetMapping
-    public ResponseEntity<Set<GroupDto>> getGroups(){
-        return new ResponseEntity<>(groupService.getGroups(), HttpStatus.OK);
+    public ResponseEntity<Set<GroupDto>> getAllGroups(){
+        return new ResponseEntity<>(groupService.getAllGroups(), HttpStatus.OK);
     }
 
     @GetMapping("/{groupId}")

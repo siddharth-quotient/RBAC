@@ -39,7 +39,7 @@ public class GroupServiceImpl implements GroupService {
 
 
     @Override
-    public Set<GroupDto> getGroups() {
+    public Set<GroupDto> getAllGroups() {
         Set<GroupDto> groups = new HashSet<>();
 
         groupRepository.findAll().forEach(group -> {

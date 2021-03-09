@@ -12,7 +12,7 @@ import java.util.Set;
  * @author Siddharth Mehta
  */
 public interface GroupService {
-    Set<GroupDto> getGroups();
+    Set<GroupDto> getAllGroups();
     GroupDto getGroupById(Long groupId);
     GroupDto updateGroupById(Long groupId, GroupDto groupDto);
     GroupDto createGroup(GroupDto groupDto);

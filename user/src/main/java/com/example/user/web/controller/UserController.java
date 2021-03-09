@@ -2,6 +2,7 @@ package com.example.user.web.controller;
 
 import com.example.user.service.UserService;
 import com.example.user.web.model.GroupsList;
+import com.example.user.web.model.ResponseDto;
 import com.example.user.web.model.UserDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -25,8 +26,8 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping
-    public ResponseEntity<Set<UserDto>> getUsers(){
-        return new ResponseEntity<>(userService.getUsers(), HttpStatus.OK);
+    public ResponseEntity<Set<UserDto>> getAllUsers(){
+        return new ResponseEntity<>(userService.getAllUsers(), HttpStatus.OK);
     }
 
     @GetMapping("/{userName}")
@@ -59,24 +60,26 @@ public class UserController {
 
     /*-------------- Check if a User belongs to Group ---------------*/
     @GetMapping("/{userName}/groups/{groupId}/check")
-    public ResponseEntity<?> checkGroupIdForUserName(@PathVariable String userName, @PathVariable Long groupId){
+    public ResponseEntity<ResponseDto> checkGroupIdForUserName(@PathVariable String userName, @PathVariable Long groupId){
         Boolean isValid = userService.checkGroupIdForUserName(userName, groupId);
-        if(isValid){
-            return new ResponseEntity<>(HttpStatus.OK);
+
+
+        /*if(isValid){
+            return new ResponseEntity<ResponseDto>(new ResponseDto(userName, null), HttpStatus.OK);
         }else{
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+            return new ResponseEntity<ResponseDto>(new ResponseDto(null, new ExceptionResponse()), HttpStatus.OK);
+        }*/
+
+        return isValid?new ResponseEntity<>(HttpStatus.OK):new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
     }
 
     /*-------------- Check if a User has a Role ---------------*/
     @GetMapping("/{userName}/roles/{roleId}/check")
     public ResponseEntity<?> checkRoleIdForUserName(@PathVariable String userName, @PathVariable Long roleId){
         Boolean isValid = userService.checkRoleIdForUserName(userName, roleId);
-        if(isValid){
-            return new ResponseEntity<>(HttpStatus.OK);
-        }else{
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+
+        return isValid?new ResponseEntity<>(HttpStatus.OK):new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
 

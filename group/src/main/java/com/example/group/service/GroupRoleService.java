@@ -10,7 +10,7 @@ import java.util.Set;
  * @author Siddharth Mehta
  */
 public interface GroupRoleService {
-    Set<GroupRoleMappingDto> getGroupRoleMapping();
+    Set<GroupRoleMappingDto> getAllGroupRoleMapping();
     GroupRoleMappingDto getGroupRoleMappingById(Long groupRoleId);
     GroupRoleMappingDto updateGroupRoleMappingById(Long groupRoleId, GroupRoleMappingDto groupRoleMappingDtoDto);
     GroupRoleMappingDto createGroupRoleMapping(GroupRoleMappingDto groupRoleMappingDto);

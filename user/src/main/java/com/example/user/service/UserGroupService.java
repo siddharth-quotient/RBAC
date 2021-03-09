@@ -10,7 +10,7 @@ import java.util.Set;
  * @author Siddharth Mehta
  */
 public interface UserGroupService {
-    Set<UserGroupMappingDto> getUserGroupMappings();
+    Set<UserGroupMappingDto> getAllUserGroupMappings();
     UserGroupMappingDto getUserGroupMappingById(Long userGroupId);
     UserGroupMappingDto updateUserGroupMappingById(Long userGroupId, UserGroupMappingDto userGroupMappingDto);
     UserGroupMappingDto createUserGroupMapping(UserGroupMappingDto userGroupMappingDto);

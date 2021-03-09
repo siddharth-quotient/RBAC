@@ -35,7 +35,7 @@ public class GroupRoleServiceImpl implements GroupRoleService {
     private final ValidateRole validateRole;
 
     @Override
-    public Set<GroupRoleMappingDto> getGroupRoleMapping() {
+    public Set<GroupRoleMappingDto> getAllGroupRoleMapping() {
         Set<GroupRoleMappingDto> groupRoles = new HashSet<>();
 
         groupRoleRepository.findAll().forEach(groupRoleMapping -> {
