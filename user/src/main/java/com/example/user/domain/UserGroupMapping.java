@@ -1,5 +1,6 @@
 package com.example.user.domain;
 
+import com.example.user.constant.Constants;
 import lombok.*;
 
 import javax.persistence.*;
@@ -16,7 +17,7 @@ import javax.persistence.*;
 @Builder
 @Entity
 @Table(
-        name = "USER_GROUP_MAPPING_TABLE",
+        name = Constants.USER_GROUP_TABLE_NAME,
         uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id" ,"group_id"})}
 )
 public class UserGroupMapping {

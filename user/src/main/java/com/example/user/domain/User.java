@@ -1,5 +1,6 @@
 package com.example.user.domain;
 
+import com.example.user.constant.Constants;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -20,7 +21,7 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = User.USER_TABLE_NAME)
+@Table(name = Constants.USER_TABLE_NAME)
 @EntityListeners(AuditingEntityListener.class)
 public class User {
     public static final String USER_TABLE_NAME = "USER_TABLE";

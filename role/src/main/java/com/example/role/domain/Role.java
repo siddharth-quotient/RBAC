@@ -1,5 +1,6 @@
 package com.example.role.domain;
 
+import com.example.role.constant.Constants;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -19,7 +20,7 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "ROLE_TABLE")
+@Table(name = Constants.ROLE_TABLE_NAME)
 @EntityListeners(AuditingEntityListener.class)
 public class Role {
 

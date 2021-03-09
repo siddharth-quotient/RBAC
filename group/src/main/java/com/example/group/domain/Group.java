@@ -1,6 +1,7 @@
 package com.example.group.domain;
 
 
+import com.example.group.constant.Constants;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -21,7 +22,7 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "GROUP_TABLE")
+@Table(name = Constants.GROUP_TABLE_NAME)
 @EntityListeners(AuditingEntityListener.class)
 public class Group {
 
