@@ -14,6 +14,11 @@ import org.springframework.web.client.RestTemplate;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Hystrix Circuit Breaker implementation when fetching Groups for a User
+ *
+ * @author Siddharth Mehta
+ */
 @Service
 @RequiredArgsConstructor
 public class GroupListByUserIdHystrix {

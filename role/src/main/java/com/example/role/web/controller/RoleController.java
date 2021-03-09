@@ -11,10 +11,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Exposes all Role - RESTful web services
+ *
+ * @author Siddharth Mehta
+ */
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/roles")
@@ -42,6 +48,7 @@ public class RoleController {
         return new ResponseEntity<>(roleService.createRole(roleDto), HttpStatus.CREATED);
     }
 
+    @Transactional
     @DeleteMapping("/{roleId}")
     public ResponseEntity<?> deleteById(@PathVariable Long roleId){
         roleService.deleteById(roleId);

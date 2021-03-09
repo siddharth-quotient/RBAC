@@ -9,6 +9,11 @@ import org.springframework.stereotype.Service;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Implementation for UserGroup Service
+ *
+ * @author Siddharth Mehta
+ */
 @Service
 @RequiredArgsConstructor
 public class UserGroupServiceImpl implements UserGroupService {

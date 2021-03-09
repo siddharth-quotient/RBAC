@@ -10,6 +10,11 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.Set;
 
+/**
+ * Exposes all UserGroup - RESTful web services
+ *
+ * @author Siddharth Mehta
+ */
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/user-groups")

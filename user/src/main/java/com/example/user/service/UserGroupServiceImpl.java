@@ -13,13 +13,17 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import javax.transaction.Transactional;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
+/**
+ * Implementation for UserGroup Service
+ *
+ * @author Siddharth Mehta
+ */
 @Slf4j
 @Service
 @RequiredArgsConstructor

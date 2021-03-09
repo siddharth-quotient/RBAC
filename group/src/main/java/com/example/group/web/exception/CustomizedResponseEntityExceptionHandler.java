@@ -11,7 +11,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import java.util.Date;
 
 /**
- *Controller Advice to handle all error handling using a consistent format - ExceptionResponse (CLASS)
+ * [Group Service] controller advice allows exception handling techniques across the whole application
  *
  * @author Siddharth Mehta
  */

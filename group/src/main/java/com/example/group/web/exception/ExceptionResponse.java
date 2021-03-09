@@ -2,7 +2,11 @@ package com.example.group.web.exception;
 
 import java.util.Date;
 
-
+/**
+ *Provides consistent Error Message format across the entire application
+ *
+ * @author Siddharth Mehta
+ */
 public class ExceptionResponse {
     private Date timeStamp;
     private Integer errorCode;

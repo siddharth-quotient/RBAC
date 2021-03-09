@@ -6,6 +6,11 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Set;
 
+/**
+ * Repository class for GroupRoleMapping domain objects
+ *
+ * @author Siddharth Mehta
+ */
 @Repository
 public interface GroupRoleRepository extends JpaRepository<GroupRoleMapping, Long> {
     Set<GroupRoleMapping> findByGroupId(Long groupId);

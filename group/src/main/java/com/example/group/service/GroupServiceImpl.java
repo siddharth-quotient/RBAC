@@ -20,6 +20,11 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
+/**
+ * Implementation for Group Service
+ *
+ * @author Siddharth Mehta
+ */
 @Service
 @RequiredArgsConstructor
 @Slf4j

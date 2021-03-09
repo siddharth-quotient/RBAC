@@ -16,6 +16,11 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
+/**
+ * Implementation for Role Service
+ *
+ * @author Siddharth Mehta
+ */
 @RequiredArgsConstructor
 @Service
 public class RoleServiceImpl implements RoleService {

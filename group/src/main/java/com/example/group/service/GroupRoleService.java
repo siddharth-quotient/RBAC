@@ -4,6 +4,11 @@ import com.example.group.web.model.GroupRoleMappingDto;
 
 import java.util.Set;
 
+/**
+ * Interface that provides contract for GroupRole Service
+ *
+ * @author Siddharth Mehta
+ */
 public interface GroupRoleService {
     Set<GroupRoleMappingDto> getGroupRoleMapping();
     GroupRoleMappingDto getGroupRoleMappingById(Long groupRoleId);

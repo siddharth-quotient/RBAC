@@ -11,9 +11,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.util.Set;
 
+/**
+ * Exposes all Group - RESTful web services
+ *
+ * @author Siddharth Mehta
+ */
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/groups")
@@ -42,6 +48,7 @@ public class GroupController {
         return new ResponseEntity<>(groupService.createGroup(groupDto), HttpStatus.CREATED);
     }
 
+    @Transactional
     @DeleteMapping("/{groupId}")
     public ResponseEntity<?> deleteById(@PathVariable Long groupId){
         groupService.deleteById(groupId);

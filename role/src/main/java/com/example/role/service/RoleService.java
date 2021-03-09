@@ -4,8 +4,12 @@ import com.example.role.web.model.RoleDto;
 
 import java.util.Set;
 
+/**
+ * Interface that provides contract for Group Service
+ *
+ * @author Siddharth Mehta
+ */
 public interface RoleService {
-
     Set<RoleDto> getRoles();
     RoleDto getRoleById(Long roleId);
     RoleDto updateRoleById(Long roleId, RoleDto roleDto);

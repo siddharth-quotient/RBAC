@@ -4,6 +4,11 @@ import com.example.user.web.model.UserGroupMappingDto;
 
 import java.util.Set;
 
+/**
+ * Interface that provides contract for UserGroup Service
+ *
+ * @author Siddharth Mehta
+ */
 public interface UserGroupService {
     Set<UserGroupMappingDto> getUserGroupMappings();
     UserGroupMappingDto getUserGroupMappingById(Long userGroupId);

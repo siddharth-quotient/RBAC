@@ -5,6 +5,11 @@ import com.example.user.web.model.UserDto;
 
 import java.util.Set;
 
+/**
+ * Interface that provides contract for User Service
+ *
+ * @author Siddharth Mehta
+ */
 public interface UserService {
     Set<UserDto> getUsers();
     UserDto getUserByName(String userName);

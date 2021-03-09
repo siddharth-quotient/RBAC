@@ -7,10 +7,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.util.Set;
 
+/**
+ * Exposes all GroupRole - RESTful web services
+ *
+ * @author Siddharth Mehta
+ */
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/group-roles")

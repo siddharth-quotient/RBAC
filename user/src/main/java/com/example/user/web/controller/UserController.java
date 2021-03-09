@@ -8,9 +8,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.util.Set;
 
+/**
+ * Exposes all User - RESTful web services
+ *
+ * @author Siddharth Mehta
+ */
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/users")
@@ -38,6 +44,7 @@ public class UserController {
         return new ResponseEntity<>(userService.createUser(userDto), HttpStatus.CREATED);
     }
 
+    @Transactional
     @DeleteMapping("/{userName}")
     public ResponseEntity<?> deleteByName(@PathVariable String userName){
         userService.deleteByName(userName);

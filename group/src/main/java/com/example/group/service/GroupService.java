@@ -1,12 +1,16 @@
 package com.example.group.service;
 
 import com.example.group.web.model.GroupDto;
-import com.example.group.web.model.GroupsList;
 import com.example.group.web.model.RolesList;
 import com.example.group.web.model.UserGroupMappingDto;
 
 import java.util.Set;
 
+/**
+ * Interface that provides contract for Group Service
+ *
+ * @author Siddharth Mehta
+ */
 public interface GroupService {
     Set<GroupDto> getGroups();
     GroupDto getGroupById(Long groupId);
