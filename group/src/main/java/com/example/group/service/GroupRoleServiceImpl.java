@@ -74,12 +74,23 @@ public class GroupRoleServiceImpl implements GroupRoleService {
             Long groupId = groupRoleMappingDto.getGroupId();
             Long roleId = groupRoleMappingDto.getRoleId();
 
-            /* Check for valid group_id */
+            /* Check if the same groupId and roleId combination already exists*/
+            Optional<GroupRoleMapping> dtoGroupRoleMappingOptional = groupRoleRepository
+                    .findByGroupIdAndAndRoleId(groupRoleMappingDto.getGroupId(), groupRoleMappingDto.getRoleId());
+
+            if(dtoGroupRoleMappingOptional.isPresent()){
+                GroupRoleMapping dtoGroupRoleMapping = dtoGroupRoleMappingOptional.get();
+                if(groupRoleMapping.getGroupRoleId()!=dtoGroupRoleMapping.getGroupRoleId()){
+                    throw new GroupRoleNotUniqueException("GroupId: "+groupId+" and RoleId: "+roleId+" lookup value already exist");
+                }
+            }
+
+            /* Check for valid groupId */
             if(!validateGroupId(groupId)){
                 throw new GroupNotFoundException("Invalid Group Id: "+ groupId);
             }
 
-            /*Check for valid role_id*/
+            /*Check for valid roleId*/
             validateRole.checkRoleExist(roleId);
 
 
@@ -103,12 +114,12 @@ public class GroupRoleServiceImpl implements GroupRoleService {
         Long groupId = groupRoleMappingDto.getGroupId();
         Long roleId = groupRoleMappingDto.getRoleId();
 
-        /* Check for valid group_id */
+        /* Check for valid groupId */
         if(!validateGroupId(groupId)){
             throw new GroupNotFoundException("Invalid Group Id: "+ groupId);
         }
 
-        /*Check for valid role_id*/
+        /*Check for valid roleId*/
         validateRole.checkRoleExist(roleId);
 
         try {

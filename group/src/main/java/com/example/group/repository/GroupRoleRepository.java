@@ -4,6 +4,7 @@ import com.example.group.domain.GroupRoleMapping;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -15,4 +16,5 @@ import java.util.Set;
 public interface GroupRoleRepository extends JpaRepository<GroupRoleMapping, Long> {
     Set<GroupRoleMapping> findByGroupId(Long groupId);
     void deleteByGroupId(Long groupId);
+    Optional<GroupRoleMapping> findByGroupIdAndAndRoleId(Long groupId, Long roleId);
 }

@@ -70,11 +70,21 @@ public class GroupServiceImpl implements GroupService {
             throw new GroupNotFoundException("Group cannot be null");
         }
 
-
         Optional<Group> groupOptional = groupRepository.findById(groupId);
 
         if(groupOptional.isPresent()){
             Group group = groupOptional.get();
+
+            /*Check if group with given groupName already exists*/
+            String dtoGroupName = groupDto.getGroupName();
+            Optional<Group> dtoGroupOptional = groupRepository.findByGroupName(dtoGroupName);
+
+            if(dtoGroupOptional.isPresent()){
+                Group dtoGroup = dtoGroupOptional.get();
+                if(dtoGroup.getGroupId()!=group.getGroupId()){
+                    throw new GroupNameNotUniqueException("Group by the name " +groupDto.getGroupName() +" already exists!");
+                }
+            }
 
             group.setGroupName( groupDto.getGroupName() );
             group.setGroupDescription( groupDto.getGroupDescription() );
@@ -94,7 +104,7 @@ public class GroupServiceImpl implements GroupService {
         try {
             return groupMapper.groupToGroupDto(groupRepository.save(groupMapper.groupDtoToGroup(groupDto)));
         }catch (DataIntegrityViolationException ex){
-            throw new GroupNameNotUniqueException("GroupName " +groupDto.getGroupName() +" already exists!");
+            throw new GroupNameNotUniqueException("Group by the name " +groupDto.getGroupName() +" already exists!");
         }
     }
 

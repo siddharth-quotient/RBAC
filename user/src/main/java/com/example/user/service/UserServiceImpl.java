@@ -64,11 +64,23 @@ public class UserServiceImpl implements UserService {
         if(userOptional.isPresent()){
             User user = userOptional.get();
 
+            /*Check if user with given username already exists*/
+            String dtoUserName = userDto.getUserName();
+            Optional<User> dtoUserOptional = userRepository.findByUserName(dtoUserName);
+
+            if(dtoUserOptional.isPresent()){
+                User dtoUser = dtoUserOptional.get();
+                if(dtoUser.getUserId()!=user.getUserId()){
+                    throw new UserNameNotUniqueException("User by the name " +userDto.getUserName() +" already exists!");
+                }
+            }
+
             user.setUserName(userDto.getUserName());
             user.setFirstName(userDto.getFirstName());
             user.setLastName(userDto.getLastName());
 
             return userMapper.userToUserDto(userRepository.save(user));
+
         }
 
         log.error("Invalid User Name provided while using getUserByName: "+ userName);
@@ -85,7 +97,7 @@ public class UserServiceImpl implements UserService {
             return userMapper.userToUserDto(userRepository.save(userMapper.userDtoToUser(userDto)));
         }
         catch (DataIntegrityViolationException ex){
-            throw new UserNameNotUniqueException("Username " +userDto.getUserName() +" already exists!");
+            throw new UserNameNotUniqueException("User by the name " +userDto.getUserName() +" already exists!");
         }
 
     }

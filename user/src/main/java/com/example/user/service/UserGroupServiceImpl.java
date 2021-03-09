@@ -67,18 +67,32 @@ public class UserGroupServiceImpl implements UserGroupService {
 
         Optional<UserGroupMapping> userGroupMappingOptional = userGroupRepository.findById(userGroupId);
 
-        if(userGroupMappingOptional.isPresent()){
+        if(!userGroupMappingOptional.isPresent()){
+            log.error("Invalid User-Group Mapping Id provided while using updateUserGroupMappingById: "+ userGroupId);
+            throw new UserGroupNotFoundException("Invalid User-Group Mapping with Id :"+ userGroupId);
+        }else{
             UserGroupMapping userGroupMapping = userGroupMappingOptional.get();
 
             Long userId = userGroupMappingDto.getUserId();
             Long groupId = userGroupMappingDto.getGroupId();
 
-            /* Check for valid user_id */
+            /* Check if the same userId and groupId combination already exists*/
+            Optional<UserGroupMapping> dtoUserGroupMappingOptional = userGroupRepository
+                    .findUserGroupMappingByUserIdAndGroupId(userGroupMappingDto.getUserId(), userGroupMappingDto.getGroupId());
+
+            if(dtoUserGroupMappingOptional.isPresent()){
+                UserGroupMapping dtoUserGroupMapping = dtoUserGroupMappingOptional.get();
+                if(userGroupMapping.getUserGroupId()!=dtoUserGroupMapping.getUserGroupId()){
+                    throw new UserGroupNotUniqueException("UserId: "+userId+" and GroupId: "+groupId+" lookup value already exist");
+                }
+            }
+
+            /* Check for valid userId */
             if(!validateUserId(userId)){
                 throw new UserNotFoundException("Invalid User Id: "+ userId);
             }
 
-            /* Check for valid group_id */
+            /* Check for valid groupId */
             validateGroupForUserGroupMapping.checkGroupExist(groupId);
 
             userGroupMapping.setUserId( userGroupMappingDto.getUserId() );
@@ -86,8 +100,7 @@ public class UserGroupServiceImpl implements UserGroupService {
 
             return userGroupMapper.userGroupMappingToUserGroupDto(userGroupRepository.save(userGroupMapping));
         }
-        log.error("Invalid User-Group Mapping Id provided while using updateUserGroupMappingById: "+ userGroupId);
-        throw new UserGroupNotFoundException("Invalid User-Group Mapping with Id :"+ userGroupId);
+
     }
 
     @Override
@@ -100,12 +113,12 @@ public class UserGroupServiceImpl implements UserGroupService {
         Long userId = userGroupMappingDto.getUserId();
         Long groupId = userGroupMappingDto.getGroupId();
 
-        /* Check for valid user_id */
+        /* Check for valid userId */
         if (!validateUserId(userId)) {
             throw new UserNotFoundException("Invalid User Id: " + userId);
         }
 
-        /* Check for valid group_id */
+        /* Check for valid groupId */
         validateGroupForUserGroupMapping.checkGroupExist(groupId);
 
         try {

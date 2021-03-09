@@ -59,11 +59,21 @@ public class RoleServiceImpl implements RoleService {
             throw new RoleNotFoundException("Role cannot be null");
         }
 
-
         Optional<Role> roleOpt = roleRepository.findById(roleId);
 
         if(roleOpt.isPresent()){
             Role role = roleOpt.get();
+
+            /*Check if group with given groupName already exists*/
+            String dtoRoleName = roleDto.getRoleName();
+            Optional<Role> dtoRoleOptional = roleRepository.findByRoleName(dtoRoleName);
+
+            if(dtoRoleOptional.isPresent()){
+                Role dtoRole = dtoRoleOptional.get();
+                if(dtoRole.getRoleId()!=role.getRoleId()){
+                    throw new RoleNameNotUniqueException("Role by the name " +roleDto.getRoleName() +" already exists!");
+                }
+            }
 
             role.setRoleName( roleDto.getRoleName() );
             role.setRoleDescription( roleDto.getRoleDescription() );

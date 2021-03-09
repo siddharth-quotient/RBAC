@@ -4,6 +4,8 @@ import com.example.group.domain.Group;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 /**
  * Repository class for Group domain objects
  *
@@ -11,4 +13,5 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface GroupRepository extends JpaRepository<Group, Long> {
+    Optional<Group> findByGroupName(String groupName);
 }
