@@ -76,7 +76,7 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
 
     @ExceptionHandler(GroupServiceDownException.class)
     public final ResponseEntity<ResponseDto> groupServiceDownException(Exception groupServiceDownException, WebRequest request){
-        ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), Constants.GROUP_SERVICE_DOWN, "Please try again later", groupServiceDownException.getMessage());
+        ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), Constants.GROUP_SERVICE_DOWN, "Cannot connect to group service!", groupServiceDownException.getMessage());
 
         return new ResponseEntity<>(new ResponseDto(null, exceptionResponse), HttpStatus.INTERNAL_SERVER_ERROR);
     }

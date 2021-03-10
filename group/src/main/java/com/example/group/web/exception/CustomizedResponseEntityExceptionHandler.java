@@ -69,7 +69,7 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
 
     @ExceptionHandler(RoleServiceDownException.class)
     public final ResponseEntity<ResponseDto> roleServiceDownException(Exception roleServiceDownException, WebRequest request){
-        ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), Constants.ROLE_SERVICE_DOWN, roleServiceDownException.getMessage(), request.getDescription(false));
+        ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), Constants.ROLE_SERVICE_DOWN, "Cannot connect to role service!", roleServiceDownException.getMessage());
 
         return new ResponseEntity<>(new ResponseDto(null, exceptionResponse), HttpStatus.INTERNAL_SERVER_ERROR);
     }

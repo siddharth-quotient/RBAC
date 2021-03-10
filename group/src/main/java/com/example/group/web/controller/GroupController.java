@@ -75,8 +75,12 @@ public class GroupController {
 
     /*-------------- Check if a User has a Role ---------------*/
     @GetMapping("/userId/{userId}/roleId/{roleId}/check")
-    public Boolean checkRoleIdForUserId(@PathVariable Long userId, @PathVariable Long roleId){
+    public Boolean checkRoleIdForUserId(@PathVariable Long userId, @PathVariable Long roleId) throws InterruptedException {
         Set<Long> groupIds = userGroupService.getGroupIdsForUserId(userId);
+
+        /*To demonstrate timeouts
+        Thread.sleep(3000);*/
+
         return userGroupService.getRoleIdsForGroupIds(groupIds, roleId);
     }
 

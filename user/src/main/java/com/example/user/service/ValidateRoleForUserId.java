@@ -4,6 +4,7 @@ import com.example.user.restTemplate.RoleRestTemplateResponseErrorHandler;
 import com.example.user.web.exception.GroupServiceDownException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 
@@ -18,14 +19,15 @@ public class ValidateRoleForUserId {
 
         restTemplate.setErrorHandler(roleRestTemplateResponseErrorHandler);
 
-
         try {
             return restTemplate.getForObject("http://group-service/groups/userId/" + userId + "/roleId/" + roleId + "/check",
                     Boolean.class);
         }
         catch (IllegalStateException e) {
-            //Caught when Group Service is Down - (No way to check Group Validity - pass True)
             throw new GroupServiceDownException("Group Service Down!");
+        }
+        catch (RestClientException ex){
+            throw new GroupServiceDownException("Group Service acting poorly, timed out!");
         }
     }
 }
