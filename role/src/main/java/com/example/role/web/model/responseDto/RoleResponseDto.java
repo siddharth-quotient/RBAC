@@ -1,4 +1,4 @@
-package com.example.role.web.model;
+package com.example.role.web.model.responseDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,8 +13,7 @@ import java.time.OffsetDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class
-RoleDto {
+public class RoleResponseDto {
 
     @Null(message = "Role ID is auto generated - should be Null")
     private Long roleId;

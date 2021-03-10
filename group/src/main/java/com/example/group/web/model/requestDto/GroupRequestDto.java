@@ -1,10 +1,9 @@
-package com.example.group.web.model;
+package com.example.group.web.model.requestDto;
 
 import lombok.*;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Null;
-import java.time.OffsetDateTime;
 
 /**
  *Data transfer object representing a group.
@@ -12,19 +11,14 @@ import java.time.OffsetDateTime;
  * @author Siddharth Mehta
  */
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-public class GroupDto {
-
-    @Null(message = "Group ID is auto generated - should be null")
+@Getter
+@Setter
+public class GroupRequestDto {
+    @Null(message = "Group ID is auto-generated - should be Null")
     private Long groupId;
-
-    @Null(message = "Creation date is auto generated - should be null")
-    private OffsetDateTime createDate;
-
-    @Null(message = "Last Modified date is auto generated - should be null")
-    private OffsetDateTime lastModifiedDate;
 
     @NotBlank(message = "Group Name should cannot be Null")
     private String groupName;

@@ -8,7 +8,9 @@ import com.example.group.web.exception.GroupNotFoundException;
 import com.example.group.web.exception.GroupRoleNotFoundException;
 import com.example.group.web.exception.GroupRoleNotUniqueException;
 import com.example.group.web.mapper.GroupRoleMapper;
-import com.example.group.web.model.GroupRoleMappingDto;
+import com.example.group.web.model.requestDto.GroupRoleMappingRequestDto;
+import com.example.group.web.model.requestDto.GroupRoleMappingUpdateRequestDto;
+import com.example.group.web.model.responseDto.GroupRoleMappingResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -32,20 +34,20 @@ public class GroupRoleServiceImpl implements GroupRoleService {
     private final GroupRoleRepository groupRoleRepository;
     private final GroupRepository groupRepository;
     private final GroupRoleMapper groupRoleMapper;
-    private final ValidateRole validateRole;
+    private final ValidateRoleForGroupRoleMapping validateRoleForGroupRoleMapping;
 
     @Override
-    public Set<GroupRoleMappingDto> getAllGroupRoleMapping() {
-        Set<GroupRoleMappingDto> groupRoles = new HashSet<>();
+    public Set<GroupRoleMappingResponseDto> getAllGroupRoleMappings() {
+        Set<GroupRoleMappingResponseDto> groupRoles = new HashSet<>();
 
         groupRoleRepository.findAll().forEach(groupRoleMapping -> {
-            groupRoles.add(groupRoleMapper.groupRoleMappingToGroupRoleMappingDto(groupRoleMapping));
+            groupRoles.add(groupRoleMapper.groupRoleMappingToGroupRoleResponseMappingDto(groupRoleMapping));
         });
         return groupRoles;
     }
 
     @Override
-    public GroupRoleMappingDto getGroupRoleMappingById(Long groupRoleId) {
+    public GroupRoleMappingResponseDto getGroupRoleMappingById(Long groupRoleId) {
         if(groupRoleId==null){
             throw new GroupRoleNotFoundException("Group-Role Mapping cannot be Null");
 
@@ -53,7 +55,7 @@ public class GroupRoleServiceImpl implements GroupRoleService {
 
         Optional<GroupRoleMapping> groupRoleOptional = groupRoleRepository.findById(groupRoleId);
         if(groupRoleOptional.isPresent()){
-            return groupRoleMapper.groupRoleMappingToGroupRoleMappingDto(groupRoleOptional.get());
+            return groupRoleMapper.groupRoleMappingToGroupRoleResponseMappingDto(groupRoleOptional.get());
         }
         log.error("Invalid Group-Role Mapping Id provided while using getGroupRoleMappingById: "+ groupRoleId);
         throw new GroupRoleNotFoundException("Invalid Group-Role Mapping with Id: "+ groupRoleId);
@@ -61,22 +63,23 @@ public class GroupRoleServiceImpl implements GroupRoleService {
 
     @Override
     @Transactional
-    public GroupRoleMappingDto updateGroupRoleMappingById(Long groupRoleId, GroupRoleMappingDto groupRoleMappingDto) {
-        if(groupRoleId==null){
-            throw new GroupRoleNotFoundException("Group-Role Mapping cannot be Null");
-        }
+    public GroupRoleMappingResponseDto updateGroupRoleMappingById(GroupRoleMappingUpdateRequestDto groupRoleMappingUpdateRequestDto) {
+        Long groupRoleId = groupRoleMappingUpdateRequestDto.getGroupRoleId();
 
         Optional<GroupRoleMapping> groupRoleOptional = groupRoleRepository.findById(groupRoleId);
 
-        if(groupRoleOptional.isPresent()){
+        if(!groupRoleOptional.isPresent()) {
+            log.error("Invalid Group-Role Mapping Id provided while using updateGroupRoleMappingById: " + groupRoleId);
+            throw new GroupRoleNotFoundException("Invalid Group-Role Mapping with Id :" + groupRoleId);
+        }else{
             GroupRoleMapping groupRoleMapping = groupRoleOptional.get();
 
-            Long groupId = groupRoleMappingDto.getGroupId();
-            Long roleId = groupRoleMappingDto.getRoleId();
+            Long groupId = groupRoleMappingUpdateRequestDto.getGroupId();
+            Long roleId = groupRoleMappingUpdateRequestDto.getRoleId();
 
             /* Check if the same groupId and roleId combination already exists*/
             Optional<GroupRoleMapping> dtoGroupRoleMappingOptional = groupRoleRepository
-                    .findByGroupIdAndAndRoleId(groupRoleMappingDto.getGroupId(), groupRoleMappingDto.getRoleId());
+                    .findByGroupIdAndAndRoleId(groupId, roleId);
 
             if(dtoGroupRoleMappingOptional.isPresent()){
                 GroupRoleMapping dtoGroupRoleMapping = dtoGroupRoleMappingOptional.get();
@@ -91,28 +94,22 @@ public class GroupRoleServiceImpl implements GroupRoleService {
             }
 
             /*Check for valid roleId*/
-            validateRole.checkRoleExist(roleId);
+            validateRoleForGroupRoleMapping.checkRoleExist(roleId);
 
+            groupRoleMapping.setGroupId( groupRoleMappingUpdateRequestDto.getGroupId() );
+            groupRoleMapping.setRoleId( groupRoleMappingUpdateRequestDto.getRoleId() );
 
-            groupRoleMapping.setGroupId( groupRoleMappingDto.getGroupId() );
-            groupRoleMapping.setRoleId( groupRoleMappingDto.getRoleId() );
-
-            return groupRoleMapper.groupRoleMappingToGroupRoleMappingDto(groupRoleRepository.save(groupRoleMapping));
+            return groupRoleMapper.groupRoleMappingToGroupRoleResponseMappingDto(groupRoleRepository.save(groupRoleMapping));
         }
-        log.error("Invalid Group-Role Mapping Id provided while using updateGroupRoleMappingById: "+ groupRoleId);
-        throw new GroupRoleNotFoundException("Invalid Group-Role Mapping with Id :"+ groupRoleId);
+
     }
 
     @Override
     @Transactional
-    public GroupRoleMappingDto createGroupRoleMapping(GroupRoleMappingDto groupRoleMappingDto) {
+    public GroupRoleMappingResponseDto createGroupRoleMapping(GroupRoleMappingRequestDto groupRoleMappingRequestDto) {
 
-        if(groupRoleMappingDto == null){
-            throw new GroupRoleNotFoundException("Group-Role Mapping cannot be Null");
-        }
-
-        Long groupId = groupRoleMappingDto.getGroupId();
-        Long roleId = groupRoleMappingDto.getRoleId();
+        Long groupId = groupRoleMappingRequestDto.getGroupId();
+        Long roleId = groupRoleMappingRequestDto.getRoleId();
 
         /* Check for valid groupId */
         if(!validateGroupId(groupId)){
@@ -120,17 +117,18 @@ public class GroupRoleServiceImpl implements GroupRoleService {
         }
 
         /*Check for valid roleId*/
-        validateRole.checkRoleExist(roleId);
+        validateRoleForGroupRoleMapping.checkRoleExist(roleId);
 
         try {
-            return groupRoleMapper.groupRoleMappingToGroupRoleMappingDto(groupRoleRepository.save(groupRoleMapper.groupRoleMappingDtoToGroupRoleMapping(groupRoleMappingDto)));
+            return groupRoleMapper.groupRoleMappingToGroupRoleResponseMappingDto(groupRoleRepository
+                    .save(groupRoleMapper.groupRoleMappingRequestDtoToGroupRoleMapping(groupRoleMappingRequestDto)));
         }catch (DataIntegrityViolationException ex){
             throw new GroupRoleNotUniqueException("GroupId: "+groupId+" and RoleId: "+roleId+" lookup value already exist");
         }
     }
 
     @Override
-    public GroupRoleMappingDto deleteById(Long groupRoleId) {
+    public GroupRoleMappingResponseDto deleteById(Long groupRoleId) {
         if(groupRoleId==null){
             throw new GroupRoleNotFoundException("Group-Role Mapping cannot be Null");
         }
@@ -143,7 +141,7 @@ public class GroupRoleServiceImpl implements GroupRoleService {
         }
 
         groupRoleRepository.deleteById(groupRoleId);
-        return groupRoleMapper.groupRoleMappingToGroupRoleMappingDto(groupRoleOptional.get());
+        return groupRoleMapper.groupRoleMappingToGroupRoleResponseMappingDto(groupRoleOptional.get());
     }
 
 

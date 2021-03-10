@@ -1,9 +1,9 @@
 package com.example.group.service;
 
 import com.example.group.repository.GroupRoleRepository;
-import com.example.group.web.model.GroupRoleMappingDto;
-import com.example.group.web.model.RoleDto;
-import com.example.group.web.model.RolesList;
+import com.example.group.web.model.responseDto.GroupRoleMappingResponseDto;
+import com.example.group.web.model.responseDto.RoleResponseDto;
+import com.example.group.web.model.responseDto.RolesList;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -27,23 +27,23 @@ public class RoleListByGroupIdHystrix {
     private final GroupRoleRepository groupRoleRepository;
 
     @HystrixCommand(fallbackMethod = "getFallBackRoleListByGroupId")
-    public ResponseEntity<RolesList> getRoleListByGroupId(Set<GroupRoleMappingDto> groupRoleMappingDtos){
-        ResponseEntity<RolesList> rolesListResponseEntity = restTemplate.postForEntity("http://role-service/roles/group-roles/", groupRoleMappingDtos, RolesList.class);
+    public ResponseEntity<RolesList> getRoleListByGroupId(Set<GroupRoleMappingResponseDto> groupRoleMappingResponseDtos){
+        ResponseEntity<RolesList> rolesListResponseEntity = restTemplate.postForEntity("http://role-service/roles/group-roles/", groupRoleMappingResponseDtos, RolesList.class);
         return rolesListResponseEntity;
     }
 
-    public ResponseEntity<RolesList> getFallBackRoleListByGroupId(Set<GroupRoleMappingDto> groupRoleMappingDtos){
+    public ResponseEntity<RolesList> getFallBackRoleListByGroupId(Set<GroupRoleMappingResponseDto> groupRoleMappingResponseDtos){
         RolesList fallBackRolesList = new RolesList();
-        Set<RoleDto> roleDtoHashSet = new HashSet<>();
+        Set<RoleResponseDto> roleResponseDtoHashSet = new HashSet<>();
 
-        if(!groupRoleMappingDtos.isEmpty()){
-            groupRoleMappingDtos.forEach(groupRoleMappingDto -> {
-                roleDtoHashSet.add(new RoleDto(groupRoleMappingDto.getRoleId(), null, null,
+        if(!groupRoleMappingResponseDtos.isEmpty()){
+            groupRoleMappingResponseDtos.forEach(groupRoleMappingDto -> {
+                roleResponseDtoHashSet.add(new RoleResponseDto(groupRoleMappingDto.getRoleId(), null, null,
                         "Role Name Unavailable", "Role Description Unavailable"));
             });
         }
 
-        fallBackRolesList.setRolesSet(roleDtoHashSet);
+        fallBackRolesList.setRoles(roleResponseDtoHashSet);
         return new ResponseEntity<>(fallBackRolesList, HttpStatus.OK);
     }
 }

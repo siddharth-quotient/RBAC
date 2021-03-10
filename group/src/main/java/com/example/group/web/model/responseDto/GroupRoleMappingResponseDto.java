@@ -1,4 +1,4 @@
-package com.example.group.web.model;
+package com.example.group.web.model.responseDto;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -15,7 +15,7 @@ import javax.validation.constraints.Null;
 @ToString
 @Getter
 @Setter
-public class GroupRoleMappingDto {
+public class GroupRoleMappingResponseDto {
 
     @Null(message = "Group-Role ID is auto generated - should be null")
     private Long groupRoleId;

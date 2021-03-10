@@ -2,23 +2,16 @@ package com.example.group.service;
 
 
 import com.example.group.restTemplate.RoleRestTemplateResponseErrorHandler;
-import com.example.group.web.exception.RoleNotFoundException;
 import com.example.group.web.exception.RoleServiceDownException;
-import com.example.group.web.model.RoleDto;
+import com.example.group.web.model.responseDto.RoleResponseDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.ResponseErrorHandler;
 import org.springframework.web.client.RestTemplate;
 
-import java.io.IOException;
-
-import static org.springframework.http.HttpStatus.Series.SERVER_ERROR;
 
 @Service
 @RequiredArgsConstructor
-public class ValidateRole {
+public class ValidateRoleForGroupRoleMapping {
     private final RestTemplate restTemplate;
     private final RoleRestTemplateResponseErrorHandler restTemplateResponseErrorHandler;
 
@@ -27,7 +20,7 @@ public class ValidateRole {
         restTemplate.setErrorHandler(restTemplateResponseErrorHandler);
 
         try {
-            RoleDto roleDto = restTemplate.getForObject("http://role-service/roles/" + roleId, RoleDto.class);
+            RoleResponseDto roleResponseDto = restTemplate.getForObject("http://role-service/roles/" + roleId, RoleResponseDto.class);
         }
         catch (IllegalStateException e) {
             //Caught when Role Service is Down

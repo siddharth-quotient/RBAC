@@ -1,4 +1,4 @@
-package com.example.group.web.model;
+package com.example.user.web.model.responseDto;
 
 import lombok.*;
 
@@ -7,15 +7,17 @@ import javax.validation.constraints.Null;
 import java.time.OffsetDateTime;
 
 /**
- *Data transfer object for users.
+ *Data transfer object representing a group.
  *
  * @author Siddharth Mehta
  */
+@Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-public class UserDto {
+public class UserResponseDto {
     private Long userId;
     private OffsetDateTime createDate;
     private OffsetDateTime lastModifiedDate;

@@ -20,6 +20,7 @@ public class UserGroupServiceImpl implements UserGroupService {
     private final UserGroupRepository userGroupRepository;
     private final GroupRoleRepository groupRoleRepository;
 
+    /*-------------- Check if a User has a Role ---------------*/
     @Override
     public Set<Long> getGroupIdsForUserId(Long userId) {
         Set<Long> groupIds = new HashSet<>();

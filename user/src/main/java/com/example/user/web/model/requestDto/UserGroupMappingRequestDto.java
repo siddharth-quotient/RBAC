@@ -1,18 +1,19 @@
-package com.example.user.web.model;
+package com.example.user.web.model.requestDto;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 
-@ToString
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
-public class UserGroupMappingDto {
+public class UserGroupMappingRequestDto {
 
-    @Null(message = "User-Group ID is auto generated - should be null")
+    @Null(message = "User-Group ID is auto-generated - should be null")
     private Long userGroupId;
 
     @NotNull(message = "User ID cannot be Null")

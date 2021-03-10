@@ -1,4 +1,4 @@
-package com.example.user.web.model;
+package com.example.user.web.model.responseDto;
 
 import lombok.*;
 
@@ -9,7 +9,8 @@ import java.time.OffsetDateTime;
 @AllArgsConstructor
 @Getter
 @Setter
-public class GroupDto {
+/*----------------- (Wrapped)Response from - Groups from User Name -------------------*/
+public class GroupResponseDto {
     private Long groupId;
     private OffsetDateTime createDate;
     private OffsetDateTime lastModifiedDate;

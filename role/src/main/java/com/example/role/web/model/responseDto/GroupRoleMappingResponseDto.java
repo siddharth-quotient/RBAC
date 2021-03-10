@@ -1,4 +1,4 @@
-package com.example.role.web.model;
+package com.example.role.web.model.responseDto;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -10,15 +10,10 @@ import javax.validation.constraints.Null;
 @Getter
 @Setter
 @ToString
-public class GroupRoleMappingDto {
+/*----------------- Request for - Roles from Group ID -------------------*/
+public class GroupRoleMappingResponseDto {
 
-    @Null
     private Long groupRoleId;
-
-    @NotNull
     private Long groupId;
-
-    @NotNull
     private Long roleId;
-
 }

@@ -2,10 +2,12 @@ package com.example.group.web.controller;
 
 import com.example.group.service.GroupService;
 import com.example.group.service.UserGroupService;
-import com.example.group.web.model.GroupDto;
-import com.example.group.web.model.GroupsList;
-import com.example.group.web.model.RolesList;
-import com.example.group.web.model.UserGroupMappingDto;
+import com.example.group.web.model.requestDto.GroupRequestDto;
+import com.example.group.web.model.requestDto.GroupUpdateRequestDto;
+import com.example.group.web.model.responseDto.GroupResponseDto;
+import com.example.group.web.model.responseDto.GroupsList;
+import com.example.group.web.model.responseDto.RolesList;
+import com.example.group.web.model.responseDto.UserGroupMappingResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,28 +31,28 @@ public class GroupController {
     private final UserGroupService userGroupService;
 
     @GetMapping
-    public ResponseEntity<Set<GroupDto>> getAllGroups(){
+    public ResponseEntity<Set<GroupResponseDto>> getAllGroups(){
         return new ResponseEntity<>(groupService.getAllGroups(), HttpStatus.OK);
     }
 
     @GetMapping("/{groupId}")
-    public ResponseEntity<GroupDto> getGroupById(@PathVariable Long groupId){
+    public ResponseEntity<GroupResponseDto> getGroupById(@PathVariable Long groupId){
         return new ResponseEntity<>(groupService.getGroupById(groupId), HttpStatus.OK);
     }
 
-    @PutMapping("/{groupId}")
-    public ResponseEntity<GroupDto> updateGroupById(@PathVariable Long groupId, @Valid @RequestBody GroupDto groupDto){
-        return new ResponseEntity<>(groupService.updateGroupById(groupId ,groupDto), HttpStatus.NO_CONTENT);
+    @PutMapping
+    public ResponseEntity<GroupResponseDto> updateGroupById(@Valid @RequestBody GroupUpdateRequestDto groupUpdateRequestDto){
+        return new ResponseEntity<>(groupService.updateGroupById(groupUpdateRequestDto), HttpStatus.NO_CONTENT);
     }
 
     @PostMapping
-    public ResponseEntity<GroupDto> createGroup(@Valid @RequestBody GroupDto groupDto){
-        return new ResponseEntity<>(groupService.createGroup(groupDto), HttpStatus.CREATED);
+    public ResponseEntity<GroupResponseDto> createGroup(@Valid @RequestBody GroupRequestDto groupRequestDto){
+        return new ResponseEntity<>(groupService.createGroup(groupRequestDto), HttpStatus.CREATED);
     }
 
     @Transactional
     @DeleteMapping("/{groupId}")
-    public ResponseEntity<GroupDto> deleteById(@PathVariable Long groupId){
+    public ResponseEntity<GroupResponseDto> deleteById(@PathVariable Long groupId){
         return new ResponseEntity<>(groupService.deleteById(groupId), HttpStatus.OK);
     }
 
@@ -63,9 +65,9 @@ public class GroupController {
 
     /*----------------- Groups from User Name -------------------*/
     @PostMapping("/user-groups")
-    public ResponseEntity<GroupsList> getGroupsByUserId(@RequestBody Set<UserGroupMappingDto> userGroupMappingDtos){
+    public ResponseEntity<GroupsList> getGroupsByUserId(@RequestBody Set<UserGroupMappingResponseDto> userGroupMappingResponseDtos){
         GroupsList groupsList =new GroupsList();
-        groupsList.setGroupDtoSet(groupService.getGroupsByUserId(userGroupMappingDtos));
+        groupsList.setGroups(groupService.getGroupsByUserId(userGroupMappingResponseDtos));
         return new ResponseEntity<>(groupsList, HttpStatus.OK);
     }
 

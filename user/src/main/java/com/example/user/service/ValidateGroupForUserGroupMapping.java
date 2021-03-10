@@ -2,7 +2,7 @@ package com.example.user.service;
 
 import com.example.user.restTemplate.GroupRestTemplateResponseErrorHandler;
 import com.example.user.web.exception.GroupServiceDownException;
-import com.example.user.web.model.GroupDto;
+import com.example.user.web.model.responseDto.GroupResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -18,7 +18,7 @@ public class ValidateGroupForUserGroupMapping {
         restTemplate.setErrorHandler(groupRestTemplateResponseErrorHandler);
 
         try {
-            GroupDto groupDto = restTemplate.getForObject("http://group-service/groups/" + groupId, GroupDto.class);
+            GroupResponseDto groupResponseDto = restTemplate.getForObject("http://group-service/groups/" + groupId, GroupResponseDto.class);
         } catch (IllegalStateException e) {
             //Caught when Group Service is Down
             throw new GroupServiceDownException("Group Service Down!");

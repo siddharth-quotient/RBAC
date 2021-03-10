@@ -8,7 +8,12 @@ import com.example.group.web.exception.GroupNameNotUniqueException;
 import com.example.group.web.exception.GroupNotFoundException;
 import com.example.group.web.mapper.GroupMapper;
 import com.example.group.web.mapper.GroupRoleMapper;
-import com.example.group.web.model.*;
+import com.example.group.web.model.requestDto.GroupRequestDto;
+import com.example.group.web.model.requestDto.GroupUpdateRequestDto;
+import com.example.group.web.model.responseDto.GroupResponseDto;
+import com.example.group.web.model.responseDto.GroupRoleMappingResponseDto;
+import com.example.group.web.model.responseDto.RolesList;
+import com.example.group.web.model.responseDto.UserGroupMappingResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -39,25 +44,25 @@ public class GroupServiceImpl implements GroupService {
 
 
     @Override
-    public Set<GroupDto> getAllGroups() {
-        Set<GroupDto> groups = new HashSet<>();
+    public Set<GroupResponseDto> getAllGroups() {
+        Set<GroupResponseDto> groups = new HashSet<>();
 
         groupRepository.findAll().forEach(group -> {
-            groups.add(groupMapper.groupToGroupDto(group));
+            groups.add(groupMapper.groupToGroupResponseDto(group));
         });
         return groups;
 
     }
 
     @Override
-    public GroupDto getGroupById(Long groupId) {
+    public GroupResponseDto getGroupById(Long groupId) {
         if(groupId==null){
             throw new GroupNotFoundException("Group cannot be null");
         }
 
         Optional<Group> groupOptional = groupRepository.findById(groupId);
         if(groupOptional.isPresent()){
-            return groupMapper.groupToGroupDto(groupOptional.get());
+            return groupMapper.groupToGroupResponseDto(groupOptional.get());
         }
         log.error("Invalid Group Id provided while using getGroupById: "+ groupId);
         throw new GroupNotFoundException("Invalid Group Id: "+ groupId);
@@ -65,31 +70,28 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     @Transactional
-    public GroupDto updateGroupById(Long groupId, GroupDto groupDto) {
-        if(groupId==null){
-            throw new GroupNotFoundException("Group cannot be null");
-        }
-
+    public GroupResponseDto updateGroupById(GroupUpdateRequestDto groupUpdateRequestDto) {
+        Long groupId = groupUpdateRequestDto.getGroupId();
         Optional<Group> groupOptional = groupRepository.findById(groupId);
 
         if(groupOptional.isPresent()){
             Group group = groupOptional.get();
 
             /*Check if group with given groupName already exists*/
-            String dtoGroupName = groupDto.getGroupName();
+            String dtoGroupName = groupUpdateRequestDto.getGroupName();
             Optional<Group> dtoGroupOptional = groupRepository.findByGroupName(dtoGroupName);
 
             if(dtoGroupOptional.isPresent()){
                 Group dtoGroup = dtoGroupOptional.get();
                 if(dtoGroup.getGroupId()!=group.getGroupId()){
-                    throw new GroupNameNotUniqueException("Group by the name " +groupDto.getGroupName() +" already exists!");
+                    throw new GroupNameNotUniqueException("Group by the name " + dtoGroupName +" already exists!");
                 }
             }
+            group.setGroupName(groupUpdateRequestDto.getGroupName());
+            group.setGroupDescription(groupUpdateRequestDto.getGroupDescription());
 
-            group.setGroupName( groupDto.getGroupName() );
-            group.setGroupDescription( groupDto.getGroupDescription() );
+            return groupMapper.groupToGroupResponseDto(groupRepository.save(group));
 
-            return groupMapper.groupToGroupDto(groupRepository.save(group));
         }
         log.error("Invalid Group Id provided while using updateGroupById: "+ groupId);
         throw new GroupNotFoundException("Invalid Group Id: "+ groupId);
@@ -97,20 +99,20 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     @Transactional
-    public GroupDto createGroup(GroupDto groupDto) {
-        if (groupDto == null) {
-            throw new GroupNotFoundException("New Group cannot be Null");
-        }
+    public GroupResponseDto createGroup(GroupRequestDto groupRequestDto) {
+
         try {
-            return groupMapper.groupToGroupDto(groupRepository.save(groupMapper.groupDtoToGroup(groupDto)));
-        }catch (DataIntegrityViolationException ex){
-            throw new GroupNameNotUniqueException("Group by the name " +groupDto.getGroupName() +" already exists!");
+            return groupMapper.groupToGroupResponseDto(groupRepository.save(groupMapper.groupRequestDtoToGroup(groupRequestDto)));
+        }
+        catch (DataIntegrityViolationException ex){
+            log.error("Group by the name " + groupRequestDto.getGroupName() +" already exists!");
+            throw new GroupNameNotUniqueException("Group by the name " + groupRequestDto.getGroupName() +" already exists!");
         }
     }
 
     @Override
     @Transactional
-    public GroupDto deleteById(Long groupId) {
+    public GroupResponseDto deleteById(Long groupId) {
         if(groupId==null){
             throw new GroupNotFoundException("Group cannot be null");
         }
@@ -128,7 +130,7 @@ public class GroupServiceImpl implements GroupService {
         userGroupRepository.deleteByGroupId(groupId);
         groupRoleRepository.deleteByGroupId(groupId);
 
-        return groupMapper.groupToGroupDto(groupOptional.get());
+        return groupMapper.groupToGroupResponseDto(groupOptional.get());
     }
 
     /*----------------- Roles from Group Id -------------------*/
@@ -142,27 +144,27 @@ public class GroupServiceImpl implements GroupService {
         }
         Group group = groupOptional.get();
 
-        Set<GroupRoleMappingDto> groupRoleMappingDtos = new HashSet<>();
+        Set<GroupRoleMappingResponseDto> groupRoleMappingResponseDtos = new HashSet<>();
 
         groupRoleRepository.findByGroupId(groupId).forEach(userGroupMappingDto -> {
-            groupRoleMappingDtos.add(groupRoleMapper.groupRoleMappingToGroupRoleMappingDto(userGroupMappingDto));
+            groupRoleMappingResponseDtos.add(groupRoleMapper.groupRoleMappingToGroupRoleResponseMappingDto(userGroupMappingDto));
         });
 
-        ResponseEntity<RolesList>  rolesListResponseEntity = roleListByGroupIdHystrix.getRoleListByGroupId(groupRoleMappingDtos);
+        ResponseEntity<RolesList>  rolesListResponseEntity = roleListByGroupIdHystrix.getRoleListByGroupId(groupRoleMappingResponseDtos);
         RolesList rolesList = rolesListResponseEntity.getBody();
-        rolesList.setGroupDto(groupMapper.groupToGroupDto(group));
+        rolesList.setGroup(groupMapper.groupToGroupResponseDto(group));
         return rolesList;
     }
 
     /*----------------- Groups from User Name -------------------*/
     @Override
-    public Set<GroupDto> getGroupsByUserId(Set<UserGroupMappingDto> userGroupMappingDtos) {
-        Set<GroupDto> groupDtoSet = new HashSet<>();
+    public Set<GroupResponseDto> getGroupsByUserId(Set<UserGroupMappingResponseDto> userGroupMappingResponseDtos) {
+        Set<GroupResponseDto> groupResponseDtoSet = new HashSet<>();
 
-        userGroupMappingDtos.forEach(userGroupMappingDto -> {
-            groupDtoSet.add(this.getGroupById(userGroupMappingDto.getGroupId()));
+        userGroupMappingResponseDtos.forEach(userGroupMappingResponseDto -> {
+            groupResponseDtoSet.add(this.getGroupById(userGroupMappingResponseDto.getGroupId()));
         });
 
-        return groupDtoSet;
+        return groupResponseDtoSet;
     }
 }

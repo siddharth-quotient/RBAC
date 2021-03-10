@@ -1,8 +1,10 @@
 package com.example.group.service;
 
-import com.example.group.web.model.GroupDto;
-import com.example.group.web.model.RolesList;
-import com.example.group.web.model.UserGroupMappingDto;
+import com.example.group.web.model.requestDto.GroupRequestDto;
+import com.example.group.web.model.requestDto.GroupUpdateRequestDto;
+import com.example.group.web.model.responseDto.GroupResponseDto;
+import com.example.group.web.model.responseDto.RolesList;
+import com.example.group.web.model.responseDto.UserGroupMappingResponseDto;
 
 import java.util.Set;
 
@@ -12,15 +14,15 @@ import java.util.Set;
  * @author Siddharth Mehta
  */
 public interface GroupService {
-    Set<GroupDto> getAllGroups();
-    GroupDto getGroupById(Long groupId);
-    GroupDto updateGroupById(Long groupId, GroupDto groupDto);
-    GroupDto createGroup(GroupDto groupDto);
-    GroupDto deleteById(Long groupId);
+    Set<GroupResponseDto> getAllGroups();
+    GroupResponseDto getGroupById(Long groupId);
+    GroupResponseDto updateGroupById(GroupUpdateRequestDto groupUpdateRequestDto);
+    GroupResponseDto createGroup(GroupRequestDto groupRequestDto);
+    GroupResponseDto deleteById(Long groupId);
 
     /*----------------- Roles from Group Id -------------------*/
     RolesList getRolesByGroupId(Long groupId);
 
     /*----------------- Groups from User Name -------------------*/
-    Set<GroupDto> getGroupsByUserId(Set<UserGroupMappingDto> userGroupMappingDtos);
+    Set<GroupResponseDto> getGroupsByUserId(Set<UserGroupMappingResponseDto> userGroupMappingResponseDtos);
 }

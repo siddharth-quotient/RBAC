@@ -8,7 +8,9 @@ import com.example.user.web.exception.UserGroupNotFoundException;
 import com.example.user.web.exception.UserGroupNotUniqueException;
 import com.example.user.web.exception.UserNotFoundException;
 import com.example.user.web.mapper.UserGroupMapper;
-import com.example.user.web.model.UserGroupMappingDto;
+import com.example.user.web.model.requestDto.UserGroupMappingRequestDto;
+import com.example.user.web.model.requestDto.UserGroupMappingUpdateRequestDto;
+import com.example.user.web.model.responseDto.UserGroupMappingResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -35,24 +37,24 @@ public class UserGroupServiceImpl implements UserGroupService {
     private final ValidateGroupForUserGroupMapping validateGroupForUserGroupMapping;
 
     @Override
-    public Set<UserGroupMappingDto> getAllUserGroupMappings() {
-        Set<UserGroupMappingDto> userGroups = new HashSet<>();
+    public Set<UserGroupMappingResponseDto> getAllUserGroupMappings() {
+        Set<UserGroupMappingResponseDto> userGroups = new HashSet<>();
 
         userGroupRepository.findAll().forEach(userGroupMapping -> {
-            userGroups.add(userGroupMapper.userGroupMappingToUserGroupDto(userGroupMapping));
+            userGroups.add(userGroupMapper.userGroupMappingToUserGroupMappingResponseDto(userGroupMapping));
         });
         return userGroups;
     }
 
     @Override
-    public UserGroupMappingDto getUserGroupMappingById(Long userGroupId) {
+    public UserGroupMappingResponseDto getUserGroupMappingById(Long userGroupId) {
         if(userGroupId==null){
             throw new UserGroupNotFoundException("User-Group Mapping cannot be Null");
         }
 
         Optional<UserGroupMapping> userGroupMappingOptional = userGroupRepository.findById(userGroupId);
         if(userGroupMappingOptional.isPresent()){
-            return userGroupMapper.userGroupMappingToUserGroupDto(userGroupMappingOptional.get());
+            return userGroupMapper.userGroupMappingToUserGroupMappingResponseDto(userGroupMappingOptional.get());
         }
         log.error("Invalid User-Group Mapping Id provided while using getUserGroupMappingById: "+ userGroupId);
         throw new UserGroupNotFoundException("Invalid User-Group Mapping with Id: "+ userGroupId);
@@ -60,10 +62,8 @@ public class UserGroupServiceImpl implements UserGroupService {
 
     @Override
     @Transactional
-    public UserGroupMappingDto updateUserGroupMappingById(Long userGroupId, UserGroupMappingDto userGroupMappingDto) {
-        if(userGroupId==null){
-            throw new UserGroupNotFoundException("User-Group Mapping cannot be Null");
-        }
+    public UserGroupMappingResponseDto updateUserGroupMappingById(UserGroupMappingUpdateRequestDto userGroupMappingUpdateRequestDto) {
+        Long userGroupId = userGroupMappingUpdateRequestDto.getUserGroupId();
 
         Optional<UserGroupMapping> userGroupMappingOptional = userGroupRepository.findById(userGroupId);
 
@@ -73,12 +73,12 @@ public class UserGroupServiceImpl implements UserGroupService {
         }else{
             UserGroupMapping userGroupMapping = userGroupMappingOptional.get();
 
-            Long userId = userGroupMappingDto.getUserId();
-            Long groupId = userGroupMappingDto.getGroupId();
+            Long userId = userGroupMappingUpdateRequestDto.getUserId();
+            Long groupId = userGroupMappingUpdateRequestDto.getGroupId();
 
             /* Check if the same userId and groupId combination already exists*/
             Optional<UserGroupMapping> dtoUserGroupMappingOptional = userGroupRepository
-                    .findUserGroupMappingByUserIdAndGroupId(userGroupMappingDto.getUserId(), userGroupMappingDto.getGroupId());
+                    .findUserGroupMappingByUserIdAndGroupId(userId, groupId);
 
             if(dtoUserGroupMappingOptional.isPresent()){
                 UserGroupMapping dtoUserGroupMapping = dtoUserGroupMappingOptional.get();
@@ -95,23 +95,20 @@ public class UserGroupServiceImpl implements UserGroupService {
             /* Check for valid groupId */
             validateGroupForUserGroupMapping.checkGroupExist(groupId);
 
-            userGroupMapping.setUserId( userGroupMappingDto.getUserId() );
-            userGroupMapping.setGroupId( userGroupMappingDto.getGroupId() );
+            userGroupMapping.setUserId( userGroupMappingUpdateRequestDto.getUserId() );
+            userGroupMapping.setGroupId( userGroupMappingUpdateRequestDto.getGroupId() );
 
-            return userGroupMapper.userGroupMappingToUserGroupDto(userGroupRepository.save(userGroupMapping));
+            return userGroupMapper.userGroupMappingToUserGroupMappingResponseDto(userGroupRepository.save(userGroupMapping));
         }
 
     }
 
     @Override
     @Transactional
-    public UserGroupMappingDto createUserGroupMapping(UserGroupMappingDto userGroupMappingDto) {
-        if (userGroupMappingDto == null) {
-            throw new UserGroupNotFoundException("User-Group Mapping cannot be Null");
-        }
+    public UserGroupMappingResponseDto createUserGroupMapping(UserGroupMappingRequestDto userGroupMappingRequestDto) {
 
-        Long userId = userGroupMappingDto.getUserId();
-        Long groupId = userGroupMappingDto.getGroupId();
+        Long userId = userGroupMappingRequestDto.getUserId();
+        Long groupId = userGroupMappingRequestDto.getGroupId();
 
         /* Check for valid userId */
         if (!validateUserId(userId)) {
@@ -122,7 +119,8 @@ public class UserGroupServiceImpl implements UserGroupService {
         validateGroupForUserGroupMapping.checkGroupExist(groupId);
 
         try {
-            return userGroupMapper.userGroupMappingToUserGroupDto(userGroupRepository.save(userGroupMapper.userGroupMappingDtoToUserGroup(userGroupMappingDto)));
+            return userGroupMapper.userGroupMappingToUserGroupMappingResponseDto(userGroupRepository
+                    .save(userGroupMapper.userGroupMappingRequestDtoToUserGroup(userGroupMappingRequestDto)));
         }
         catch (DataIntegrityViolationException ex){
             throw new UserGroupNotUniqueException("UserId: "+userId+" and GroupId: "+groupId+" lookup value already exist");
@@ -130,7 +128,7 @@ public class UserGroupServiceImpl implements UserGroupService {
     }
 
     @Override
-    public UserGroupMappingDto deleteById(Long userGroupId) {
+    public UserGroupMappingResponseDto deleteById(Long userGroupId) {
         if(userGroupId==null){
             throw new UserGroupNotFoundException("User-Group Mapping cannot be Null");
         }
@@ -143,7 +141,7 @@ public class UserGroupServiceImpl implements UserGroupService {
         }
 
         userGroupRepository.deleteById(userGroupId);
-        return userGroupMapper.userGroupMappingToUserGroupDto(userGroupMappingOptional.get());
+        return userGroupMapper.userGroupMappingToUserGroupMappingResponseDto(userGroupMappingOptional.get());
     }
 
     public boolean validateUserId(Long userId) {

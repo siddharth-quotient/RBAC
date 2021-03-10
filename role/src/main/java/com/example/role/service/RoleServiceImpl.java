@@ -6,8 +6,12 @@ import com.example.role.repository.RoleRepository;
 import com.example.role.web.exception.RoleNameNotUniqueException;
 import com.example.role.web.exception.RoleNotFoundException;
 import com.example.role.web.mapper.RoleMapper;
-import com.example.role.web.model.RoleDto;
+import com.example.role.web.model.requestDto.RoleRequestDto;
+import com.example.role.web.model.requestDto.RoleUpdateRequestDto;
+import com.example.role.web.model.responseDto.GroupRoleMappingResponseDto;
+import com.example.role.web.model.responseDto.RoleResponseDto;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +27,7 @@ import java.util.Set;
  */
 @RequiredArgsConstructor
 @Service
+@Slf4j
 public class RoleServiceImpl implements RoleService {
 
     private final RoleRepository roleRepository;
@@ -30,23 +35,23 @@ public class RoleServiceImpl implements RoleService {
     private final RoleMapper roleMapper;
 
     @Override
-    public RoleDto getRoleById(Long roleId) {
+    public RoleResponseDto getRoleById(Long roleId) {
         if(roleId==null){
             throw new RoleNotFoundException("Role cannot be null");
         }
         Optional<Role> roleOpt = roleRepository.findById(roleId);
         if (roleOpt.isPresent()){
-            return roleMapper.roleToRoleDto(roleOpt.get());
+            return roleMapper.roleToRoleResponseDto(roleOpt.get());
         }
         throw new RoleNotFoundException("Invalid Role Id :"+ roleId);
     }
 
     @Override
-    public Set<RoleDto> getAllRoles(){
-        Set<RoleDto> roles = new HashSet<>();
+    public Set<RoleResponseDto> getAllRoles(){
+        Set<RoleResponseDto> roles = new HashSet<>();
 
         roleRepository.findAll().forEach(role -> {
-            roles.add(roleMapper.roleToRoleDto(role));
+            roles.add(roleMapper.roleToRoleResponseDto(role));
         });
 
         return roles;
@@ -54,55 +59,50 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     @Transactional
-    public RoleDto updateRoleById(Long roleId, RoleDto roleDto) {
-        if(roleId==null){
-            throw new RoleNotFoundException("Role cannot be null");
-        }
+    public RoleResponseDto updateRoleById(RoleUpdateRequestDto roleUpdateRequestDto) {
+        Long roleId = roleUpdateRequestDto.getRoleId();
+        Optional<Role> roleOptional = roleRepository.findById(roleId);
 
-        Optional<Role> roleOpt = roleRepository.findById(roleId);
-
-        if(roleOpt.isPresent()){
-            Role role = roleOpt.get();
+        if(roleOptional.isPresent()){
+            Role role = roleOptional.get();
 
             /*Check if role with given roleName already exists*/
-            String dtoRoleName = roleDto.getRoleName();
+            String dtoRoleName = roleUpdateRequestDto.getRoleName();
             Optional<Role> dtoRoleOptional = roleRepository.findByRoleName(dtoRoleName);
 
             if(dtoRoleOptional.isPresent()){
                 Role dtoRole = dtoRoleOptional.get();
                 if(dtoRole.getRoleId()!=role.getRoleId()){
-                    throw new RoleNameNotUniqueException("Role by the name " +roleDto.getRoleName() +" already exists!");
+                    throw new RoleNameNotUniqueException("Role by the name " + roleUpdateRequestDto.getRoleName() +" already exists!");
                 }
             }
 
-            role.setRoleName( roleDto.getRoleName() );
-            role.setRoleDescription( roleDto.getRoleDescription() );
+            role.setRoleName( roleUpdateRequestDto.getRoleName() );
+            role.setRoleDescription( roleUpdateRequestDto.getRoleDescription() );
 
-            return roleMapper.roleToRoleDto(roleRepository.save(role));
+            return roleMapper.roleToRoleResponseDto(roleRepository.save(role));
         }
-
+        log.error("Invalid Role Id provided while using updateRoleById: "+ roleId);
         throw new RoleNotFoundException("Invalid Role Id :"+ roleId);
     }
 
     @Override
     @Transactional
-    public RoleDto createRole(RoleDto roleDto) {
-        if(roleDto == null){
-            throw new RoleNotFoundException("New Role cannot be Null");
-        }
+    public RoleResponseDto createRole(RoleRequestDto roleRequestDto) {
 
         try {
-            return roleMapper.roleToRoleDto(roleRepository.save(roleMapper.roleDtoToRole(roleDto)));
+            return roleMapper.roleToRoleResponseDto(roleRepository.save(roleMapper.roleRequestDtoToRole(roleRequestDto)));
         }
         catch (DataIntegrityViolationException ex){
-            throw new RoleNameNotUniqueException("RoleName " +roleDto.getRoleName() +" already exists!");
+            log.error("Role by the name " + roleRequestDto.getRoleName() +" already exists!");
+            throw new RoleNameNotUniqueException("RoleName " + roleRequestDto.getRoleName() +" already exists!");
         }
     }
 
 
     @Override
     @Transactional
-    public RoleDto deleteById(Long roleId) {
+    public RoleResponseDto deleteById(Long roleId) {
         if(roleId==null){
             throw new RoleNotFoundException("Role cannot be null");
         }
@@ -118,7 +118,19 @@ public class RoleServiceImpl implements RoleService {
         /*Delete all Group-Role Mappings for the deleted roleId */
         groupRoleRepository.deleteByRoleId(roleId);
 
-        return roleMapper.roleToRoleDto(roleOptional.get());
+        return roleMapper.roleToRoleResponseDto(roleOptional.get());
+    }
+
+    /*----------------- Roles from Group Id -------------------*/
+    @Override
+    public Set<RoleResponseDto> getRolesByGroupId(Set<GroupRoleMappingResponseDto> groupRoleMappingResponseDtos) {
+        Set<RoleResponseDto> roleResponseDtos = new HashSet<>();
+
+        groupRoleMappingResponseDtos.forEach(groupRoleMappingResponseDto -> {
+            roleResponseDtos.add(this.getRoleById(groupRoleMappingResponseDto.getRoleId()));
+        });
+
+        return roleResponseDtos;
     }
 
 }

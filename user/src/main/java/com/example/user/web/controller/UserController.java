@@ -1,9 +1,10 @@
 package com.example.user.web.controller;
 
 import com.example.user.service.UserService;
-import com.example.user.web.model.GroupsList;
+import com.example.user.web.model.requestDto.UserRequestDto;
+import com.example.user.web.model.responseDto.GroupsList;
 import com.example.user.web.model.ResponseDto;
-import com.example.user.web.model.UserDto;
+import com.example.user.web.model.responseDto.UserResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,28 +27,28 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping
-    public ResponseEntity<Set<UserDto>> getAllUsers(){
+    public ResponseEntity<Set<UserResponseDto>> getAllUsers(){
         return new ResponseEntity<>(userService.getAllUsers(), HttpStatus.OK);
     }
 
     @GetMapping("/{userName}")
-    public ResponseEntity<UserDto> getUserByName(@PathVariable String userName){
+    public ResponseEntity<UserResponseDto> getUserByName(@PathVariable String userName){
         return new ResponseEntity<>(userService.getUserByName(userName), HttpStatus.OK);
     }
 
-    @PutMapping("/{userName}")
-    public ResponseEntity<UserDto> updateUserByName(@PathVariable String userName, @Valid @RequestBody UserDto userDto){
-        return new ResponseEntity<>(userService.updateUserByName(userName ,userDto), HttpStatus.NO_CONTENT);
+    @PutMapping
+    public ResponseEntity<UserResponseDto> updateUserByName(@Valid @RequestBody UserRequestDto userRequestDto){
+        return new ResponseEntity<>(userService.updateUserByName(userRequestDto), HttpStatus.NO_CONTENT);
     }
 
     @PostMapping
-    public ResponseEntity<UserDto> createUser(@Valid @RequestBody UserDto userDto){
-        return new ResponseEntity<>(userService.createUser(userDto), HttpStatus.CREATED);
+    public ResponseEntity<UserResponseDto> createUser(@Valid @RequestBody UserRequestDto userRequestDto){
+        return new ResponseEntity<>(userService.createUser(userRequestDto), HttpStatus.CREATED);
     }
 
     @Transactional
     @DeleteMapping("/{userName}")
-    public ResponseEntity<UserDto> deleteByName(@PathVariable String userName){
+    public ResponseEntity<UserResponseDto> deleteByName(@PathVariable String userName){
 
         return new ResponseEntity<>(userService.deleteByName(userName), HttpStatus.OK);
     }

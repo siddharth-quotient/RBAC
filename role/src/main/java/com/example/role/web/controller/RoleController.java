@@ -2,9 +2,11 @@ package com.example.role.web.controller;
 
 
 import com.example.role.service.RoleService;
-import com.example.role.web.model.GroupRoleMappingDto;
-import com.example.role.web.model.RoleDto;
-import com.example.role.web.model.RolesList;
+import com.example.role.web.model.requestDto.RoleRequestDto;
+import com.example.role.web.model.requestDto.RoleUpdateRequestDto;
+import com.example.role.web.model.responseDto.GroupRoleMappingResponseDto;
+import com.example.role.web.model.responseDto.RoleResponseDto;
+import com.example.role.web.model.responseDto.RolesList;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,42 +31,47 @@ public class RoleController {
     private final RoleService roleService;
 
     @GetMapping
-    public ResponseEntity<Set<RoleDto>> getAllRoles(){
+    public ResponseEntity<Set<RoleResponseDto>> getAllRoles(){
         return new ResponseEntity<>(roleService.getAllRoles(), HttpStatus.OK);
     }
 
     @GetMapping("/{roleId}")
-    public ResponseEntity<RoleDto> getRoleById(@PathVariable Long roleId){
+    public ResponseEntity<RoleResponseDto> getRoleById(@PathVariable Long roleId){
         return new ResponseEntity<>(roleService.getRoleById(roleId), HttpStatus.OK);
     }
 
-    @PutMapping("/{roleId}")
-    public ResponseEntity<RoleDto> updateRoleById(@PathVariable Long roleId, @Valid @RequestBody RoleDto roleDto){
-        return new ResponseEntity<>(roleService.updateRoleById(roleId ,roleDto), HttpStatus.NO_CONTENT);
+    @PutMapping
+    public ResponseEntity<RoleResponseDto> updateRoleById(@Valid @RequestBody RoleUpdateRequestDto roleUpdateRequestDto){
+        return new ResponseEntity<>(roleService.updateRoleById(roleUpdateRequestDto), HttpStatus.NO_CONTENT);
     }
 
     @PostMapping
-    public ResponseEntity<RoleDto> createRole(@Valid @RequestBody RoleDto roleDto){
-        return new ResponseEntity<>(roleService.createRole(roleDto), HttpStatus.CREATED);
+    public ResponseEntity<RoleResponseDto> createRole(@Valid @RequestBody RoleRequestDto roleRequestDto){
+        return new ResponseEntity<>(roleService.createRole(roleRequestDto), HttpStatus.CREATED);
     }
 
     @Transactional
     @DeleteMapping("/{roleId}")
-    public ResponseEntity<?> deleteById(@PathVariable Long roleId){
+    public ResponseEntity<RoleResponseDto> deleteById(@PathVariable Long roleId){
         return new ResponseEntity<>(roleService.deleteById(roleId), HttpStatus.OK);
     }
 
-
+    /*----------------- Roles from Group Id -------------------*/
     @PostMapping("/group-roles")
-    public ResponseEntity<RolesList> getRolesByGroupId(@RequestBody Set<GroupRoleMappingDto> groupRoleMappingDtos){
-        Set<RoleDto> roleDtoSet = new HashSet<>();
+    public ResponseEntity<RolesList> getRolesByGroupId(@RequestBody Set<GroupRoleMappingResponseDto> groupRoleMappingResponseDtos){
+        /*Set<RoleResponseDto> roleResponseDtoSet = new HashSet<>();
 
-        groupRoleMappingDtos.forEach(groupRoleMappingDto -> {
-            roleDtoSet.add( roleService.getRoleById(groupRoleMappingDto.getRoleId()));
+        groupRoleMappingResponseDtos.forEach(groupRoleMappingResponseDto -> {
+            roleResponseDtoSet.add( roleService.getRoleById(groupRoleMappingResponseDto.getRoleId()));
         });
 
         RolesList rolesList =new RolesList();
-        rolesList.setRolesSet(roleDtoSet);
+        rolesList.setRoles(roleResponseDtoSet);
+        return new ResponseEntity<>(rolesList, HttpStatus.OK);*/
+
+
+        RolesList rolesList =new RolesList();
+        rolesList.setRoles(roleService.getRolesByGroupId(groupRoleMappingResponseDtos));
         return new ResponseEntity<>(rolesList, HttpStatus.OK);
     }
 }

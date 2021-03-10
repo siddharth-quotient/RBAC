@@ -4,13 +4,15 @@ import com.example.user.domain.User;
 import com.example.user.domain.UserGroupMapping;
 import com.example.user.repository.UserGroupRepository;
 import com.example.user.repository.UserRepository;
+import com.example.user.web.exception.RoleNotFoundException;
 import com.example.user.web.exception.UserNameNotUniqueException;
 import com.example.user.web.exception.UserNotFoundException;
 import com.example.user.web.mapper.UserGroupMapper;
 import com.example.user.web.mapper.UserMapper;
-import com.example.user.web.model.GroupsList;
-import com.example.user.web.model.UserDto;
-import com.example.user.web.model.UserGroupMappingDto;
+import com.example.user.web.model.requestDto.UserRequestDto;
+import com.example.user.web.model.responseDto.GroupsList;
+import com.example.user.web.model.responseDto.UserResponseDto;
+import com.example.user.web.model.responseDto.UserGroupMappingResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -40,71 +42,58 @@ public class UserServiceImpl implements UserService {
     private final ValidateRoleForUserId validateRoleForUserId;
 
     @Override
-    public Set<UserDto> getAllUsers() {
-        Set<UserDto> users = new HashSet<>();
+    public Set<UserResponseDto> getAllUsers() {
+        Set<UserResponseDto> users = new HashSet<>();
 
         userRepository.findAll().forEach(user -> {
-            users.add(userMapper.userToUserDto(user));
+            users.add(userMapper.userToUserResponseDto(user));
         });
         return users;
     }
 
     @Override
-    public UserDto getUserByName(String userName) {
+    public UserResponseDto getUserByName(String userName) {
         User user = getUserByUserName(userName);
-        return  userMapper.userToUserDto(user);
+        return  userMapper.userToUserResponseDto(user);
     }
 
     @Override
     @Transactional
-    public UserDto updateUserByName(String userName, UserDto userDto) {
-
-        Optional<User> userOptional = userRepository.findByUserName(userName);
+    public UserResponseDto updateUserByName(UserRequestDto userRequestDto) {
+        String dtoUserName = userRequestDto.getUserName();
+        Optional<User> userOptional = userRepository.findByUserName(dtoUserName);
 
         if(userOptional.isPresent()){
             User user = userOptional.get();
 
-            /*Check if user with given username already exists*/
-            String dtoUserName = userDto.getUserName();
-            Optional<User> dtoUserOptional = userRepository.findByUserName(dtoUserName);
+            user.setUserName(userRequestDto.getUserName());
+            user.setFirstName(userRequestDto.getFirstName());
+            user.setLastName(userRequestDto.getLastName());
 
-            if(dtoUserOptional.isPresent()){
-                User dtoUser = dtoUserOptional.get();
-                if(dtoUser.getUserId()!=user.getUserId()){
-                    throw new UserNameNotUniqueException("User by the name " +userDto.getUserName() +" already exists!");
-                }
-            }
-
-            user.setUserName(userDto.getUserName());
-            user.setFirstName(userDto.getFirstName());
-            user.setLastName(userDto.getLastName());
-
-            return userMapper.userToUserDto(userRepository.save(user));
+            return userMapper.userToUserResponseDto(userRepository.save(user));
 
         }
 
-        log.error("Invalid User Name provided while using getUserByName: "+ userName);
-        throw new UserNotFoundException("Invalid User with name: "+ userName);
+        log.error("Invalid User Name provided while using getUserByName: "+ dtoUserName);
+        throw new UserNotFoundException("Invalid User with name: "+ dtoUserName);
     }
 
     @Override
     @Transactional
-    public UserDto createUser(UserDto userDto) {
-        if(userDto ==  null){
-            throw new UserNotFoundException("New User cannot be null");
-        }
+    public UserResponseDto createUser(UserRequestDto userRequestDto) {
+
         try {
-            return userMapper.userToUserDto(userRepository.save(userMapper.userDtoToUser(userDto)));
+            return userMapper.userToUserResponseDto(userRepository.save(userMapper.userRequestDtoToUser(userRequestDto)));
         }
         catch (DataIntegrityViolationException ex){
-            throw new UserNameNotUniqueException("User by the name " +userDto.getUserName() +" already exists!");
+            throw new UserNameNotUniqueException("User by the name " + userRequestDto.getUserName() +" already exists!");
         }
 
     }
 
     @Override
     @Transactional
-    public UserDto deleteByName(String userName) {
+    public UserResponseDto deleteByName(String userName) {
         if(userName==null || userName.isEmpty()){
             throw new UserNotFoundException("User cannot be null");
         }
@@ -122,24 +111,24 @@ public class UserServiceImpl implements UserService {
         /*Delete all User-Group Mappings for the deleted userId */
         userGroupRepository.deleteByUserId(userId);
 
-        return userMapper.userToUserDto(userOptional.get());
+        return userMapper.userToUserResponseDto(userOptional.get());
     }
 
     /*----------------- Groups from User Name -------------------*/
     @Override
     @Transactional
     public GroupsList getGroupsByUserName(String userName) {
-        User user = getUserByUserName(userName);
+        User user = this.getUserByUserName(userName);
         Long userId = user.getUserId();
-        Set<UserGroupMappingDto> userGroupMappingDtos = new HashSet<>();
+        Set<UserGroupMappingResponseDto> userGroupMappingResponseDtos = new HashSet<>();
 
         userGroupRepository.findByUserId(userId).forEach(userGroupMapping -> {
-            userGroupMappingDtos.add(userGroupMapper.userGroupMappingToUserGroupDto(userGroupMapping));
+            userGroupMappingResponseDtos.add(userGroupMapper.userGroupMappingToUserGroupMappingResponseDto(userGroupMapping));
         });
 
-        ResponseEntity<GroupsList>  groupsListResponseEntity = groupListByUserIdHystrix.getGroupListByUserId(userGroupMappingDtos);
+        ResponseEntity<GroupsList>  groupsListResponseEntity = groupListByUserIdHystrix.getGroupListByUserId(userGroupMappingResponseDtos);
         GroupsList groupsList = groupsListResponseEntity.getBody();
-        groupsList.setUserDto(userMapper.userToUserDto(user));
+        groupsList.setUser(userMapper.userToUserResponseDto(user));
         return groupsList;
     }
 
@@ -158,6 +147,7 @@ public class UserServiceImpl implements UserService {
     /*-------------- Check if a User has a Role ---------------*/
     @Override
     public Boolean checkRoleIdForUserName(String userName, Long roleId) {
+
         User user = getUserByUserName(userName);
         Long userId = user.getUserId();
 

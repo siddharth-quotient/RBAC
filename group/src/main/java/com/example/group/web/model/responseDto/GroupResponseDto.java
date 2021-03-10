@@ -1,4 +1,4 @@
-package com.example.user.web.model;
+package com.example.group.web.model.responseDto;
 
 import lombok.*;
 
@@ -15,10 +15,10 @@ import java.time.OffsetDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Getter
-public class UserDto {
-    @Null(message = "User ID is auto generated - should be null")
-    private Long userId;
+public class GroupResponseDto {
+
+    @Null(message = "Group ID is auto generated - should be null")
+    private Long groupId;
 
     @Null(message = "Creation date is auto generated - should be null")
     private OffsetDateTime createDate;
@@ -26,12 +26,9 @@ public class UserDto {
     @Null(message = "Last Modified date is auto generated - should be null")
     private OffsetDateTime lastModifiedDate;
 
-    @NotBlank(message = "User Name cannot be Null")
-    private String userName;
+    @NotBlank(message = "Group Name should cannot be Null")
+    private String groupName;
 
-    @NotBlank(message = "First Name cannot be Null")
-    private String firstName;
-
-    @NotBlank(message = "Last Name cannot be Null")
-    private String lastName;
+    @NotBlank(message = "Group Description cannot be Null")
+    private String groupDescription;
 }

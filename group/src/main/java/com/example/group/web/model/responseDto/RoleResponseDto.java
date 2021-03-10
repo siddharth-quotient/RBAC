@@ -1,4 +1,4 @@
-package com.example.group.web.model;
+package com.example.group.web.model.responseDto;
 
 import lombok.*;
 
@@ -9,12 +9,13 @@ import java.time.OffsetDateTime;
  *
  * @author Siddharth Mehta
  */
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-@ToString
-public class RoleDto {
+/*----------------- (Wrapped) Response from - Roles from Group ID -------------------*/
+public class RoleResponseDto {
 
     private Long roleId;
     private OffsetDateTime createDate;
