@@ -1,6 +1,7 @@
 package com.example.user.web.controller;
 
 import com.example.user.service.UserGroupService;
+import com.example.user.web.model.ResponseDto;
 import com.example.user.web.model.requestDto.UserGroupMappingRequestDto;
 import com.example.user.web.model.requestDto.UserGroupMappingUpdateRequestDto;
 import com.example.user.web.model.responseDto.UserGroupMappingResponseDto;
@@ -26,27 +27,27 @@ public class UserGroupController {
     private final UserGroupService userGroupService;
 
     @GetMapping
-    public ResponseEntity<Set<UserGroupMappingResponseDto>> getAllUserGroups(){
-        return new ResponseEntity<>(userGroupService.getAllUserGroupMappings(), HttpStatus.OK);
+    public ResponseEntity<ResponseDto> getAllUserGroups(){
+        return new ResponseEntity<>(new ResponseDto(userGroupService.getAllUserGroupMappings(), null), HttpStatus.OK);
     }
 
     @GetMapping("/{userGroupStringId}")
-    public ResponseEntity<UserGroupMappingResponseDto> getUserGroupMappingById(@PathVariable String userGroupStringId){
-        return new ResponseEntity<>(userGroupService.getUserGroupMappingById(userGroupStringId), HttpStatus.OK);
+    public ResponseEntity<ResponseDto> getUserGroupMappingById(@PathVariable String userGroupStringId){
+        return new ResponseEntity<>(new ResponseDto(userGroupService.getUserGroupMappingById(userGroupStringId), null), HttpStatus.OK);
     }
 
     @PutMapping
-    public ResponseEntity<UserGroupMappingResponseDto> updateUserGroupMappingById(@Valid @RequestBody UserGroupMappingUpdateRequestDto userGroupMappingUpdateRequestDto){
-        return new ResponseEntity<>(userGroupService.updateUserGroupMappingById(userGroupMappingUpdateRequestDto), HttpStatus.NO_CONTENT);
+    public ResponseEntity<ResponseDto> updateUserGroupMappingById(@Valid @RequestBody UserGroupMappingUpdateRequestDto userGroupMappingUpdateRequestDto){
+        return new ResponseEntity<>(new ResponseDto(userGroupService.updateUserGroupMappingById(userGroupMappingUpdateRequestDto),null), HttpStatus.NO_CONTENT);
     }
 
     @PostMapping
-    public ResponseEntity<UserGroupMappingResponseDto> createUserGroupMapping(@Valid @RequestBody UserGroupMappingRequestDto userGroupMappingRequestDto){
-        return new ResponseEntity<>(userGroupService.createUserGroupMapping(userGroupMappingRequestDto), HttpStatus.CREATED);
+    public ResponseEntity<ResponseDto> createUserGroupMapping(@Valid @RequestBody UserGroupMappingRequestDto userGroupMappingRequestDto){
+        return new ResponseEntity<>(new ResponseDto(userGroupService.createUserGroupMapping(userGroupMappingRequestDto), null), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{userGroupStringId}")
-    public ResponseEntity<UserGroupMappingResponseDto> deleteById(@PathVariable String userGroupStringId){
-        return new ResponseEntity<>(userGroupService.deleteById(userGroupStringId), HttpStatus.OK);
+    public ResponseEntity<ResponseDto> deleteById(@PathVariable String userGroupStringId){
+        return new ResponseEntity<>(new ResponseDto(userGroupService.deleteById(userGroupStringId), null), HttpStatus.OK);
     }
 }

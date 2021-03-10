@@ -10,6 +10,7 @@ import com.example.user.web.exception.UserNotFoundException;
 import com.example.user.web.mapper.UserGroupMapper;
 import com.example.user.web.model.requestDto.UserGroupMappingRequestDto;
 import com.example.user.web.model.requestDto.UserGroupMappingUpdateRequestDto;
+import com.example.user.web.model.responseDto.AllUserGroupMappingsResponseDto;
 import com.example.user.web.model.responseDto.UserGroupMappingResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,13 +38,16 @@ public class UserGroupServiceImpl implements UserGroupService {
     private final ValidateGroupForUserGroupMapping validateGroupForUserGroupMapping;
 
     @Override
-    public Set<UserGroupMappingResponseDto> getAllUserGroupMappings() {
+    public AllUserGroupMappingsResponseDto getAllUserGroupMappings() {
+        AllUserGroupMappingsResponseDto allUserGroupMappingsResponseDto = new AllUserGroupMappingsResponseDto();
         Set<UserGroupMappingResponseDto> userGroups = new HashSet<>();
 
         userGroupRepository.findAll().forEach(userGroupMapping -> {
             userGroups.add(userGroupMapper.userGroupMappingToUserGroupMappingResponseDto(userGroupMapping));
         });
-        return userGroups;
+
+        allUserGroupMappingsResponseDto.setUserGroups(userGroups);
+        return allUserGroupMappingsResponseDto;
     }
 
     @Override

@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
-import java.util.Set;
 
 /**
  * Exposes all User - RESTful web services
@@ -28,49 +27,42 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping
-    public ResponseEntity<AllUsersResponseDto> getAllUsers(){
-        return new ResponseEntity<>(userService.getAllUsers(), HttpStatus.OK);
+    public ResponseEntity<ResponseDto> getAllUsers(){
+        return new ResponseEntity<>(new ResponseDto(userService.getAllUsers(), null), HttpStatus.OK);
     }
 
     @GetMapping("/{userName}")
-    public ResponseEntity<UserResponseDto> getUserByName(@PathVariable String userName){
-        return new ResponseEntity<>(userService.getUserByName(userName), HttpStatus.OK);
+    public ResponseEntity<ResponseDto> getUserByName(@PathVariable String userName){
+        return new ResponseEntity<>(new ResponseDto(userService.getUserByName(userName), null), HttpStatus.OK);
     }
 
     @PutMapping
-    public ResponseEntity<UserResponseDto> updateUserByName(@Valid @RequestBody UserRequestDto userRequestDto){
-        return new ResponseEntity<>(userService.updateUserByName(userRequestDto), HttpStatus.NO_CONTENT);
+    public ResponseEntity<ResponseDto> updateUserByName(@Valid @RequestBody UserRequestDto userRequestDto){
+        return new ResponseEntity<>(new ResponseDto(userService.updateUserByName(userRequestDto), null), HttpStatus.NO_CONTENT);
     }
 
     @PostMapping
-    public ResponseEntity<UserResponseDto> createUser(@Valid @RequestBody UserRequestDto userRequestDto){
-        return new ResponseEntity<>(userService.createUser(userRequestDto), HttpStatus.CREATED);
+    public ResponseEntity<ResponseDto> createUser(@Valid @RequestBody UserRequestDto userRequestDto){
+        return new ResponseEntity<>(new ResponseDto(userService.createUser(userRequestDto), null), HttpStatus.CREATED);
     }
 
     @Transactional
     @DeleteMapping("/{userName}")
-    public ResponseEntity<UserResponseDto> deleteByName(@PathVariable String userName){
+    public ResponseEntity<ResponseDto> deleteByName(@PathVariable String userName){
 
-        return new ResponseEntity<>(userService.deleteByName(userName), HttpStatus.OK);
+        return new ResponseEntity<>(new ResponseDto(userService.deleteByName(userName), null), HttpStatus.OK);
     }
 
     /*----------------- Groups from User Name -------------------*/
     @GetMapping("/{userName}/groups")
-    public ResponseEntity<GroupsList> getGroupsByUserName(@PathVariable String userName){
-        return new ResponseEntity<>(userService.getGroupsByUserName(userName), HttpStatus.OK);
+    public ResponseEntity<ResponseDto> getGroupsByUserName(@PathVariable String userName){
+        return new ResponseEntity<>(new ResponseDto(userService.getGroupsByUserName(userName), null), HttpStatus.OK);
     }
 
     /*-------------- Check if a User belongs to Group ---------------*/
     @GetMapping("/{userName}/groups/{groupId}/check")
-    public ResponseEntity<ResponseDto> checkGroupIdForUserName(@PathVariable String userName, @PathVariable Long groupId){
+    public ResponseEntity<?> checkGroupIdForUserName(@PathVariable String userName, @PathVariable Long groupId){
         Boolean isValid = userService.checkGroupIdForUserName(userName, groupId);
-
-
-        /*if(isValid){
-            return new ResponseEntity<ResponseDto>(new ResponseDto(userName, null), HttpStatus.OK);
-        }else{
-            return new ResponseEntity<ResponseDto>(new ResponseDto(null, new ExceptionResponse()), HttpStatus.OK);
-        }*/
 
         return isValid?new ResponseEntity<>(HttpStatus.OK):new ResponseEntity<>(HttpStatus.NOT_FOUND);
 

@@ -2,6 +2,7 @@ package com.example.user.service;
 
 import com.example.user.web.model.requestDto.UserGroupMappingRequestDto;
 import com.example.user.web.model.requestDto.UserGroupMappingUpdateRequestDto;
+import com.example.user.web.model.responseDto.AllUserGroupMappingsResponseDto;
 import com.example.user.web.model.responseDto.UserGroupMappingResponseDto;
 
 import java.util.Set;
@@ -12,7 +13,7 @@ import java.util.Set;
  * @author Siddharth Mehta
  */
 public interface UserGroupService {
-    Set<UserGroupMappingResponseDto> getAllUserGroupMappings();
+    AllUserGroupMappingsResponseDto getAllUserGroupMappings();
     UserGroupMappingResponseDto getUserGroupMappingById(String userGroupStringId);
     UserGroupMappingResponseDto updateUserGroupMappingById(UserGroupMappingUpdateRequestDto userGroupMappingUpdateRequestDto);
     UserGroupMappingResponseDto createUserGroupMapping(UserGroupMappingRequestDto userGroupMappingRequestDto);
