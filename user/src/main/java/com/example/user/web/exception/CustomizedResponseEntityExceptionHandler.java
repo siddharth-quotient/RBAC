@@ -26,28 +26,28 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
     public final ResponseEntity<Object> userNotFoundException(Exception userNotFoundException, WebRequest request){
         ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), Constants.USER_NOT_FOUND, userNotFoundException.getMessage(), request.getDescription(false));
 
-        return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND); //Ok for all valid endpoints
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.OK);
     }
 
     @ExceptionHandler(GroupNotFoundException.class)
     public final ResponseEntity<Object> groupNotFoundException(Exception groupNotFoundException, WebRequest request){
         ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), Constants.GROUP_NOT_FOUND, groupNotFoundException.getMessage(), request.getDescription(false));
 
-        return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.OK);
     }
 
     @ExceptionHandler(RoleNotFoundException.class)
     public final ResponseEntity<Object> roleNotFoundException(Exception roleNotFoundException, WebRequest request){
         ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), Constants.ROLE_NOT_FOUND, roleNotFoundException.getMessage(), request.getDescription(false));
 
-        return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.OK);
     }
 
     @ExceptionHandler(UserGroupNotFoundException.class)
     public final ResponseEntity<Object> userGroupNotFoundException(Exception userGroupNotFoundException, WebRequest request){
         ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), Constants.USER_GROUP_NOT_FOUND, userGroupNotFoundException.getMessage(), request.getDescription(false));
 
-        return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.OK);
     }
 
     @Override
