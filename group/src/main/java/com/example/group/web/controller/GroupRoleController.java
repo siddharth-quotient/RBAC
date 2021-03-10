@@ -1,16 +1,15 @@
 package com.example.group.web.controller;
 
 import com.example.group.service.GroupRoleService;
-import com.example.group.web.model.requestDto.GroupRoleMappingRequestDto;
-import com.example.group.web.model.requestDto.GroupRoleMappingUpdateRequestDto;
-import com.example.group.web.model.responseDto.GroupRoleMappingResponseDto;
+import com.example.group.web.dto.ResponseDto;
+import com.example.group.web.dto.requestDto.GroupRoleMappingRequestDto;
+import com.example.group.web.dto.requestDto.GroupRoleMappingUpdateRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Set;
 
 /**
  * Exposes all GroupRole - RESTful web services
@@ -25,28 +24,28 @@ public class GroupRoleController {
     private final GroupRoleService groupRoleService;
 
     @GetMapping
-    public ResponseEntity<Set<GroupRoleMappingResponseDto>> getAllGroupRoles(){
-        return new ResponseEntity<>(groupRoleService.getAllGroupRoleMappings(), HttpStatus.OK);
+    public ResponseEntity<ResponseDto> getAllGroupRoles(){
+        return new ResponseEntity<>(new ResponseDto(groupRoleService.getAllGroupRoleMappings(), null), HttpStatus.OK);
     }
 
     @GetMapping("/{groupRoleId}")
-    public ResponseEntity<GroupRoleMappingResponseDto> getGroupRoleMappingById(@PathVariable Long groupRoleId){
-        return new ResponseEntity<>(groupRoleService.getGroupRoleMappingById(groupRoleId), HttpStatus.OK);
+    public ResponseEntity<ResponseDto> getGroupRoleMappingById(@PathVariable Long groupRoleId){
+        return new ResponseEntity<>(new ResponseDto(groupRoleService.getGroupRoleMappingById(groupRoleId), null), HttpStatus.OK);
     }
 
     @PutMapping
-    public ResponseEntity<GroupRoleMappingResponseDto> updateGroupRoleMappingById(@Valid @RequestBody GroupRoleMappingUpdateRequestDto groupRoleMappingUpdateRequestDto){
-        return new ResponseEntity<>(groupRoleService.updateGroupRoleMappingById(groupRoleMappingUpdateRequestDto), HttpStatus.NO_CONTENT);
+    public ResponseEntity<ResponseDto> updateGroupRoleMappingById(@Valid @RequestBody GroupRoleMappingUpdateRequestDto groupRoleMappingUpdateRequestDto){
+        return new ResponseEntity<>(new ResponseDto(groupRoleService.updateGroupRoleMappingById(groupRoleMappingUpdateRequestDto), null), HttpStatus.NO_CONTENT);
     }
 
     @PostMapping
-    public ResponseEntity<GroupRoleMappingResponseDto> createGroupRoleMapping(@Valid @RequestBody GroupRoleMappingRequestDto groupRoleMappingRequestDto){
-        return new ResponseEntity<>(groupRoleService.createGroupRoleMapping(groupRoleMappingRequestDto), HttpStatus.CREATED);
+    public ResponseEntity<ResponseDto> createGroupRoleMapping(@Valid @RequestBody GroupRoleMappingRequestDto groupRoleMappingRequestDto){
+        return new ResponseEntity<>(new ResponseDto(groupRoleService.createGroupRoleMapping(groupRoleMappingRequestDto), null), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{groupRoleId}")
-    public ResponseEntity<GroupRoleMappingResponseDto> deleteById(@PathVariable Long groupRoleId){
-        return new ResponseEntity<>(groupRoleService.deleteById(groupRoleId), HttpStatus.OK);
+    public ResponseEntity<ResponseDto> deleteById(@PathVariable Long groupRoleId){
+        return new ResponseEntity<>(new ResponseDto(groupRoleService.deleteById(groupRoleId), null), HttpStatus.OK);
     }
 
 }

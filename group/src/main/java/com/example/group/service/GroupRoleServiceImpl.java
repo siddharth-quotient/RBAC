@@ -8,9 +8,10 @@ import com.example.group.web.exception.GroupNotFoundException;
 import com.example.group.web.exception.GroupRoleNotFoundException;
 import com.example.group.web.exception.GroupRoleNotUniqueException;
 import com.example.group.web.mapper.GroupRoleMapper;
-import com.example.group.web.model.requestDto.GroupRoleMappingRequestDto;
-import com.example.group.web.model.requestDto.GroupRoleMappingUpdateRequestDto;
-import com.example.group.web.model.responseDto.GroupRoleMappingResponseDto;
+import com.example.group.web.dto.requestDto.GroupRoleMappingRequestDto;
+import com.example.group.web.dto.requestDto.GroupRoleMappingUpdateRequestDto;
+import com.example.group.web.dto.responseDto.AllGroupRoleMappingsResponseDto;
+import com.example.group.web.dto.responseDto.GroupRoleMappingResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -37,13 +38,16 @@ public class GroupRoleServiceImpl implements GroupRoleService {
     private final ValidateRoleForGroupRoleMapping validateRoleForGroupRoleMapping;
 
     @Override
-    public Set<GroupRoleMappingResponseDto> getAllGroupRoleMappings() {
+    public AllGroupRoleMappingsResponseDto getAllGroupRoleMappings() {
+        AllGroupRoleMappingsResponseDto allGroupRoleMappingsResponseDto = new AllGroupRoleMappingsResponseDto();
         Set<GroupRoleMappingResponseDto> groupRoles = new HashSet<>();
 
         groupRoleRepository.findAll().forEach(groupRoleMapping -> {
             groupRoles.add(groupRoleMapper.groupRoleMappingToGroupRoleResponseMappingDto(groupRoleMapping));
         });
-        return groupRoles;
+
+        allGroupRoleMappingsResponseDto.setGroupRoles(groupRoles);
+        return allGroupRoleMappingsResponseDto;
     }
 
     @Override

@@ -2,12 +2,13 @@ package com.example.role.web.controller;
 
 
 import com.example.role.service.RoleService;
-import com.example.role.web.model.requestDto.RoleRequestDto;
-import com.example.role.web.model.requestDto.RoleUpdateRequestDto;
-import com.example.role.web.model.responseDto.AllRolesResponseDto;
-import com.example.role.web.model.responseDto.GroupRoleMappingResponseDto;
-import com.example.role.web.model.responseDto.RoleResponseDto;
-import com.example.role.web.model.responseDto.RolesList;
+import com.example.role.web.dto.ResponseDto;
+import com.example.role.web.dto.requestDto.RoleRequestDto;
+import com.example.role.web.dto.requestDto.RoleUpdateRequestDto;
+import com.example.role.web.dto.responseDto.AllRolesResponseDto;
+import com.example.role.web.dto.responseDto.GroupRoleMappingResponseDto;
+import com.example.role.web.dto.responseDto.RoleResponseDto;
+import com.example.role.web.dto.responseDto.RolesList;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
-import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -32,45 +32,34 @@ public class RoleController {
     private final RoleService roleService;
 
     @GetMapping
-    public ResponseEntity<AllRolesResponseDto> getAllRoles(){
-        return new ResponseEntity<>(roleService.getAllRoles(), HttpStatus.OK);
+    public ResponseEntity<ResponseDto> getAllRoles(){
+        return new ResponseEntity<>(new ResponseDto(roleService.getAllRoles(), null), HttpStatus.OK);
     }
 
     @GetMapping("/{roleId}")
-    public ResponseEntity<RoleResponseDto> getRoleById(@PathVariable Long roleId){
-        return new ResponseEntity<>(roleService.getRoleById(roleId), HttpStatus.OK);
+    public ResponseEntity<ResponseDto> getRoleById(@PathVariable Long roleId){
+        return new ResponseEntity<>(new ResponseDto(roleService.getRoleById(roleId), null), HttpStatus.OK);
     }
 
     @PutMapping
-    public ResponseEntity<RoleResponseDto> updateRoleById(@Valid @RequestBody RoleUpdateRequestDto roleUpdateRequestDto){
-        return new ResponseEntity<>(roleService.updateRoleById(roleUpdateRequestDto), HttpStatus.NO_CONTENT);
+    public ResponseEntity<ResponseDto> updateRoleById(@Valid @RequestBody RoleUpdateRequestDto roleUpdateRequestDto){
+        return new ResponseEntity<>(new ResponseDto(roleService.updateRoleById(roleUpdateRequestDto), null), HttpStatus.NO_CONTENT);
     }
 
     @PostMapping
-    public ResponseEntity<RoleResponseDto> createRole(@Valid @RequestBody RoleRequestDto roleRequestDto){
-        return new ResponseEntity<>(roleService.createRole(roleRequestDto), HttpStatus.CREATED);
+    public ResponseEntity<ResponseDto> createRole(@Valid @RequestBody RoleRequestDto roleRequestDto){
+        return new ResponseEntity<>(new ResponseDto(roleService.createRole(roleRequestDto), null), HttpStatus.CREATED);
     }
 
     @Transactional
     @DeleteMapping("/{roleId}")
-    public ResponseEntity<RoleResponseDto> deleteById(@PathVariable Long roleId){
-        return new ResponseEntity<>(roleService.deleteById(roleId), HttpStatus.OK);
+    public ResponseEntity<ResponseDto> deleteById(@PathVariable Long roleId){
+        return new ResponseEntity<>(new ResponseDto(roleService.deleteById(roleId), null), HttpStatus.OK);
     }
 
     /*----------------- Roles from Group Id -------------------*/
     @PostMapping("/group-roles")
     public ResponseEntity<RolesList> getRolesByGroupId(@RequestBody Set<GroupRoleMappingResponseDto> groupRoleMappingResponseDtos){
-        /*Set<RoleResponseDto> roleResponseDtoSet = new HashSet<>();
-
-        groupRoleMappingResponseDtos.forEach(groupRoleMappingResponseDto -> {
-            roleResponseDtoSet.add( roleService.getRoleById(groupRoleMappingResponseDto.getRoleId()));
-        });
-
-        RolesList rolesList =new RolesList();
-        rolesList.setRoles(roleResponseDtoSet);
-        return new ResponseEntity<>(rolesList, HttpStatus.OK);*/
-
-
         RolesList rolesList =new RolesList();
         rolesList.setRoles(roleService.getRolesByGroupId(groupRoleMappingResponseDtos));
         return new ResponseEntity<>(rolesList, HttpStatus.OK);

@@ -1,7 +1,7 @@
 package com.example.user.web.exception;
 
 import com.example.user.constant.Constants;
-import com.example.user.web.model.ResponseDto;
+import com.example.user.web.dto.ResponseDto;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

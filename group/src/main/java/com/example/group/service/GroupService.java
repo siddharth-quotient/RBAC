@@ -1,11 +1,11 @@
 package com.example.group.service;
 
-import com.example.group.web.model.requestDto.GroupRequestDto;
-import com.example.group.web.model.requestDto.GroupUpdateRequestDto;
-import com.example.group.web.model.responseDto.AllGroupsResponseDto;
-import com.example.group.web.model.responseDto.GroupResponseDto;
-import com.example.group.web.model.responseDto.RolesList;
-import com.example.group.web.model.responseDto.UserGroupMappingResponseDto;
+import com.example.group.web.dto.requestDto.GroupRequestDto;
+import com.example.group.web.dto.requestDto.GroupUpdateRequestDto;
+import com.example.group.web.dto.responseDto.AllGroupsResponseDto;
+import com.example.group.web.dto.responseDto.GroupResponseDto;
+import com.example.group.web.dto.responseDto.RolesList;
+import com.example.group.web.dto.responseDto.UserGroupMappingResponseDto;
 
 import java.util.Set;
 

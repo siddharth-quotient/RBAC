@@ -1,10 +1,10 @@
 package com.example.role.service;
 
-import com.example.role.web.model.requestDto.RoleRequestDto;
-import com.example.role.web.model.requestDto.RoleUpdateRequestDto;
-import com.example.role.web.model.responseDto.AllRolesResponseDto;
-import com.example.role.web.model.responseDto.GroupRoleMappingResponseDto;
-import com.example.role.web.model.responseDto.RoleResponseDto;
+import com.example.role.web.dto.requestDto.RoleRequestDto;
+import com.example.role.web.dto.requestDto.RoleUpdateRequestDto;
+import com.example.role.web.dto.responseDto.AllRolesResponseDto;
+import com.example.role.web.dto.responseDto.GroupRoleMappingResponseDto;
+import com.example.role.web.dto.responseDto.RoleResponseDto;
 
 import java.util.Set;
 

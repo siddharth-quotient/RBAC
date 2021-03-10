@@ -1,18 +1,15 @@
 package com.example.user.web.controller;
 
 import com.example.user.service.UserGroupService;
-import com.example.user.web.model.ResponseDto;
-import com.example.user.web.model.requestDto.UserGroupMappingRequestDto;
-import com.example.user.web.model.requestDto.UserGroupMappingUpdateRequestDto;
-import com.example.user.web.model.responseDto.UserGroupMappingResponseDto;
+import com.example.user.web.dto.ResponseDto;
+import com.example.user.web.dto.requestDto.UserGroupMappingRequestDto;
+import com.example.user.web.dto.requestDto.UserGroupMappingUpdateRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Min;
-import java.util.Set;
 
 /**
  * Exposes all UserGroup - RESTful web services

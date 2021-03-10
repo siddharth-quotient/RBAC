@@ -1,11 +1,8 @@
 package com.example.user.web.controller;
 
 import com.example.user.service.UserService;
-import com.example.user.web.model.requestDto.UserRequestDto;
-import com.example.user.web.model.responseDto.AllUsersResponseDto;
-import com.example.user.web.model.responseDto.GroupsList;
-import com.example.user.web.model.ResponseDto;
-import com.example.user.web.model.responseDto.UserResponseDto;
+import com.example.user.web.dto.requestDto.UserRequestDto;
+import com.example.user.web.dto.ResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

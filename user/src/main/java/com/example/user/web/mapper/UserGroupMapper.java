@@ -1,9 +1,8 @@
 package com.example.user.web.mapper;
 
 import com.example.user.domain.UserGroupMapping;
-import com.example.user.web.model.requestDto.UserGroupMappingRequestDto;
-import com.example.user.web.model.responseDto.UserGroupMappingResponseDto;
-import lombok.Builder;
+import com.example.user.web.dto.requestDto.UserGroupMappingRequestDto;
+import com.example.user.web.dto.responseDto.UserGroupMappingResponseDto;
 import org.mapstruct.Mapper;
 
 @Mapper

@@ -1,9 +1,9 @@
 package com.example.user.service;
 
 
-import com.example.user.web.model.responseDto.GroupResponseDto;
-import com.example.user.web.model.responseDto.GroupsList;
-import com.example.user.web.model.responseDto.UserGroupMappingResponseDto;
+import com.example.user.web.dto.responseDto.GroupResponseDto;
+import com.example.user.web.dto.responseDto.GroupsList;
+import com.example.user.web.dto.responseDto.UserGroupMappingResponseDto;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

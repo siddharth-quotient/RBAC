@@ -3,7 +3,7 @@ package com.example.group.service;
 
 import com.example.group.restTemplate.RoleRestTemplateResponseErrorHandler;
 import com.example.group.web.exception.RoleServiceDownException;
-import com.example.group.web.model.responseDto.RoleResponseDto;
+import com.example.group.web.dto.responseDto.RoleResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;

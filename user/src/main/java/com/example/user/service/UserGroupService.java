@@ -1,11 +1,9 @@
 package com.example.user.service;
 
-import com.example.user.web.model.requestDto.UserGroupMappingRequestDto;
-import com.example.user.web.model.requestDto.UserGroupMappingUpdateRequestDto;
-import com.example.user.web.model.responseDto.AllUserGroupMappingsResponseDto;
-import com.example.user.web.model.responseDto.UserGroupMappingResponseDto;
-
-import java.util.Set;
+import com.example.user.web.dto.requestDto.UserGroupMappingRequestDto;
+import com.example.user.web.dto.requestDto.UserGroupMappingUpdateRequestDto;
+import com.example.user.web.dto.responseDto.AllUserGroupMappingsResponseDto;
+import com.example.user.web.dto.responseDto.UserGroupMappingResponseDto;
 
 /**
  * Interface that provides contract for UserGroup Service

@@ -2,7 +2,7 @@ package com.example.user.service;
 
 import com.example.user.restTemplate.GroupRestTemplateResponseErrorHandler;
 import com.example.user.web.exception.GroupServiceDownException;
-import com.example.user.web.model.responseDto.GroupResponseDto;
+import com.example.user.web.dto.responseDto.GroupResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;

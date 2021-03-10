@@ -1,6 +1,7 @@
 package com.example.role.web.exception;
 
 import com.example.role.constant.Constants;
+import com.example.role.web.dto.ResponseDto;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,10 +24,10 @@ import java.util.Date;
 public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(RoleNotFoundException.class)
-    public final ResponseEntity<Object> roleNotFoundException(Exception roleNotFoundException, WebRequest request){
+    public final ResponseEntity<ResponseDto> roleNotFoundException(Exception roleNotFoundException, WebRequest request){
         ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), Constants.ROLE_NOT_FOUND, roleNotFoundException.getMessage(), request.getDescription(false));
 
-        return new ResponseEntity<>(exceptionResponse, HttpStatus.OK);
+        return new ResponseEntity<>(new ResponseDto(null, exceptionResponse), HttpStatus.OK);
     }
 
     @Override
@@ -34,13 +35,15 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
                                                                   HttpHeaders headers, HttpStatus status, WebRequest request) {
         String errorMessage = ex.getBindingResult().getFieldErrors().get(0).getDefaultMessage();
         ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), Constants.ROLE_SERVICE_INVALID_METHOD_ARGUMENT, "Failed Validation of Request Body", errorMessage);
-        return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
+
+        return new ResponseEntity<>(new ResponseDto(null, exceptionResponse), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(RoleNameNotUniqueException.class)
     public ResponseEntity<Object> roleNameNotUniqueException(RoleNameNotUniqueException roleNameNotUniqueException, WebRequest request) {
         ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), Constants.ROLE_NAME_DATA_INTEGRITY_VIOLATION, roleNameNotUniqueException.getMessage(), request.getDescription(false));
-        return new ResponseEntity<>(exceptionResponse, HttpStatus.CONFLICT);
+
+        return new ResponseEntity<>(new ResponseDto(null, exceptionResponse), HttpStatus.CONFLICT);
     }
 
 }

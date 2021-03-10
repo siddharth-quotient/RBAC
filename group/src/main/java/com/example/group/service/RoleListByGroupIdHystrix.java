@@ -1,9 +1,9 @@
 package com.example.group.service;
 
 import com.example.group.repository.GroupRoleRepository;
-import com.example.group.web.model.responseDto.GroupRoleMappingResponseDto;
-import com.example.group.web.model.responseDto.RoleResponseDto;
-import com.example.group.web.model.responseDto.RolesList;
+import com.example.group.web.dto.responseDto.GroupRoleMappingResponseDto;
+import com.example.group.web.dto.responseDto.RoleResponseDto;
+import com.example.group.web.dto.responseDto.RolesList;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
