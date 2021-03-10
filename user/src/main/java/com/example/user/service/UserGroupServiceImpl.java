@@ -47,9 +47,13 @@ public class UserGroupServiceImpl implements UserGroupService {
     }
 
     @Override
-    public UserGroupMappingResponseDto getUserGroupMappingById(Long userGroupId) {
-        if(userGroupId==null){
-            throw new UserGroupNotFoundException("User-Group Mapping cannot be Null");
+    public UserGroupMappingResponseDto getUserGroupMappingById(String userGroupStringId) {
+        Long userGroupId;
+        try {
+            userGroupId = Long.parseLong(userGroupStringId);
+        }
+        catch (Exception e){
+            throw new UserGroupNotFoundException("Invalid User-Group Mapping with Id: "+ userGroupStringId);
         }
 
         Optional<UserGroupMapping> userGroupMappingOptional = userGroupRepository.findById(userGroupId);
@@ -128,20 +132,25 @@ public class UserGroupServiceImpl implements UserGroupService {
     }
 
     @Override
-    public UserGroupMappingResponseDto deleteById(Long userGroupId) {
-        if(userGroupId==null){
-            throw new UserGroupNotFoundException("User-Group Mapping cannot be Null");
+    public UserGroupMappingResponseDto deleteById(String userGroupStringId) {
+        Long userGroupId;
+        try {
+            userGroupId = Long.parseLong(userGroupStringId);
+        }
+        catch (Exception e){
+            throw new UserGroupNotFoundException("Invalid User-Group Mapping with Id: "+ userGroupStringId);
         }
 
         Optional<UserGroupMapping> userGroupMappingOptional = userGroupRepository.findById(userGroupId);
 
-        if(!userGroupMappingOptional.isPresent()){
-            log.error("Invalid User-Group Mapping Id provided while using deleteById: "+ userGroupId);
-            throw new UserGroupNotFoundException("Invalid User-Group Mapping with Id: "+ userGroupId);
-        }
+        if(userGroupMappingOptional.isPresent()){
+            userGroupRepository.deleteById(userGroupId);
+            return userGroupMapper.userGroupMappingToUserGroupMappingResponseDto(userGroupMappingOptional.get());
 
-        userGroupRepository.deleteById(userGroupId);
-        return userGroupMapper.userGroupMappingToUserGroupMappingResponseDto(userGroupMappingOptional.get());
+        }
+        log.error("Invalid User-Group Mapping Id provided while using deleteById: "+ userGroupId);
+        throw new UserGroupNotFoundException("Invalid User-Group Mapping with Id: "+ userGroupId);
+
     }
 
     public boolean validateUserId(Long userId) {

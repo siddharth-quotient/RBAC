@@ -2,8 +2,6 @@ package com.example.user.web.model.responseDto;
 
 import lombok.*;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Null;
 import java.time.OffsetDateTime;
 
 /**

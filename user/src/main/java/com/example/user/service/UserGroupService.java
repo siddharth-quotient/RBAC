@@ -13,8 +13,8 @@ import java.util.Set;
  */
 public interface UserGroupService {
     Set<UserGroupMappingResponseDto> getAllUserGroupMappings();
-    UserGroupMappingResponseDto getUserGroupMappingById(Long userGroupId);
+    UserGroupMappingResponseDto getUserGroupMappingById(String userGroupStringId);
     UserGroupMappingResponseDto updateUserGroupMappingById(UserGroupMappingUpdateRequestDto userGroupMappingUpdateRequestDto);
     UserGroupMappingResponseDto createUserGroupMapping(UserGroupMappingRequestDto userGroupMappingRequestDto);
-    UserGroupMappingResponseDto deleteById(Long userGroupId);
+    UserGroupMappingResponseDto deleteById(String userGroupStringId);
 }

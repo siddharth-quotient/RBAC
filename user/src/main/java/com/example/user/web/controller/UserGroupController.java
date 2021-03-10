@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
 import java.util.Set;
 
 /**
@@ -29,9 +30,9 @@ public class UserGroupController {
         return new ResponseEntity<>(userGroupService.getAllUserGroupMappings(), HttpStatus.OK);
     }
 
-    @GetMapping("/{userGroupId}")
-    public ResponseEntity<UserGroupMappingResponseDto> getUserGroupMappingById(@PathVariable Long userGroupId){
-        return new ResponseEntity<>(userGroupService.getUserGroupMappingById(userGroupId), HttpStatus.OK);
+    @GetMapping("/{userGroupStringId}")
+    public ResponseEntity<UserGroupMappingResponseDto> getUserGroupMappingById(@PathVariable String userGroupStringId){
+        return new ResponseEntity<>(userGroupService.getUserGroupMappingById(userGroupStringId), HttpStatus.OK);
     }
 
     @PutMapping
@@ -44,8 +45,8 @@ public class UserGroupController {
         return new ResponseEntity<>(userGroupService.createUserGroupMapping(userGroupMappingRequestDto), HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/{userGroupId}")
-    public ResponseEntity<UserGroupMappingResponseDto> deleteById(@PathVariable Long userGroupId){
-        return new ResponseEntity<>(userGroupService.deleteById(userGroupId), HttpStatus.OK);
+    @DeleteMapping("/{userGroupStringId}")
+    public ResponseEntity<UserGroupMappingResponseDto> deleteById(@PathVariable String userGroupStringId){
+        return new ResponseEntity<>(userGroupService.deleteById(userGroupStringId), HttpStatus.OK);
     }
 }
