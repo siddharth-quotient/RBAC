@@ -2,6 +2,7 @@ package com.example.user.web.controller;
 
 import com.example.user.service.UserService;
 import com.example.user.web.model.requestDto.UserRequestDto;
+import com.example.user.web.model.responseDto.AllUsersResponseDto;
 import com.example.user.web.model.responseDto.GroupsList;
 import com.example.user.web.model.ResponseDto;
 import com.example.user.web.model.responseDto.UserResponseDto;
@@ -27,7 +28,7 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping
-    public ResponseEntity<Set<UserResponseDto>> getAllUsers(){
+    public ResponseEntity<AllUsersResponseDto> getAllUsers(){
         return new ResponseEntity<>(userService.getAllUsers(), HttpStatus.OK);
     }
 

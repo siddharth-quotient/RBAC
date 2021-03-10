@@ -4,10 +4,7 @@ import com.example.group.service.GroupService;
 import com.example.group.service.UserGroupService;
 import com.example.group.web.model.requestDto.GroupRequestDto;
 import com.example.group.web.model.requestDto.GroupUpdateRequestDto;
-import com.example.group.web.model.responseDto.GroupResponseDto;
-import com.example.group.web.model.responseDto.GroupsList;
-import com.example.group.web.model.responseDto.RolesList;
-import com.example.group.web.model.responseDto.UserGroupMappingResponseDto;
+import com.example.group.web.model.responseDto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,7 +28,7 @@ public class GroupController {
     private final UserGroupService userGroupService;
 
     @GetMapping
-    public ResponseEntity<Set<GroupResponseDto>> getAllGroups(){
+    public ResponseEntity<AllGroupsResponseDto> getAllGroups(){
         return new ResponseEntity<>(groupService.getAllGroups(), HttpStatus.OK);
     }
 

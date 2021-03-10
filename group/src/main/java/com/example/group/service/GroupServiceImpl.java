@@ -10,10 +10,7 @@ import com.example.group.web.mapper.GroupMapper;
 import com.example.group.web.mapper.GroupRoleMapper;
 import com.example.group.web.model.requestDto.GroupRequestDto;
 import com.example.group.web.model.requestDto.GroupUpdateRequestDto;
-import com.example.group.web.model.responseDto.GroupResponseDto;
-import com.example.group.web.model.responseDto.GroupRoleMappingResponseDto;
-import com.example.group.web.model.responseDto.RolesList;
-import com.example.group.web.model.responseDto.UserGroupMappingResponseDto;
+import com.example.group.web.model.responseDto.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -44,13 +41,16 @@ public class GroupServiceImpl implements GroupService {
 
 
     @Override
-    public Set<GroupResponseDto> getAllGroups() {
+    public AllGroupsResponseDto getAllGroups() {
+        AllGroupsResponseDto allGroupsResponseDto = new AllGroupsResponseDto();
         Set<GroupResponseDto> groups = new HashSet<>();
 
         groupRepository.findAll().forEach(group -> {
             groups.add(groupMapper.groupToGroupResponseDto(group));
         });
-        return groups;
+
+        allGroupsResponseDto.setGroups(groups);
+        return allGroupsResponseDto;
 
     }
 

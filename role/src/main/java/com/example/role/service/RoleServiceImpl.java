@@ -8,6 +8,7 @@ import com.example.role.web.exception.RoleNotFoundException;
 import com.example.role.web.mapper.RoleMapper;
 import com.example.role.web.model.requestDto.RoleRequestDto;
 import com.example.role.web.model.requestDto.RoleUpdateRequestDto;
+import com.example.role.web.model.responseDto.AllRolesResponseDto;
 import com.example.role.web.model.responseDto.GroupRoleMappingResponseDto;
 import com.example.role.web.model.responseDto.RoleResponseDto;
 import lombok.RequiredArgsConstructor;
@@ -47,14 +48,16 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public Set<RoleResponseDto> getAllRoles(){
+    public AllRolesResponseDto getAllRoles(){
+        AllRolesResponseDto allRolesResponseDto = new AllRolesResponseDto();
         Set<RoleResponseDto> roles = new HashSet<>();
 
         roleRepository.findAll().forEach(role -> {
             roles.add(roleMapper.roleToRoleResponseDto(role));
         });
 
-        return roles;
+        allRolesResponseDto.setRoles(roles);
+        return allRolesResponseDto;
     }
 
     @Override

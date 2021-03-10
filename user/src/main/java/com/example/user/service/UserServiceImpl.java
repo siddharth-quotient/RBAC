@@ -10,6 +10,7 @@ import com.example.user.web.exception.UserNotFoundException;
 import com.example.user.web.mapper.UserGroupMapper;
 import com.example.user.web.mapper.UserMapper;
 import com.example.user.web.model.requestDto.UserRequestDto;
+import com.example.user.web.model.responseDto.AllUsersResponseDto;
 import com.example.user.web.model.responseDto.GroupsList;
 import com.example.user.web.model.responseDto.UserResponseDto;
 import com.example.user.web.model.responseDto.UserGroupMappingResponseDto;
@@ -42,13 +43,17 @@ public class UserServiceImpl implements UserService {
     private final ValidateRoleForUserId validateRoleForUserId;
 
     @Override
-    public Set<UserResponseDto> getAllUsers() {
+    public AllUsersResponseDto getAllUsers() {
+        AllUsersResponseDto allUsersResponseDto = new AllUsersResponseDto();
         Set<UserResponseDto> users = new HashSet<>();
 
         userRepository.findAll().forEach(user -> {
             users.add(userMapper.userToUserResponseDto(user));
         });
-        return users;
+
+        allUsersResponseDto.setUsers(users);
+
+        return allUsersResponseDto;
     }
 
     @Override

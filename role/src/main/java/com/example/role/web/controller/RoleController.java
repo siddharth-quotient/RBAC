@@ -4,6 +4,7 @@ package com.example.role.web.controller;
 import com.example.role.service.RoleService;
 import com.example.role.web.model.requestDto.RoleRequestDto;
 import com.example.role.web.model.requestDto.RoleUpdateRequestDto;
+import com.example.role.web.model.responseDto.AllRolesResponseDto;
 import com.example.role.web.model.responseDto.GroupRoleMappingResponseDto;
 import com.example.role.web.model.responseDto.RoleResponseDto;
 import com.example.role.web.model.responseDto.RolesList;
@@ -31,7 +32,7 @@ public class RoleController {
     private final RoleService roleService;
 
     @GetMapping
-    public ResponseEntity<Set<RoleResponseDto>> getAllRoles(){
+    public ResponseEntity<AllRolesResponseDto> getAllRoles(){
         return new ResponseEntity<>(roleService.getAllRoles(), HttpStatus.OK);
     }
 

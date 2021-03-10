@@ -2,6 +2,7 @@ package com.example.group.service;
 
 import com.example.group.web.model.requestDto.GroupRequestDto;
 import com.example.group.web.model.requestDto.GroupUpdateRequestDto;
+import com.example.group.web.model.responseDto.AllGroupsResponseDto;
 import com.example.group.web.model.responseDto.GroupResponseDto;
 import com.example.group.web.model.responseDto.RolesList;
 import com.example.group.web.model.responseDto.UserGroupMappingResponseDto;
@@ -14,7 +15,7 @@ import java.util.Set;
  * @author Siddharth Mehta
  */
 public interface GroupService {
-    Set<GroupResponseDto> getAllGroups();
+    AllGroupsResponseDto getAllGroups();
     GroupResponseDto getGroupById(Long groupId);
     GroupResponseDto updateGroupById(GroupUpdateRequestDto groupUpdateRequestDto);
     GroupResponseDto createGroup(GroupRequestDto groupRequestDto);
