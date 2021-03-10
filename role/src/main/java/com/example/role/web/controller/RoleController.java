@@ -59,8 +59,12 @@ public class RoleController {
 
     /*----------------- Roles from Group Id -------------------*/
     @PostMapping("/group-roles")
-    public ResponseEntity<RolesList> getRolesByGroupId(@RequestBody Set<GroupRoleMappingResponseDto> groupRoleMappingResponseDtos){
+    public ResponseEntity<RolesList> getRolesByGroupId(@RequestBody Set<GroupRoleMappingResponseDto> groupRoleMappingResponseDtos) throws InterruptedException {
         RolesList rolesList =new RolesList();
+
+        /*To demonstrate timeouts
+        Thread.sleep(3000);*/
+
         rolesList.setRoles(roleService.getRolesByGroupId(groupRoleMappingResponseDtos));
         return new ResponseEntity<>(rolesList, HttpStatus.OK);
     }

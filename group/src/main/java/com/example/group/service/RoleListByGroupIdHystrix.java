@@ -5,6 +5,7 @@ import com.example.group.web.dto.responseDto.GroupRoleMappingResponseDto;
 import com.example.group.web.dto.responseDto.RoleResponseDto;
 import com.example.group.web.dto.responseDto.RolesList;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,9 +25,12 @@ import java.util.Set;
 public class RoleListByGroupIdHystrix {
 
     private final RestTemplate restTemplate;
-    private final GroupRoleRepository groupRoleRepository;
 
-    @HystrixCommand(fallbackMethod = "getFallBackRoleListByGroupId")
+    @HystrixCommand(fallbackMethod = "getFallBackRoleListByGroupId",
+            commandProperties = {
+            @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds",value = "2000"),
+            @HystrixProperty(name = "circuitBreaker.sleepWindowInMilliseconds",value = "2000")
+    })
     public ResponseEntity<RolesList> getRoleListByGroupId(Set<GroupRoleMappingResponseDto> groupRoleMappingResponseDtos){
         ResponseEntity<RolesList> rolesListResponseEntity = restTemplate.postForEntity("http://role-service/roles/group-roles/", groupRoleMappingResponseDtos, RolesList.class);
         return rolesListResponseEntity;

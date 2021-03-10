@@ -63,8 +63,12 @@ public class GroupController {
 
     /*----------------- Groups from User Name -------------------*/
     @PostMapping("/user-groups")
-    public ResponseEntity<GroupsList> getGroupsByUserId(@RequestBody Set<UserGroupMappingResponseDto> userGroupMappingResponseDtos){
+    public ResponseEntity<GroupsList> getGroupsByUserId(@RequestBody Set<UserGroupMappingResponseDto> userGroupMappingResponseDtos) throws InterruptedException {
         GroupsList groupsList =new GroupsList();
+
+        /*To demonstrate timeouts
+        Thread.sleep(3000);*/
+
         groupsList.setGroups(groupService.getGroupsByUserId(userGroupMappingResponseDtos));
         return new ResponseEntity<>(groupsList, HttpStatus.OK);
     }
