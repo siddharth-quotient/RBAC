@@ -2,6 +2,11 @@ package com.example.user.web.dto.responseDto;
 
 import lombok.*;
 
+/**
+ * Response Data Transfer Object representing UserGroupMappings.
+ *
+ * @author Siddharth Mehta
+ */
 @Data
 @Builder
 @NoArgsConstructor

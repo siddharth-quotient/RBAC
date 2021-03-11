@@ -7,7 +7,7 @@ import org.mapstruct.Mapper;
 
 @Mapper
 public interface UserGroupMapper {
-    //Flow:  UserGroupRequestDto   ->  UserGroup Entity   ->   UserGroupResponseDto
+    /*Flow:  UserGroupRequestDto   ->  UserGroup Entity   ->   UserGroupResponseDto*/
 
     UserGroupMapping userGroupMappingRequestDtoToUserGroup(UserGroupMappingRequestDto userGroupMappingRequestDto);
 

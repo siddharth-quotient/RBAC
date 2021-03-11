@@ -6,6 +6,7 @@ import com.example.group.web.exception.RoleServiceDownException;
 import com.example.group.web.dto.responseDto.RoleResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 
@@ -25,6 +26,9 @@ public class ValidateRoleForGroupRoleMapping {
         catch (IllegalStateException e) {
             //Caught when Role Service is Down
             throw new RoleServiceDownException("Role Service Down!");
+        }
+        catch (RestClientException ex){
+            throw new RoleServiceDownException("Role Service acting poorly, timed out!");
         }
     }
 }

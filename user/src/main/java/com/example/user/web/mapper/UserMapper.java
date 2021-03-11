@@ -7,7 +7,7 @@ import org.mapstruct.Mapper;
 
 @Mapper(uses = {DateMapper.class})
 public interface UserMapper {
-    //Flow:  UserRequestDto   ->  User Entity   ->   UserResponseDto
+    /* Flow:  UserRequestDto   ->  User Entity   ->   UserResponseDto */
 
     User userRequestDtoToUser(UserRequestDto userRequestDto);
 

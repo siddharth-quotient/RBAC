@@ -51,12 +51,23 @@ public class UserController {
     }
 
     /*----------------- Groups from User Name -------------------*/
+    /**
+     * This method is an API endpoint used to get a list of groups for a user.
+     * @param userName Name of user
+     * @return ResponseEntity<ResponseDto>  response entity of global wrapper of all responses.
+     */
     @GetMapping("/{userName}/groups")
     public ResponseEntity<ResponseDto> getGroupsByUserName(@PathVariable String userName){
         return new ResponseEntity<>(new ResponseDto(userService.getGroupsByUserName(userName), null), HttpStatus.OK);
     }
 
     /*-------------- Check if a User belongs to Group ---------------*/
+    /**
+     * This method is an API endpoint used to check if a user belongs to a group.
+     * @param userName Name of user
+     * @param groupId Id of group
+     * @return ResponseEntity response entity with StatusCode 200 OK for true and 404 Not Found for false.
+     */
     @GetMapping("/{userName}/groups/{groupId}/check")
     public ResponseEntity<?> checkGroupIdForUserName(@PathVariable String userName, @PathVariable Long groupId){
         Boolean isValid = userService.checkGroupIdForUserName(userName, groupId);
@@ -66,6 +77,12 @@ public class UserController {
     }
 
     /*-------------- Check if a User has a Role ---------------*/
+    /**
+     * This method is an API endpoint used to check if a user has role permission.
+     * @param userName Name of user
+     * @param roleId Id of role
+     * @return ResponseEntity response entity with StatusCode 200 OK for true and 404 Not Found for false.
+     */
     @GetMapping("/{userName}/roles/{roleId}/check")
     public ResponseEntity<?> checkRoleIdForUserName(@PathVariable String userName, @PathVariable Long roleId){
         Boolean isValid = userService.checkRoleIdForUserName(userName, roleId);

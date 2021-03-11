@@ -4,6 +4,11 @@ import lombok.*;
 
 import java.time.OffsetDateTime;
 
+/**
+ * Response Data Transfer Object representing Group used in GroupsList.class.
+ *
+ * @author Siddharth Mehta
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

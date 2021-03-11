@@ -4,6 +4,11 @@ import lombok.*;
 
 import javax.validation.constraints.NotNull;
 
+/**
+ * Request Data Transfer Object for updating UserGroupMappings (userGroupId not null).
+ *
+ * @author Siddharth Mehta
+ */
 @Data
 @Builder
 @NoArgsConstructor

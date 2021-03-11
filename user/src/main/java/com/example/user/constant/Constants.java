@@ -1,5 +1,10 @@
 package com.example.user.constant;
 
+/**
+ * Single Access Point for all Constants present in application
+ *
+ * @author Siddharth Mehta
+ */
 public class Constants {
     private Constants() {}
     public static final String USER_TABLE_NAME = "USER_TABLE";

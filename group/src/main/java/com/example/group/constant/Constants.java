@@ -1,5 +1,10 @@
 package com.example.group.constant;
 
+/**
+ * Single Access Point for all Constants present in application
+ *
+ * @author Siddharth Mehta
+ */
 public class Constants {
     private Constants() {}
     public static final String GROUP_TABLE_NAME = "GROUP_TABLE";

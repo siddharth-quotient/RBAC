@@ -1,5 +1,10 @@
 package com.example.role.constant;
 
+/**
+ * Single Access Point for all Constants present in application
+ *
+ * @author Siddharth Mehta
+ */
 public class Constants {
     private Constants() {}
     public static final String ROLE_TABLE_NAME = "ROLE_TABLE";

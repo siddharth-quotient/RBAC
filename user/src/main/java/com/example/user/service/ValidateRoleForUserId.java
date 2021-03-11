@@ -3,12 +3,14 @@ package com.example.user.service;
 import com.example.user.restTemplate.RoleRestTemplateResponseErrorHandler;
 import com.example.user.web.exception.GroupServiceDownException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class ValidateRoleForUserId {
 
@@ -24,9 +26,11 @@ public class ValidateRoleForUserId {
                     Boolean.class);
         }
         catch (IllegalStateException e) {
+            log.error("[checkRolePermissionExistForUser] Group Service Down!");
             throw new GroupServiceDownException("Group Service Down!");
         }
         catch (RestClientException ex){
+            log.error("[checkRolePermissionExistForUser] Group Service acting poorly, timed out!");
             throw new GroupServiceDownException("Group Service acting poorly, timed out!");
         }
     }

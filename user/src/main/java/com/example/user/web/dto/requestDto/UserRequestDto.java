@@ -5,7 +5,7 @@ import lombok.*;
 import javax.validation.constraints.NotBlank;
 
 /**
- *Data transfer object representing a group.
+ * Request Data Transfer Object for User.
  *
  * @author Siddharth Mehta
  */

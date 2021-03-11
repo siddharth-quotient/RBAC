@@ -57,6 +57,7 @@ public class UserGroupServiceImpl implements UserGroupService {
             userGroupId = Long.parseLong(userGroupStringId);
         }
         catch (Exception e){
+            log.error("[getUserGroupMappingById] Invalid User-Group Mapping with Id: "+ userGroupStringId);
             throw new UserGroupNotFoundException("Invalid User-Group Mapping with Id: "+ userGroupStringId);
         }
 
@@ -64,7 +65,7 @@ public class UserGroupServiceImpl implements UserGroupService {
         if(userGroupMappingOptional.isPresent()){
             return userGroupMapper.userGroupMappingToUserGroupMappingResponseDto(userGroupMappingOptional.get());
         }
-        log.error("Invalid User-Group Mapping Id provided while using getUserGroupMappingById: "+ userGroupId);
+        log.error("[getUserGroupMappingById] Invalid User-Group Mapping Id provided with Id: "+ userGroupId);
         throw new UserGroupNotFoundException("Invalid User-Group Mapping with Id: "+ userGroupId);
     }
 
@@ -76,7 +77,7 @@ public class UserGroupServiceImpl implements UserGroupService {
         Optional<UserGroupMapping> userGroupMappingOptional = userGroupRepository.findById(userGroupId);
 
         if(!userGroupMappingOptional.isPresent()){
-            log.error("Invalid User-Group Mapping Id provided while using updateUserGroupMappingById: "+ userGroupId);
+            log.error("[updateUserGroupMappingById] Invalid User-Group Mapping [updateUserGroupMappingById] with Id: "+ userGroupId);
             throw new UserGroupNotFoundException("Invalid User-Group Mapping with Id :"+ userGroupId);
         }else{
             UserGroupMapping userGroupMapping = userGroupMappingOptional.get();
@@ -91,12 +92,14 @@ public class UserGroupServiceImpl implements UserGroupService {
             if(dtoUserGroupMappingOptional.isPresent()){
                 UserGroupMapping dtoUserGroupMapping = dtoUserGroupMappingOptional.get();
                 if(userGroupMapping.getUserGroupId()!=dtoUserGroupMapping.getUserGroupId()){
+                    log.error("[updateUserGroupMappingById] UserId: "+userId+" and GroupId: "+groupId+" lookup value already exist");
                     throw new UserGroupNotUniqueException("UserId: "+userId+" and GroupId: "+groupId+" lookup value already exist");
                 }
             }
 
             /* Check for valid userId */
             if(!validateUserId(userId)){
+                log.error("[updateUserGroupMappingById] Invalid User Id: " + userId);
                 throw new UserNotFoundException("Invalid User Id: "+ userId);
             }
 
@@ -120,6 +123,7 @@ public class UserGroupServiceImpl implements UserGroupService {
 
         /* Check for valid userId */
         if (!validateUserId(userId)) {
+            log.error("[createUserGroupMapping] Invalid User Id: " + userId);
             throw new UserNotFoundException("Invalid User Id: " + userId);
         }
 
@@ -131,6 +135,7 @@ public class UserGroupServiceImpl implements UserGroupService {
                     .save(userGroupMapper.userGroupMappingRequestDtoToUserGroup(userGroupMappingRequestDto)));
         }
         catch (DataIntegrityViolationException ex){
+            log.error("[createUserGroupMapping] UserId: "+userId+" and GroupId: "+groupId+" lookup value already exist");
             throw new UserGroupNotUniqueException("UserId: "+userId+" and GroupId: "+groupId+" lookup value already exist");
         }
     }
@@ -142,6 +147,7 @@ public class UserGroupServiceImpl implements UserGroupService {
             userGroupId = Long.parseLong(userGroupStringId);
         }
         catch (Exception e){
+            log.error("[deleteById] Invalid User-Group Mapping with Id: "+ userGroupStringId);
             throw new UserGroupNotFoundException("Invalid User-Group Mapping with Id: "+ userGroupStringId);
         }
 
@@ -152,7 +158,7 @@ public class UserGroupServiceImpl implements UserGroupService {
             return userGroupMapper.userGroupMappingToUserGroupMappingResponseDto(userGroupMappingOptional.get());
 
         }
-        log.error("Invalid User-Group Mapping Id provided while using deleteById: "+ userGroupId);
+        log.error("[deleteById] Invalid User-Group Mapping with Id: "+ userGroupId);
         throw new UserGroupNotFoundException("Invalid User-Group Mapping with Id: "+ userGroupId);
 
     }

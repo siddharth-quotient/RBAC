@@ -78,7 +78,7 @@ public class UserServiceImpl implements UserService {
 
         }
 
-        log.error("Invalid User Name provided while using getUserByName: "+ dtoUserName);
+        log.error("[updateUserByName] Invalid User Name with name: "+ dtoUserName);
         throw new UserNotFoundException("Invalid User with name: "+ dtoUserName);
     }
 
@@ -90,6 +90,7 @@ public class UserServiceImpl implements UserService {
             return userMapper.userToUserResponseDto(userRepository.save(userMapper.userRequestDtoToUser(userRequestDto)));
         }
         catch (DataIntegrityViolationException ex){
+            log.error("[createUser] User by the name " + userRequestDto.getUserName() +" already exists!");
             throw new UserNameNotUniqueException("User by the name " + userRequestDto.getUserName() +" already exists!");
         }
 
@@ -99,13 +100,14 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public UserResponseDto deleteByName(String userName) {
         if(userName==null || userName.isEmpty()){
-            throw new UserNotFoundException("User cannot be null");
+            log.error("[deleteByName] UserName cannot be null");
+            throw new UserNotFoundException("UserName cannot be null");
         }
 
         Optional<User> userOptional = userRepository.findByUserName(userName);
 
         if(!userOptional.isPresent()) {
-            log.error("Invalid User Name provided while using deleteByName: "+ userName);
+            log.error("[deleteByName] Invalid User Name: "+ userName);
             throw new UserNotFoundException("Invalid User Name: "+ userName);
         }
 
@@ -119,6 +121,11 @@ public class UserServiceImpl implements UserService {
     }
 
     /*----------------- Groups from User Name -------------------*/
+    /**
+     * This method is used to get a list of groups for a user.
+     * @param userName Name of user
+     * @return GroupList object holding user and corresponding groups.
+     */
     @Override
     @Transactional
     public GroupsList getGroupsByUserName(String userName) {
@@ -137,6 +144,13 @@ public class UserServiceImpl implements UserService {
     }
 
     /*-------------- Check if a User belongs to Group ---------------*/
+    /**
+     * This method is used to check if a user belongs to group.
+     * @param userName Name of user
+     * @param groupId Id of group
+     * @return Boolean True (user belongs to group),
+     *                 False (user doesn't belong to group)
+     */
     @Override
     public Boolean checkGroupIdForUserName(String userName, Long groupId) {
         User user = getUserByUserName(userName);
@@ -149,6 +163,13 @@ public class UserServiceImpl implements UserService {
     }
 
     /*-------------- Check if a User has a Role ---------------*/
+    /**
+     * This method is used to check if a user has role permission.
+     * @param userName Name of user
+     * @param roleId Id of role
+     * @return Boolean True (user has role permission),
+     *                 False (user doesn't have role permission)
+     */
     @Override
     public Boolean checkRoleIdForUserName(String userName, Long roleId) {
 
@@ -163,7 +184,7 @@ public class UserServiceImpl implements UserService {
         Optional<User> userOptional = userRepository.findByUserName(userName);
 
         if(!userOptional.isPresent()) {
-            log.error("Invalid User Name: "+ userName);
+            log.error("[getUserByUserName] Invalid User Name: "+ userName);
             throw new UserNotFoundException("Invalid User Name: "+ userName);
         }
 

@@ -14,7 +14,6 @@ import java.sql.Timestamp;
  *
  * @author Siddharth Mehta
  */
-
 @Getter
 @Setter
 @NoArgsConstructor
