@@ -6,6 +6,11 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * Global wrapper for all Data Transfer Objects.
+ *
+ * @author Siddharth Mehta
+ */
 @Data
 @AllArgsConstructor
 @Getter

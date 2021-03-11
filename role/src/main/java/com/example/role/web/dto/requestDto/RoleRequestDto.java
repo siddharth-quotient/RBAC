@@ -5,6 +5,12 @@ import lombok.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Null;
 
+/**
+ * Request Data Transfer Object for Role.
+ *
+ * @author Siddharth Mehta
+ */
+
 @Data
 @Builder
 @NoArgsConstructor

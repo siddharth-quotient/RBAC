@@ -10,9 +10,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 import java.sql.Timestamp;
 
-
 /**
- * Simple JavaBean domain object representing a group.
+ * Simple JavaBean domain object representing a Group.
  *
  * @author Siddharth Mehta
  */

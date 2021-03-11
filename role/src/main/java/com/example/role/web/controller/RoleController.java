@@ -5,9 +5,7 @@ import com.example.role.service.RoleService;
 import com.example.role.web.dto.ResponseDto;
 import com.example.role.web.dto.requestDto.RoleRequestDto;
 import com.example.role.web.dto.requestDto.RoleUpdateRequestDto;
-import com.example.role.web.dto.responseDto.AllRolesResponseDto;
 import com.example.role.web.dto.responseDto.GroupRoleMappingResponseDto;
-import com.example.role.web.dto.responseDto.RoleResponseDto;
 import com.example.role.web.dto.responseDto.RolesList;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -58,6 +56,11 @@ public class RoleController {
     }
 
     /*----------------- Roles from Group Id -------------------*/
+    /**
+     * This method is an API endpoint used to fulfill request of Group-Service to fetch all Roles for Group.
+     * @param Set<GroupRoleMappingResponseDto> Set of GroupRoleMappingResponseDto.
+     * @return ResponseEntity<RolesList> object holding group and corresponding roles.
+     */
     @PostMapping("/group-roles")
     public ResponseEntity<RolesList> getRolesByGroupId(@RequestBody Set<GroupRoleMappingResponseDto> groupRoleMappingResponseDtos) throws InterruptedException {
         RolesList rolesList =new RolesList();

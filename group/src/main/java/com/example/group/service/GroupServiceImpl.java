@@ -50,13 +50,14 @@ public class GroupServiceImpl implements GroupService {
         });
 
         allGroupsResponseDto.setGroups(groups);
-        return allGroupsResponseDto;
 
+        return allGroupsResponseDto;
     }
 
     @Override
     public GroupResponseDto getGroupById(Long groupId) {
         if(groupId==null){
+            log.error("[getGroupById] Group cannot be null");
             throw new GroupNotFoundException("Group cannot be null");
         }
 
@@ -64,7 +65,7 @@ public class GroupServiceImpl implements GroupService {
         if(groupOptional.isPresent()){
             return groupMapper.groupToGroupResponseDto(groupOptional.get());
         }
-        log.error("Invalid Group Id provided while using getGroupById: "+ groupId);
+        log.error("[getGroupById] Invalid Group Id: "+ groupId);
         throw new GroupNotFoundException("Invalid Group Id: "+ groupId);
     }
 
@@ -84,6 +85,7 @@ public class GroupServiceImpl implements GroupService {
             if(dtoGroupOptional.isPresent()){
                 Group dtoGroup = dtoGroupOptional.get();
                 if(dtoGroup.getGroupId()!=group.getGroupId()){
+                    log.error("[updateGroupById] Group by the name " + dtoGroupName +" already exists!");
                     throw new GroupNameNotUniqueException("Group by the name " + dtoGroupName +" already exists!");
                 }
             }
@@ -93,7 +95,7 @@ public class GroupServiceImpl implements GroupService {
             return groupMapper.groupToGroupResponseDto(groupRepository.save(group));
 
         }
-        log.error("Invalid Group Id provided while using updateGroupById: "+ groupId);
+        log.error("[updateGroupById] Invalid Group Id: "+ groupId);
         throw new GroupNotFoundException("Invalid Group Id: "+ groupId);
     }
 
@@ -105,7 +107,7 @@ public class GroupServiceImpl implements GroupService {
             return groupMapper.groupToGroupResponseDto(groupRepository.save(groupMapper.groupRequestDtoToGroup(groupRequestDto)));
         }
         catch (DataIntegrityViolationException ex){
-            log.error("Group by the name " + groupRequestDto.getGroupName() +" already exists!");
+            log.error("[createGroup] Group by the name " + groupRequestDto.getGroupName() +" already exists!");
             throw new GroupNameNotUniqueException("Group by the name " + groupRequestDto.getGroupName() +" already exists!");
         }
     }
@@ -114,13 +116,14 @@ public class GroupServiceImpl implements GroupService {
     @Transactional
     public GroupResponseDto deleteById(Long groupId) {
         if(groupId==null){
+            log.error("[deleteById] Group cannot be null");
             throw new GroupNotFoundException("Group cannot be null");
         }
 
         Optional<Group> groupOptional = groupRepository.findById(groupId);
 
         if(!groupOptional.isPresent()){
-            log.error("Invalid Group Id provided while using deleteById: "+ groupId);
+            log.error("[deleteById] Invalid Group Id :"+ groupId);
             throw new GroupNotFoundException("Invalid Group Id :"+ groupId);
         }
 
@@ -134,12 +137,17 @@ public class GroupServiceImpl implements GroupService {
     }
 
     /*----------------- Roles from Group Id -------------------*/
+    /**
+     * This method is used to get a list of roles for a group.
+     * @param groupId Id of group.
+     * @return RolesList object holding group and corresponding roles.
+     */
     @Override
     @Transactional
     public RolesList getRolesByGroupId(Long groupId) {
         Optional<Group> groupOptional = groupRepository.findById(groupId);
         if(!groupOptional.isPresent()){
-            log.error("Invalid Group Id provided while using getRolesByGroupId: "+ groupId);
+            log.error("[getRolesByGroupId] Invalid Group Id: "+ groupId);
             throw new GroupNotFoundException("Invalid Group Id: "+ groupId);
         }
         Group group = groupOptional.get();
@@ -157,6 +165,11 @@ public class GroupServiceImpl implements GroupService {
     }
 
     /*----------------- Groups from User Name -------------------*/
+    /**
+     * This method is used to fulfill the request made from User-Service to get Groups for a User.
+     * @param Set<UserGroupMappingResponseDto> Set of UserGroupMappingResponseDto.
+     * @return Set<GroupResponseDto> Set of GroupResponseDto.
+     */
     @Override
     public Set<GroupResponseDto> getGroupsByUserId(Set<UserGroupMappingResponseDto> userGroupMappingResponseDtos) {
         Set<GroupResponseDto> groupResponseDtoSet = new HashSet<>();

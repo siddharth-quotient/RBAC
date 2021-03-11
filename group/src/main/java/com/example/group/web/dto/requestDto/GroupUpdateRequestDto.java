@@ -6,7 +6,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 /**
- *Data transfer object representing a group.
+ * Request Data Transfer Object for updating Groups (groupId not null).
  *
  * @author Siddharth Mehta
  */

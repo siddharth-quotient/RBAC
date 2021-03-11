@@ -38,12 +38,14 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public RoleResponseDto getRoleById(Long roleId) {
         if(roleId==null){
+            log.error("[getRoleById] Role cannot be null");
             throw new RoleNotFoundException("Role cannot be null");
         }
         Optional<Role> roleOpt = roleRepository.findById(roleId);
         if (roleOpt.isPresent()){
             return roleMapper.roleToRoleResponseDto(roleOpt.get());
         }
+        log.error("[getRoleById] Invalid Role Id: "+ roleId);
         throw new RoleNotFoundException("Invalid Role Id :"+ roleId);
     }
 
@@ -76,6 +78,7 @@ public class RoleServiceImpl implements RoleService {
             if(dtoRoleOptional.isPresent()){
                 Role dtoRole = dtoRoleOptional.get();
                 if(dtoRole.getRoleId()!=role.getRoleId()){
+                    log.error("[updateRoleById] Role by the name " + dtoRoleName +" already exists!");
                     throw new RoleNameNotUniqueException("Role by the name " + roleUpdateRequestDto.getRoleName() +" already exists!");
                 }
             }
@@ -85,7 +88,7 @@ public class RoleServiceImpl implements RoleService {
 
             return roleMapper.roleToRoleResponseDto(roleRepository.save(role));
         }
-        log.error("Invalid Role Id provided while using updateRoleById: "+ roleId);
+        log.error("[updateRoleById] Invalid Role Id: "+ roleId);
         throw new RoleNotFoundException("Invalid Role Id :"+ roleId);
     }
 
@@ -97,8 +100,8 @@ public class RoleServiceImpl implements RoleService {
             return roleMapper.roleToRoleResponseDto(roleRepository.save(roleMapper.roleRequestDtoToRole(roleRequestDto)));
         }
         catch (DataIntegrityViolationException ex){
-            log.error("Role by the name " + roleRequestDto.getRoleName() +" already exists!");
-            throw new RoleNameNotUniqueException("RoleName " + roleRequestDto.getRoleName() +" already exists!");
+            log.error("[createRole] Role by the name " + roleRequestDto.getRoleName() +" already exists!");
+            throw new RoleNameNotUniqueException("Role by the name " + roleRequestDto.getRoleName() +" already exists!");
         }
     }
 
@@ -107,12 +110,14 @@ public class RoleServiceImpl implements RoleService {
     @Transactional
     public RoleResponseDto deleteById(Long roleId) {
         if(roleId==null){
+            log.error("[deleteById] Role cannot be null");
             throw new RoleNotFoundException("Role cannot be null");
         }
 
         Optional<Role> roleOptional = roleRepository.findById(roleId);
 
         if(!roleOptional.isPresent()){
+            log.error("[deleteById] Invalid Role Id :"+ roleId);
             throw new RoleNotFoundException("Invalid Role Id :"+ roleId);
         }
 
@@ -125,6 +130,11 @@ public class RoleServiceImpl implements RoleService {
     }
 
     /*----------------- Roles from Group Id -------------------*/
+    /**
+     * This method is used to fulfill the request made from Group-Service to get Roles for a Group.
+     * @param Set<GroupRoleMappingResponseDto> Set of GroupRoleMappingResponseDto
+     * @return Set<RoleResponseDto> Set of RoleResponseDto>
+     */
     @Override
     public Set<RoleResponseDto> getRolesByGroupId(Set<GroupRoleMappingResponseDto> groupRoleMappingResponseDtos) {
         Set<RoleResponseDto> roleResponseDtos = new HashSet<>();

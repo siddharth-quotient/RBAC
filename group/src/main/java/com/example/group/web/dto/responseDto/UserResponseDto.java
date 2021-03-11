@@ -5,7 +5,7 @@ import lombok.*;
 import java.time.OffsetDateTime;
 
 /**
- *Data transfer object for users.
+ * Response Data Transfer Object representing User.
  *
  * @author Siddharth Mehta
  */

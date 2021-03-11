@@ -9,6 +9,11 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Null;
 import java.time.OffsetDateTime;
 
+/**
+ * Response Data Transfer Object representing Role.
+ *
+ * @author Siddharth Mehta
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

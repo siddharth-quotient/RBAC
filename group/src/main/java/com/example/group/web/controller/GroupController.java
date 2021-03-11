@@ -56,12 +56,22 @@ public class GroupController {
 
 
     /*----------------- Roles from Group Id -------------------*/
+    /**
+     * This method is an API endpoint used to get a list of roles for a group.
+     * @param groupId Id of Group
+     * @return ResponseEntity<ResponseDto>  response entity of global wrapper of all responses.
+     */
     @GetMapping("/{groupId}/roles")
     public ResponseEntity<ResponseDto> getRolesByGroupId(@PathVariable Long groupId){
         return new ResponseEntity<>(new ResponseDto(groupService.getRolesByGroupId(groupId), null), HttpStatus.OK);
     }
 
     /*----------------- Groups from User Name -------------------*/
+    /**
+     * This method is an API endpoint used to fulfill request of User-Service to fetch all Groups for User.
+     * @param Set<UserGroupMappingResponseDto> Set of UserGroupMappingResponseDto
+     * @return ResponseEntity<GroupList> object holding user and corresponding groups.
+     */
     @PostMapping("/user-groups")
     public ResponseEntity<GroupsList> getGroupsByUserId(@RequestBody Set<UserGroupMappingResponseDto> userGroupMappingResponseDtos) throws InterruptedException {
         GroupsList groupsList =new GroupsList();
@@ -74,6 +84,13 @@ public class GroupController {
     }
 
     /*-------------- Check if a User has a Role ---------------*/
+    /**
+     * This method is an API endpoint used to fulfill request of User-Service to check if a User has a Role permission .
+     * @param userId Id of User
+     * @param roleId Id of Role
+     * @return Boolean True (user has role permission),
+     *                 False (user doesn't have role permission).
+     */
     @GetMapping("/userId/{userId}/roleId/{roleId}/check")
     public Boolean checkRoleIdForUserId(@PathVariable Long userId, @PathVariable Long roleId) throws InterruptedException {
         Set<Long> groupIds = userGroupService.getGroupIdsForUserId(userId);

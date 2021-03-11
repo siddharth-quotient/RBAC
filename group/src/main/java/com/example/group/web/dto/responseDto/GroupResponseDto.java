@@ -7,7 +7,7 @@ import javax.validation.constraints.Null;
 import java.time.OffsetDateTime;
 
 /**
- *Data transfer object representing a group.
+ * Response Data Transfer Object representing Group.
  *
  * @author Siddharth Mehta
  */

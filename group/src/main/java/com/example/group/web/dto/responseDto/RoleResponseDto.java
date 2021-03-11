@@ -5,7 +5,7 @@ import lombok.*;
 import java.time.OffsetDateTime;
 
 /**
- *Data transfer object representing a roles to corresponding group.
+ * Response Data Transfer Object representing Role.
  *
  * @author Siddharth Mehta
  */

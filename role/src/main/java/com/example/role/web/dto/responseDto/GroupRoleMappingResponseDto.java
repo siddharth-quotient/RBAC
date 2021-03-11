@@ -4,6 +4,11 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+/**
+ * Response Data Transfer Object representing GroupRoleMappings.
+ *
+ * @author Siddharth Mehta
+ */
 @Getter
 @Setter
 @ToString

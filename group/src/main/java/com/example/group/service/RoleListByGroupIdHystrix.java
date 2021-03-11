@@ -1,12 +1,12 @@
 package com.example.group.service;
 
-import com.example.group.repository.GroupRoleRepository;
 import com.example.group.web.dto.responseDto.GroupRoleMappingResponseDto;
 import com.example.group.web.dto.responseDto.RoleResponseDto;
 import com.example.group.web.dto.responseDto.RolesList;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -21,6 +21,7 @@ import java.util.Set;
  * @author Siddharth Mehta
  */
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class RoleListByGroupIdHystrix {
 
@@ -33,6 +34,7 @@ public class RoleListByGroupIdHystrix {
     })
     public ResponseEntity<RolesList> getRoleListByGroupId(Set<GroupRoleMappingResponseDto> groupRoleMappingResponseDtos){
         ResponseEntity<RolesList> rolesListResponseEntity = restTemplate.postForEntity("http://role-service/roles/group-roles/", groupRoleMappingResponseDtos, RolesList.class);
+        log.info("Fetching roleList from getRoleListByGroupId!");
         return rolesListResponseEntity;
     }
 
@@ -48,6 +50,7 @@ public class RoleListByGroupIdHystrix {
         }
 
         fallBackRolesList.setRoles(roleResponseDtoHashSet);
+        log.info("Fetching roleList from getFallBackRoleListByGroupId!");
         return new ResponseEntity<>(fallBackRolesList, HttpStatus.OK);
     }
 }

@@ -3,7 +3,7 @@ package com.example.group.web.dto.responseDto;
 import lombok.*;
 
 /**
- *Data transfer object representing a user-group-mapping.
+ * Response Data Transfer Object representing UserGroupMappings.
  *
  * @author Siddharth Mehta
  */

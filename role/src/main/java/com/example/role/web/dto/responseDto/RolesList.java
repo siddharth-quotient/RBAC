@@ -6,6 +6,11 @@ import lombok.Setter;
 
 import java.util.Set;
 
+/**
+ * Response Data Transfer Object representing Group with corresponding Roles.
+ *
+ * @author Siddharth Mehta
+ */
 @Getter
 @Setter
 /*----------------- (Wrapper)Response for - Roles from Group ID -------------------*/

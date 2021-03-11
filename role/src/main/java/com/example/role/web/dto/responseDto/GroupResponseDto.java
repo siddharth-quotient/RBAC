@@ -8,6 +8,11 @@ import lombok.NoArgsConstructor;
 
 import java.time.OffsetDateTime;
 
+/**
+ * Response Data Transfer Object representing Group.
+ *
+ * @author Siddharth Mehta
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

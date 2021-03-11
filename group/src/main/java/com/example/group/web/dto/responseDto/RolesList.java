@@ -6,7 +6,7 @@ import lombok.Setter;
 import java.util.Set;
 
 /**
- * Wrapper Object to  provide a data transfer object of role list along with groups.
+ * Response Data Transfer Object representing Group with corresponding Roles.
  *
  * @author Siddharth Mehta
  */

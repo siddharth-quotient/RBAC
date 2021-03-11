@@ -8,7 +8,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 
 /**
- *Data transfer object representing a group-role-mapping.
+ * Response Data Transfer Object representing GroupRoleMappings.
  *
  * @author Siddharth Mehta
  */
