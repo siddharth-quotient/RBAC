@@ -64,14 +64,14 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
     public ResponseEntity<ResponseDto> userNameNotUniqueException(UserNameNotUniqueException userNameNotUniqueException, WebRequest request) {
         ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), Constants.USER_NAME_DATA_INTEGRITY_VIOLATION, userNameNotUniqueException.getMessage(), request.getDescription(false));
 
-        return new ResponseEntity<>(new ResponseDto(null, exceptionResponse), HttpStatus.CONFLICT);
+        return new ResponseEntity<>(new ResponseDto(null, exceptionResponse), HttpStatus.OK);
     }
 
     @ExceptionHandler(UserGroupNotUniqueException.class)
     public ResponseEntity<ResponseDto> userGroupNotUniqueException(UserGroupNotUniqueException userGroupNotUniqueException, WebRequest request) {
         ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), Constants.USER_GROUP_DATA_INTEGRITY_VIOLATION, userGroupNotUniqueException.getMessage(), request.getDescription(false));
 
-        return new ResponseEntity<>(new ResponseDto(null, exceptionResponse), HttpStatus.CONFLICT);
+        return new ResponseEntity<>(new ResponseDto(null, exceptionResponse), HttpStatus.OK);
     }
 
     @ExceptionHandler(GroupServiceDownException.class)

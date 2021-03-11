@@ -56,7 +56,7 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
     public ResponseEntity<ResponseDto> groupNameNotUniqueException(GroupNameNotUniqueException groupNameNotUniqueException, WebRequest request) {
         ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), Constants.GROUP_NAME_DATA_INTEGRITY_VIOLATION, groupNameNotUniqueException.getMessage(), request.getDescription(false));
 
-        return new ResponseEntity<>(new ResponseDto(null, exceptionResponse), HttpStatus.CONFLICT);
+        return new ResponseEntity<>(new ResponseDto(null, exceptionResponse), HttpStatus.OK);
 
     }
 
@@ -64,7 +64,7 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
     public ResponseEntity<ResponseDto> groupRoleNotUniqueException(GroupRoleNotUniqueException groupRoleNotUniqueException, WebRequest request) {
         ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), Constants.GROUP_ROLE_DATA_INTEGRITY_VIOLATION, groupRoleNotUniqueException.getMessage(), request.getDescription(false));
 
-        return new ResponseEntity<>(new ResponseDto(null, exceptionResponse), HttpStatus.CONFLICT);
+        return new ResponseEntity<>(new ResponseDto(null, exceptionResponse), HttpStatus.OK);
     }
 
     @ExceptionHandler(RoleServiceDownException.class)
