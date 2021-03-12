@@ -1,10 +1,7 @@
 package com.example.group.web.dto;
 
 import com.example.group.web.exception.ExceptionResponse;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 /**
  * Global wrapper for all Data Transfer Objects.
@@ -12,6 +9,7 @@ import lombok.Setter;
  * @author Siddharth Mehta
  */
 @Data
+@NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter

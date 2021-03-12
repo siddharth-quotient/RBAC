@@ -16,12 +16,12 @@ import javax.validation.constraints.NotBlank;
 @Getter
 @Setter
 public class UserRequestDto {
-    @NotBlank(message = "User Name cannot be Null")
+    @NotBlank(message = "User Name cannot be Empty.")
     private String userName;
 
-    @NotBlank(message = "First Name cannot be Null")
+    @NotBlank(message = "First Name cannot be Empty.")
     private String firstName;
 
-    @NotBlank(message = "Last Name cannot be Null")
+    @NotBlank(message = "Last Name cannot be Empty.")
     private String lastName;
 }

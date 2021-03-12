@@ -19,12 +19,12 @@ import javax.validation.constraints.NotNull;
 @Setter
 public class
 RoleUpdateRequestDto {
-    @NotNull(message = "Role ID cannot be Null")
+    @NotNull(message = "Role ID Cannot Be Empty.")
     private Long roleId;
 
-    @NotBlank(message = "Role Name cannot be Null")
+    @NotBlank(message = "Role Name Cannot Be Empty.")
     private String roleName;
 
-    @NotBlank(message = "Role Description cannot be Null")
+    @NotBlank(message = "Role Description Cannot Be Empty.")
     private String roleDescription;
 }

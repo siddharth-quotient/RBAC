@@ -41,9 +41,9 @@ public class RoleServiceImpl implements RoleService {
             log.error("[getRoleById] Role cannot be null");
             throw new RoleNotFoundException("Role cannot be null");
         }
-        Optional<Role> roleOpt = roleRepository.findById(roleId);
-        if (roleOpt.isPresent()){
-            return roleMapper.roleToRoleResponseDto(roleOpt.get());
+        Optional<Role> roleOptional = roleRepository.findById(roleId);
+        if (roleOptional.isPresent()){
+            return roleMapper.roleToRoleResponseDto(roleOptional.get());
         }
         log.error("[getRoleById] Invalid Role Id: "+ roleId);
         throw new RoleNotFoundException("Invalid Role Id :"+ roleId);

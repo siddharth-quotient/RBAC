@@ -18,13 +18,13 @@ import javax.validation.constraints.Null;
 @Setter
 public class UserGroupMappingRequestDto {
 
-    @Null(message = "User-Group ID is auto-generated - should be null")
+    @Null(message = "User-Group ID Is Auto-Generated - Should Not Be Set.")
     private Long userGroupId;
 
-    @NotNull(message = "User ID cannot be Null")
+    @NotNull(message = "User ID Cannot Be Empty.")
     private Long userId;
 
-    @NotNull(message = "Group ID cannot be Null")
+    @NotNull(message = "Group ID Cannot Be Empty.")
     private Long groupId;
 
 }

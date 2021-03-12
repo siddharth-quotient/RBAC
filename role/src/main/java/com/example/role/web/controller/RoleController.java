@@ -71,4 +71,10 @@ public class RoleController {
         rolesList.setRoles(roleService.getRolesByGroupId(groupRoleMappingResponseDtos));
         return new ResponseEntity<>(rolesList, HttpStatus.OK);
     }
+
+
+    @GetMapping("/get/{roleId}")
+    public ResponseDto getRoleByIdWithReturnResponseDto(@PathVariable Long roleId){
+        return new ResponseDto(roleService.getRoleById(roleId), null);
+    }
 }

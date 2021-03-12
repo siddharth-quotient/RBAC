@@ -1,9 +1,9 @@
 package com.example.user.service;
 
 import com.example.user.restTemplate.GroupRestTemplateResponseErrorHandler;
+import com.example.user.web.dto.ResponseDto;
 import com.example.user.web.exception.GroupNotFoundException;
 import com.example.user.web.exception.GroupServiceDownException;
-import com.example.user.web.dto.responseDto.GroupResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -23,13 +23,13 @@ public class ValidateGroupForUserGroupMapping {
         restTemplate.setErrorHandler(groupRestTemplateResponseErrorHandler);
 
         try {
-            GroupResponseDto groupResponseDto = restTemplate.getForObject("http://group-service/groups/" + groupId, GroupResponseDto.class);
-            if(groupResponseDto.getGroupId()==null){
+            ResponseDto responseDto= restTemplate.getForObject("http://group-service/groups/get/" + groupId,
+                    ResponseDto.class);
+            if(responseDto.getError()!=null){
                 log.error("[checkGroupExist] Group does not exist!");
                 throw new GroupNotFoundException("Invalid Group Id: "+groupId);
             }
         }
-
         catch (IllegalStateException illegalStateException) {
             log.error("[checkGroupExist] Group Service Down!");
             throw new GroupServiceDownException("Group Service Down!");

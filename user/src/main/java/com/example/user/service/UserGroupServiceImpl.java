@@ -78,7 +78,7 @@ public class UserGroupServiceImpl implements UserGroupService {
 
         if(!userGroupMappingOptional.isPresent()){
             log.error("[updateUserGroupMappingById] Invalid User-Group Mapping [updateUserGroupMappingById] with Id: "+ userGroupId);
-            throw new UserGroupNotFoundException("Invalid User-Group Mapping with Id :"+ userGroupId);
+            throw new UserGroupNotFoundException("Invalid User-Group Mapping with Id: "+ userGroupId);
         }else{
             UserGroupMapping userGroupMapping = userGroupMappingOptional.get();
 

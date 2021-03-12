@@ -123,8 +123,8 @@ public class GroupServiceImpl implements GroupService {
         Optional<Group> groupOptional = groupRepository.findById(groupId);
 
         if(!groupOptional.isPresent()){
-            log.error("[deleteById] Invalid Group Id :"+ groupId);
-            throw new GroupNotFoundException("Invalid Group Id :"+ groupId);
+            log.error("[deleteById] Invalid Group Id: "+ groupId);
+            throw new GroupNotFoundException("Invalid Group Id: "+ groupId);
         }
 
         groupRepository.deleteById(groupId);

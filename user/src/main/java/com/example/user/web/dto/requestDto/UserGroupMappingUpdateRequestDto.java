@@ -17,13 +17,13 @@ import javax.validation.constraints.NotNull;
 @Setter
 public class UserGroupMappingUpdateRequestDto {
 
-    @NotNull(message = "User-Group ID cannot be null")
+    @NotNull(message = "User-Group ID Cannot Be Empty.")
     private Long userGroupId;
 
-    @NotNull(message = "User ID cannot be Null")
+    @NotNull(message = "User ID Cannot Be Empty.")
     private Long userId;
 
-    @NotNull(message = "Group ID cannot be Null")
+    @NotNull(message = "Group ID Cannot Be Empty.")
     private Long groupId;
 
 }

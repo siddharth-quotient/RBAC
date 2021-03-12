@@ -148,18 +148,21 @@ public class UserServiceImpl implements UserService {
      * This method is used to check if a user belongs to group.
      * @param userName Name of user
      * @param groupId Id of group
-     * @return Boolean True (user belongs to group),
-     *                 False (user doesn't belong to group)
+     * @return String user belongs to group,
+     *                user doesn't belong to group
      */
     @Override
-    public Boolean checkGroupIdForUserName(String userName, Long groupId) {
+    public String checkGroupIdForUserName(String userName, Long groupId) {
         User user = getUserByUserName(userName);
         Long userId = user.getUserId();
 
         Optional<UserGroupMapping> userGroupMappingOptional = userGroupRepository
                 .findUserGroupMappingByUserIdAndGroupId(userId, groupId);
 
-        return userGroupMappingOptional.isPresent();
+        return (userGroupMappingOptional.isPresent())
+                ? "User "+userName+" Belongs To Group "+groupId+"!"
+                : "User "+userName+" Doesn't Belongs To Group "+ groupId+"!";
+
     }
 
     /*-------------- Check if a User has a Role ---------------*/
@@ -171,12 +174,14 @@ public class UserServiceImpl implements UserService {
      *                 False (user doesn't have role permission)
      */
     @Override
-    public Boolean checkRoleIdForUserName(String userName, Long roleId) {
+    public String checkRoleIdForUserName(String userName, Long roleId) {
 
         User user = getUserByUserName(userName);
         Long userId = user.getUserId();
 
-        return validateRoleForUserId.checkRolePermissionExistForUser(userId, roleId);
+        return (validateRoleForUserId.checkRolePermissionExistForUser(userId, roleId))
+                ? "User "+userName+" Has Role "+roleId+" Permission!"
+                : "User "+userName+" Doesn't Have Role "+ roleId+" Permission!";
     }
 
     //Helper function

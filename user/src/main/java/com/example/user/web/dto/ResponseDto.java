@@ -9,6 +9,7 @@ import lombok.*;
  * @author Siddharth Mehta
  */
 @Data
+@NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter

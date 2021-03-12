@@ -35,7 +35,7 @@ public class UserGroupController {
 
     @PutMapping
     public ResponseEntity<ResponseDto> updateUserGroupMappingById(@Valid @RequestBody UserGroupMappingUpdateRequestDto userGroupMappingUpdateRequestDto){
-        return new ResponseEntity<>(new ResponseDto(userGroupService.updateUserGroupMappingById(userGroupMappingUpdateRequestDto),null), HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(new ResponseDto(userGroupService.updateUserGroupMappingById(userGroupMappingUpdateRequestDto),null), HttpStatus.OK);
     }
 
     @PostMapping

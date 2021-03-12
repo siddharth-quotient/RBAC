@@ -17,13 +17,13 @@ import javax.validation.constraints.NotNull;
 @Setter
 public class GroupRoleMappingUpdateRequestDto {
 
-    @NotNull(message = "Group-Role ID cannot be null")
+    @NotNull(message = "Group-Role ID Cannot Be Empty.")
     private Long groupRoleId;
 
-    @NotNull(message = "Group ID cannot be Null")
+    @NotNull(message = "Group ID Cannot Be Empty.")
     private Long groupId;
 
-    @NotNull(message = "Role ID cannot be Null")
+    @NotNull(message = "Role ID Cannot Be Empty.")
     private Long roleId;
 
 }

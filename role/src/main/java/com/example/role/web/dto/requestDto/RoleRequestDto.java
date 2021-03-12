@@ -20,12 +20,12 @@ import javax.validation.constraints.Null;
 public class
 RoleRequestDto {
 
-    @Null(message = "Role ID is auto generated - should be Null")
+    @Null(message = "Role ID Is Auto Generated - Should Not Be Set.")
     private Long roleId;
 
-    @NotBlank(message = "Role Name cannot be Null")
+    @NotBlank(message = "Role Name Cannot Be Empty.")
     private String roleName;
 
-    @NotBlank(message = "Role Description cannot be Null")
+    @NotBlank(message = "Role Description Cannot Be Empty.")
     private String roleDescription;
 }

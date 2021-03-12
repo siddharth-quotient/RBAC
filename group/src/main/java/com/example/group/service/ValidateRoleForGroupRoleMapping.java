@@ -2,6 +2,7 @@ package com.example.group.service;
 
 
 import com.example.group.restTemplate.RoleRestTemplateResponseErrorHandler;
+import com.example.group.web.dto.ResponseDto;
 import com.example.group.web.exception.RoleNotFoundException;
 import com.example.group.web.exception.RoleServiceDownException;
 import com.example.group.web.dto.responseDto.RoleResponseDto;
@@ -17,27 +18,27 @@ import org.springframework.web.client.RestTemplate;
 @RequiredArgsConstructor
 public class ValidateRoleForGroupRoleMapping {
     private final RestTemplate restTemplate;
-    private final RoleRestTemplateResponseErrorHandler restTemplateResponseErrorHandler;
+    private final RoleRestTemplateResponseErrorHandler roleRestTemplateResponseErrorHandler;
 
     void checkRoleExist(Long roleId){
 
-        restTemplate.setErrorHandler(restTemplateResponseErrorHandler);
+        restTemplate.setErrorHandler(roleRestTemplateResponseErrorHandler);
 
         try {
-            RoleResponseDto roleResponseDto = restTemplate.getForObject("http://role-service/roles/" + roleId, RoleResponseDto.class);
-            if(roleResponseDto.getRoleId()==null){
-
-                log.error("[checkGroupExist]  Invalid Role Id: "+ roleId);
+            ResponseDto responseDto= restTemplate.getForObject("http://role-service/roles/get/" + roleId,
+                    ResponseDto.class);
+            if(responseDto.getError()!=null){
+                log.error("[checkRoleExist] Role does not exist!");
                 throw new RoleNotFoundException("Invalid Role Id: "+roleId);
             }
         }
-        catch (IllegalStateException e) {
+        catch (IllegalStateException illegalStateException) {
             log.error("[checkRoleExist] Role Service Down!");
             throw new RoleServiceDownException("Role Service Down!");
         }
-        catch (RestClientException ex){
+        /*catch (RestClientException restClientException){
             log.error("[checkRoleExist] Role Service acting poorly, timed out!");
             throw new RoleServiceDownException("Role Service acting poorly, timed out!");
-        }
+        }*/
     }
 }

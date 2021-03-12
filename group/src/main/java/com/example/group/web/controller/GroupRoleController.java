@@ -35,7 +35,7 @@ public class GroupRoleController {
 
     @PutMapping
     public ResponseEntity<ResponseDto> updateGroupRoleMappingById(@Valid @RequestBody GroupRoleMappingUpdateRequestDto groupRoleMappingUpdateRequestDto){
-        return new ResponseEntity<>(new ResponseDto(groupRoleService.updateGroupRoleMappingById(groupRoleMappingUpdateRequestDto), null), HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(new ResponseDto(groupRoleService.updateGroupRoleMappingById(groupRoleMappingUpdateRequestDto), null), HttpStatus.OK);
     }
 
     @PostMapping

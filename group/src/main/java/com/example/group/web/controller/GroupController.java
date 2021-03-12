@@ -40,7 +40,7 @@ public class GroupController {
 
     @PutMapping
     public ResponseEntity<ResponseDto> updateGroupById(@Valid @RequestBody GroupUpdateRequestDto groupUpdateRequestDto){
-        return new ResponseEntity<>(new ResponseDto(groupService.updateGroupById(groupUpdateRequestDto), null), HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(new ResponseDto(groupService.updateGroupById(groupUpdateRequestDto), null), HttpStatus.OK);
     }
 
     @PostMapping
@@ -99,6 +99,12 @@ public class GroupController {
         Thread.sleep(3000);*/
 
         return userGroupService.getRoleIdsForGroupIds(groupIds, roleId);
+    }
+
+
+    @GetMapping("/get/{groupId}")
+    public ResponseDto getGroupByIdWithReturnResponseDto(@PathVariable Long groupId){
+        return new ResponseDto(groupService.getGroupById(groupId), null);
     }
 
 }

@@ -35,7 +35,7 @@ public class UserController {
 
     @PutMapping
     public ResponseEntity<ResponseDto> updateUserByName(@Valid @RequestBody UserRequestDto userRequestDto){
-        return new ResponseEntity<>(new ResponseDto(userService.updateUserByName(userRequestDto), null), HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(new ResponseDto(userService.updateUserByName(userRequestDto), null), HttpStatus.OK);
     }
 
     @PostMapping
@@ -69,11 +69,8 @@ public class UserController {
      * @return ResponseEntity response entity with StatusCode 200 OK for true and 404 Not Found for false.
      */
     @GetMapping("/{userName}/groups/{groupId}/check")
-    public ResponseEntity<?> checkGroupIdForUserName(@PathVariable String userName, @PathVariable Long groupId){
-        Boolean isValid = userService.checkGroupIdForUserName(userName, groupId);
-
-        return isValid?new ResponseEntity<>(HttpStatus.OK):new ResponseEntity<>(HttpStatus.NOT_FOUND);
-
+    public ResponseEntity<ResponseDto> checkGroupIdForUserName(@PathVariable String userName, @PathVariable Long groupId){
+        return new ResponseEntity<>(new ResponseDto(userService.checkGroupIdForUserName(userName, groupId), null), HttpStatus.OK);
     }
 
     /*-------------- Check if a User has a Role ---------------*/
@@ -85,9 +82,7 @@ public class UserController {
      */
     @GetMapping("/{userName}/roles/{roleId}/check")
     public ResponseEntity<?> checkRoleIdForUserName(@PathVariable String userName, @PathVariable Long roleId){
-        Boolean isValid = userService.checkRoleIdForUserName(userName, roleId);
-
-        return isValid?new ResponseEntity<>(HttpStatus.OK):new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(new ResponseDto(userService.checkRoleIdForUserName(userName, roleId), null), HttpStatus.OK);
     }
 
 
