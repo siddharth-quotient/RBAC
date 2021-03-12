@@ -107,4 +107,17 @@ public class GroupController {
         return new ResponseDto(groupService.getGroupById(groupId), null);
     }
 
+
+    /*----------------- Groups And Roles from User Name -------------------*/
+    /**
+     * This method is an API endpoint used to fulfill request of User-Service to fetch all Groups and Roles for User.
+     * @param Set<UserGroupMappingResponseDto> Set of UserGroupMappingResponseDto
+     * @return ResponseEntity<AllCredentialList> object holding all credentials.
+     */
+    @PostMapping("/all-credentials")
+    public ResponseEntity<AllCredentialList> getGroupsAndRolesByUserId(@RequestBody Set<UserGroupMappingResponseDto> userGroupMappingResponseDtos){
+        AllCredentialList allCredentialList = groupService.getGroupsAndRolesByUserId(userGroupMappingResponseDtos);
+        return new ResponseEntity<>(allCredentialList, HttpStatus.OK);
+    }
+
 }

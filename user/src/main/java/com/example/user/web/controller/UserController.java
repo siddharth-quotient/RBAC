@@ -86,4 +86,14 @@ public class UserController {
     }
 
 
+    /**
+     * This method is an API endpoint used to get a list of groups and roles for a user.
+     * @param userName Name of user
+     * @return ResponseEntity<ResponseDto>  response entity of global wrapper of all responses.
+     */
+    @GetMapping("/{userName}/all-credentials")
+    public ResponseEntity<ResponseDto> getGroupsAndRolesByUserName(@PathVariable String userName){
+        return new ResponseEntity<>(new ResponseDto(userService.getGroupsAndRolesByUserName(userName), null), HttpStatus.OK);
+    }
+
 }

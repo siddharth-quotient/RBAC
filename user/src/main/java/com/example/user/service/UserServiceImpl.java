@@ -4,15 +4,12 @@ import com.example.user.domain.User;
 import com.example.user.domain.UserGroupMapping;
 import com.example.user.repository.UserGroupRepository;
 import com.example.user.repository.UserRepository;
+import com.example.user.web.dto.responseDto.*;
 import com.example.user.web.exception.UserNameNotUniqueException;
 import com.example.user.web.exception.UserNotFoundException;
 import com.example.user.web.mapper.UserGroupMapper;
 import com.example.user.web.mapper.UserMapper;
 import com.example.user.web.dto.requestDto.UserRequestDto;
-import com.example.user.web.dto.responseDto.AllUsersResponseDto;
-import com.example.user.web.dto.responseDto.GroupsList;
-import com.example.user.web.dto.responseDto.UserResponseDto;
-import com.example.user.web.dto.responseDto.UserGroupMappingResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -39,6 +36,7 @@ public class UserServiceImpl implements UserService {
     private final UserGroupMapper userGroupMapper;
     private final UserMapper userMapper;
     private final GroupListByUserIdHystrix groupListByUserIdHystrix;
+    private final AllCredentialsByUserIdHystrix allCredentialsByUserIdHystrix;
     private final ValidateRoleForUserId validateRoleForUserId;
 
     @Override
@@ -182,6 +180,27 @@ public class UserServiceImpl implements UserService {
         return (validateRoleForUserId.checkRolePermissionExistForUser(userId, roleId))
                 ? "User "+userName+" Has Role "+roleId+" Permission!"
                 : "User "+userName+" Doesn't Have Role "+ roleId+" Permission!";
+    }
+
+    /**
+     * This method is used to get a list of groups and roles for a user.
+     * @param userName Name of user
+     * @return AllCredentialList object holding user and corresponding groups and roles.
+     */
+    @Override
+    public AllCredentialList getGroupsAndRolesByUserName(String userName) {
+        User user = this.getUserByUserName(userName);
+        Long userId = user.getUserId();
+        Set<UserGroupMappingResponseDto> userGroupMappingResponseDtos = new HashSet<>();
+
+        userGroupRepository.findByUserId(userId).forEach(userGroupMapping -> {
+            userGroupMappingResponseDtos.add(userGroupMapper.userGroupMappingToUserGroupMappingResponseDto(userGroupMapping));
+        });
+
+        ResponseEntity<AllCredentialList>  allCredentialListResponseEntity = allCredentialsByUserIdHystrix.getAllCredentialListByUserId(userGroupMappingResponseDtos);
+        AllCredentialList allCredentialList = allCredentialListResponseEntity.getBody();
+        allCredentialList.setUser(userMapper.userToUserResponseDto(user));
+        return allCredentialList;
     }
 
     //Helper function

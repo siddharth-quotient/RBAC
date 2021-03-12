@@ -1,6 +1,7 @@
 package com.example.group.service;
 
 import com.example.group.domain.Group;
+import com.example.group.domain.GroupRoleMapping;
 import com.example.group.repository.GroupRepository;
 import com.example.group.repository.GroupRoleRepository;
 import com.example.group.repository.UserGroupRepository;
@@ -38,6 +39,7 @@ public class GroupServiceImpl implements GroupService {
     private final GroupMapper groupMapper;
     private final GroupRoleMapper groupRoleMapper;
     private final RoleListByGroupIdHystrix roleListByGroupIdHystrix;
+    private final AllCredentialsByUserIdHystrix allCredentialsByUserIdHystrix;
 
 
     @Override
@@ -179,5 +181,39 @@ public class GroupServiceImpl implements GroupService {
         });
 
         return groupResponseDtoSet;
+    }
+
+
+    /**
+     * This method is used to fulfill the request made from User-Service to get Groups And Roles for a User.
+     * @param Set<UserGroupMappingResponseDto> Set of UserGroupMappingResponseDto.
+     * @return Set<GroupResponseDto> Set of GroupResponseDto.
+     */
+    @Override
+    public AllCredentialList getGroupsAndRolesByUserId(Set<UserGroupMappingResponseDto> userGroupMappingResponseDtos) {
+        AllCredentialList allCredentialList = new AllCredentialList();
+        Set<Long> groupIds = new HashSet<>();
+        Set<GroupRoleMapping> groupRoleMappings = new HashSet<>();
+        Set<GroupRoleMappingResponseDto> groupRoleMappingResponseDtos = new HashSet<>();
+
+        allCredentialList.setGroups(this.getGroupsByUserId(userGroupMappingResponseDtos));
+
+
+        for(UserGroupMappingResponseDto userGroupMappingResponseDto: userGroupMappingResponseDtos){
+            groupIds.add(userGroupMappingResponseDto.getGroupId());
+        }
+
+        for(Long groupId: groupIds){
+            groupRoleMappings.addAll(groupRoleRepository.findByGroupId(groupId));
+        }
+
+        for(GroupRoleMapping groupRoleMapping: groupRoleMappings){
+            groupRoleMappingResponseDtos.add(groupRoleMapper.groupRoleMappingToGroupRoleResponseMappingDto(groupRoleMapping));
+        }
+
+        ResponseEntity<AllCredentialList>  allCredentialListResponseEntity = allCredentialsByUserIdHystrix.getAllCredentialListByUserId(groupRoleMappingResponseDtos);
+        allCredentialList.setRoles(allCredentialListResponseEntity.getBody().getRoles());
+
+        return allCredentialList;
     }
 }

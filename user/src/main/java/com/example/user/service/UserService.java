@@ -1,6 +1,7 @@
 package com.example.user.service;
 
 import com.example.user.web.dto.requestDto.UserRequestDto;
+import com.example.user.web.dto.responseDto.AllCredentialList;
 import com.example.user.web.dto.responseDto.AllUsersResponseDto;
 import com.example.user.web.dto.responseDto.GroupsList;
 import com.example.user.web.dto.responseDto.UserResponseDto;
@@ -25,4 +26,7 @@ public interface UserService {
 
     /*-------------- Check if a User has a Role ---------------*/
     String checkRoleIdForUserName(String userName, Long roleId);
+
+    /*-------------- Groups and Roles from UserName ----------------*/
+   AllCredentialList getGroupsAndRolesByUserName(String userName);
 }

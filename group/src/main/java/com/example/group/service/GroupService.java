@@ -2,10 +2,7 @@ package com.example.group.service;
 
 import com.example.group.web.dto.requestDto.GroupRequestDto;
 import com.example.group.web.dto.requestDto.GroupUpdateRequestDto;
-import com.example.group.web.dto.responseDto.AllGroupsResponseDto;
-import com.example.group.web.dto.responseDto.GroupResponseDto;
-import com.example.group.web.dto.responseDto.RolesList;
-import com.example.group.web.dto.responseDto.UserGroupMappingResponseDto;
+import com.example.group.web.dto.responseDto.*;
 
 import java.util.Set;
 
@@ -26,4 +23,7 @@ public interface GroupService {
 
     /*----------------- Groups from User Name -------------------*/
     Set<GroupResponseDto> getGroupsByUserId(Set<UserGroupMappingResponseDto> userGroupMappingResponseDtos);
+
+    /*----------------- Groups And Roles from User Name -------------------*/
+    AllCredentialList getGroupsAndRolesByUserId(Set<UserGroupMappingResponseDto> userGroupMappingResponseDtos);
 }
