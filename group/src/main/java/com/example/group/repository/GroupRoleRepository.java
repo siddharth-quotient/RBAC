@@ -17,4 +17,6 @@ public interface GroupRoleRepository extends JpaRepository<GroupRoleMapping, Lon
     Set<GroupRoleMapping> findByGroupId(Long groupId);
     void deleteByGroupId(Long groupId);
     Optional<GroupRoleMapping> findByGroupIdAndAndRoleId(Long groupId, Long roleId);
+    void deleteByGroupIdAndRoleId(Long groupId, Long roleId);
+
 }

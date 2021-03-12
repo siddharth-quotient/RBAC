@@ -15,5 +15,5 @@ public interface UserGroupService {
     UserGroupMappingResponseDto getUserGroupMappingById(String userGroupStringId);
     UserGroupMappingResponseDto updateUserGroupMappingById(UserGroupMappingUpdateRequestDto userGroupMappingUpdateRequestDto);
     UserGroupMappingResponseDto createUserGroupMapping(UserGroupMappingRequestDto userGroupMappingRequestDto);
-    UserGroupMappingResponseDto deleteById(String userGroupStringId);
+    UserGroupMappingResponseDto deleteByUserIdAndGroupId(String userName, Long groupId);
 }

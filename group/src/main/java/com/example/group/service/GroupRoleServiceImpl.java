@@ -136,24 +136,25 @@ public class GroupRoleServiceImpl implements GroupRoleService {
         }
     }
 
+
     @Override
-    public GroupRoleMappingResponseDto deleteById(Long groupRoleId) {
-        if(groupRoleId==null){
-            log.error("Group-Role Mapping cannot be Null");
-            throw new GroupRoleNotFoundException("Group-Role Mapping cannot be Null");
+    @Transactional
+    public GroupRoleMappingResponseDto deleteByGroupIdAndRoleId(Long groupId, Long roleId) {
+        Optional<Group> groupOptional = groupRepository.findById(groupId);
+        if(!groupOptional.isPresent()) {
+            log.error("[deleteByGroupIdAndRoleId] Invalid Group Id: "+ groupId);
+            throw new GroupNotFoundException("Invalid Group Id: "+ groupId);
         }
 
-        Optional<GroupRoleMapping> groupRoleOptional = groupRoleRepository.findById(groupRoleId);
+        Optional<GroupRoleMapping> groupMappingByUserIdAndGroupId = groupRoleRepository.findByGroupIdAndAndRoleId(groupId, roleId);
 
-        if(!groupRoleOptional.isPresent()){
-            log.error("[deleteById] Invalid Group-Role Mapping with Id: "+ groupRoleId);
-            throw new GroupRoleNotFoundException("Invalid Group-Role Mapping with Id: "+ groupRoleId);
+        if(!groupMappingByUserIdAndGroupId.isPresent()){
+            log.error("[deleteByGroupIdAndRoleId] Invalid Group-Role Mapping with Group Id: "+ groupId+" and Role Id: "+ roleId);
+            throw new GroupRoleNotFoundException("Invalid Group-Role Mapping with Group Id: "+ groupId+" and Role Id: "+ roleId);
         }
-
-        groupRoleRepository.deleteById(groupRoleId);
-        return groupRoleMapper.groupRoleMappingToGroupRoleResponseMappingDto(groupRoleOptional.get());
+        groupRoleRepository.deleteByGroupIdAndRoleId(groupId, roleId);
+        return groupRoleMapper.groupRoleMappingToGroupRoleResponseMappingDto(groupMappingByUserIdAndGroupId.get());
     }
-
 
     public boolean validateGroupId(Long groupId){
         Optional<Group> groupOptional = groupRepository.findById(groupId);
