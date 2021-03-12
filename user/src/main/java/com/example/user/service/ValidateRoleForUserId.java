@@ -25,13 +25,17 @@ public class ValidateRoleForUserId {
             return restTemplate.getForObject("http://group-service/groups/userId/" + userId + "/roleId/" + roleId + "/check",
                     Boolean.class);
         }
-        catch (IllegalStateException e) {
+        catch (IllegalStateException illegalStateException) {
             log.error("[checkRolePermissionExistForUser] Group Service Down!");
             throw new GroupServiceDownException("Group Service Down!");
         }
-        catch (RestClientException ex){
+        catch (RestClientException restClientException){
             log.error("[checkRolePermissionExistForUser] Group Service acting poorly, timed out!");
             throw new GroupServiceDownException("Group Service acting poorly, timed out!");
+        }
+        catch(Exception exception){
+            log.error("[checkGroupExist] Role does not exist!");
+            throw new GroupServiceDownException("Invalid Role Id: "+roleId);
         }
     }
 }

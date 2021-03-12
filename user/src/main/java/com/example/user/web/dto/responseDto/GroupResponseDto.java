@@ -10,6 +10,7 @@ import java.time.OffsetDateTime;
  * @author Siddharth Mehta
  */
 @Data
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter

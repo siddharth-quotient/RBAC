@@ -2,6 +2,7 @@ package com.example.group.service;
 
 
 import com.example.group.restTemplate.RoleRestTemplateResponseErrorHandler;
+import com.example.group.web.exception.RoleNotFoundException;
 import com.example.group.web.exception.RoleServiceDownException;
 import com.example.group.web.dto.responseDto.RoleResponseDto;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +25,11 @@ public class ValidateRoleForGroupRoleMapping {
 
         try {
             RoleResponseDto roleResponseDto = restTemplate.getForObject("http://role-service/roles/" + roleId, RoleResponseDto.class);
+            if(roleResponseDto.getRoleId()==null){
+
+                log.error("[checkGroupExist]  Invalid Role Id: "+ roleId);
+                throw new RoleNotFoundException("Invalid Role Id: "+roleId);
+            }
         }
         catch (IllegalStateException e) {
             log.error("[checkRoleExist] Role Service Down!");

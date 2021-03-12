@@ -33,12 +33,6 @@ public class GroupRestTemplateResponseErrorHandler implements ResponseErrorHandl
                 .series() == HttpStatus.Series.SERVER_ERROR) {
             log.error("Group Service Down!");
             throw new GroupServiceDownException("Group Service Down!");
-        } else if (httpResponse.getStatusCode()
-                .series() == HttpStatus.Series.CLIENT_ERROR) {
-            if (httpResponse.getStatusCode() == HttpStatus.NOT_FOUND) {
-                log.error("Invalid Group Id");
-                throw new GroupNotFoundException("Invalid Group Id");
-            }
         }
     }
 }

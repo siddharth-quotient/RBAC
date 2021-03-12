@@ -33,12 +33,6 @@ public class RoleRestTemplateResponseErrorHandler implements ResponseErrorHandle
                 .series() == HttpStatus.Series.SERVER_ERROR) {
             log.error("Role Service Down!");
             throw new RoleServiceDownException("Role Service Down!");
-        } else if (httpResponse.getStatusCode()
-                .series() == HttpStatus.Series.CLIENT_ERROR) {
-            if (httpResponse.getStatusCode() == HttpStatus.NOT_FOUND) {
-                log.error("Invalid Role Id");
-                throw new RoleNotFoundException("Invalid Role Id");
-            }
         }
     }
 }
