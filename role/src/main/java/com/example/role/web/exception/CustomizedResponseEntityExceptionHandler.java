@@ -50,7 +50,7 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
 
     @ExceptionHandler(RoleNameNotUniqueException.class)
     public ResponseEntity<Object> roleNameNotUniqueException(RoleNameNotUniqueException roleNameNotUniqueException, WebRequest request) {
-        ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), Constants.ROLE_NAME_DATA_INTEGRITY_VIOLATION, "Group Already Exists!", roleNameNotUniqueException.getMessage());
+        ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), Constants.ROLE_NAME_DATA_INTEGRITY_VIOLATION, "Role Already Exists!", roleNameNotUniqueException.getMessage());
 
         return new ResponseEntity<>(new ResponseDto(null, exceptionResponse), HttpStatus.OK);
     }

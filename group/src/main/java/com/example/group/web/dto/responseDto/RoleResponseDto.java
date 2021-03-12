@@ -14,6 +14,7 @@ import java.time.OffsetDateTime;
 @AllArgsConstructor
 @Getter
 @Setter
+@ToString
 /*----------------- (Wrapped) Response from - Roles from Group ID -------------------*/
 public class RoleResponseDto {
 

@@ -1,9 +1,6 @@
 package com.example.role.web.dto.responseDto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Null;
@@ -18,6 +15,9 @@ import java.time.OffsetDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Getter
+@Setter
+@ToString
 public class RoleResponseDto {
 
     @Null(message = "Role ID is auto generated - should be Null")

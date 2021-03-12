@@ -46,7 +46,7 @@ public class RoleServiceImpl implements RoleService {
             return roleMapper.roleToRoleResponseDto(roleOptional.get());
         }
         log.error("[getRoleById] Invalid Role Id: "+ roleId);
-        throw new RoleNotFoundException("Invalid Role Id :"+ roleId);
+        throw new RoleNotFoundException("Invalid Role Id: "+ roleId);
     }
 
     @Override

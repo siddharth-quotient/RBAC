@@ -6,7 +6,9 @@ import com.example.role.web.dto.ResponseDto;
 import com.example.role.web.dto.requestDto.RoleRequestDto;
 import com.example.role.web.dto.requestDto.RoleUpdateRequestDto;
 import com.example.role.web.dto.responseDto.GroupRoleMappingResponseDto;
+import com.example.role.web.dto.responseDto.RoleResponseDto;
 import com.example.role.web.dto.responseDto.RolesList;
+import com.example.role.web.exception.ExceptionResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +24,7 @@ import java.util.Set;
  *
  * @author Siddharth Mehta
  */
-@Controller
+@RestController
 @RequiredArgsConstructor
 @RequestMapping("/roles")
 public class RoleController {
@@ -72,9 +74,8 @@ public class RoleController {
         return new ResponseEntity<>(rolesList, HttpStatus.OK);
     }
 
-
     @GetMapping("/get/{roleId}")
-    public ResponseDto getRoleByIdWithReturnResponseDto(@PathVariable Long roleId){
+    public ResponseDto getRoleWithReturnResponseDto(@PathVariable Long roleId){
         return new ResponseDto(roleService.getRoleById(roleId), null);
     }
 }
