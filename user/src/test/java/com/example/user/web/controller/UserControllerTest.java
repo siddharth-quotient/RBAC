@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -80,6 +81,7 @@ class UserControllerTest {
     }
 
     @Test
+    @DisplayName("Get All Users")
     void getAllUsers() throws Exception {
         given(userService.getAllUsers()).willReturn(validAllUserResponseDto);
 
@@ -90,6 +92,7 @@ class UserControllerTest {
     }
 
     @Test
+    @DisplayName("Get A User By UserName")
     void getUserByName() throws Exception {
         given(userService.getUserByName(any())).willReturn(validUser1);
 
@@ -103,6 +106,7 @@ class UserControllerTest {
     }
 
     @Test
+    @DisplayName("Update A User")
     void updateUserByName() throws Exception {
         given(userService.updateUserByName(any())).willReturn(validUser1);
 
@@ -121,6 +125,7 @@ class UserControllerTest {
     }
 
     @Test
+    @DisplayName("Create A User")
     void createUser() throws Exception {
         given(userService.createUser(any())).willReturn(validUser1);
 
@@ -139,6 +144,7 @@ class UserControllerTest {
     }
 
     @Test
+    @DisplayName("Delete A User By UserName")
     void deleteByName() throws Exception {
         given(userService.deleteByName(any())).willReturn(validUser1);
 
