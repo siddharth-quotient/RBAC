@@ -44,7 +44,7 @@ public class RoleController {
 
     @PutMapping
     public ResponseEntity<ResponseDto> updateRoleById(@Valid @RequestBody RoleUpdateRequestDto roleUpdateRequestDto){
-        return new ResponseEntity<>(new ResponseDto(roleService.updateRoleById(roleUpdateRequestDto), null), HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(new ResponseDto(roleService.updateRoleById(roleUpdateRequestDto), null), HttpStatus.OK);
     }
 
     @PostMapping
