@@ -91,7 +91,7 @@ public class UserController {
      * @param userName Name of user
      * @return ResponseEntity<ResponseDto>  response entity of global wrapper of all responses.
      */
-    @GetMapping("/{userName}/all-credentials")
+    @GetMapping("/{userName}/group-roles")
     public ResponseEntity<ResponseDto> getGroupsAndRolesByUserName(@PathVariable String userName){
         return new ResponseEntity<>(new ResponseDto(userService.getGroupsAndRolesByUserName(userName), null), HttpStatus.OK);
     }

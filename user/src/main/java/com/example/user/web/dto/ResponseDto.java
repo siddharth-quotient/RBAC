@@ -1,6 +1,7 @@
 package com.example.user.web.dto;
 
 import com.example.user.web.exception.ExceptionResponse;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 
 /**
@@ -14,6 +15,8 @@ import lombok.*;
 @Getter
 @Setter
 public class ResponseDto {
+    @JsonInclude(value = JsonInclude.Include.NON_EMPTY, content = JsonInclude.Include.NON_NULL)
     private Object success;
+    @JsonInclude(value = JsonInclude.Include.NON_EMPTY, content = JsonInclude.Include.NON_NULL)
     private ExceptionResponse error;
 }
