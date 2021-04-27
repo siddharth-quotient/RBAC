@@ -24,27 +24,27 @@ public class UserGroupController {
     private final UserGroupService userGroupService;
 
     @GetMapping
-    public ResponseEntity<ResponseDto> getAllUserGroups(){
+    public ResponseEntity<ResponseDto> getAllUserGroups() {
         return new ResponseEntity<>(new ResponseDto(userGroupService.getAllUserGroupMappings(), null), HttpStatus.OK);
     }
 
     @GetMapping("/{userGroupStringId}")
-    public ResponseEntity<ResponseDto> getUserGroupMappingById(@PathVariable String userGroupStringId){
+    public ResponseEntity<ResponseDto> getUserGroupMappingById(@PathVariable String userGroupStringId) {
         return new ResponseEntity<>(new ResponseDto(userGroupService.getUserGroupMappingById(userGroupStringId), null), HttpStatus.OK);
     }
 
     @PutMapping
-    public ResponseEntity<ResponseDto> updateUserGroupMappingById(@Valid @RequestBody UserGroupMappingUpdateRequestDto userGroupMappingUpdateRequestDto){
-        return new ResponseEntity<>(new ResponseDto(userGroupService.updateUserGroupMappingById(userGroupMappingUpdateRequestDto),null), HttpStatus.OK);
+    public ResponseEntity<ResponseDto> updateUserGroupMappingById(@Valid @RequestBody UserGroupMappingUpdateRequestDto userGroupMappingUpdateRequestDto) {
+        return new ResponseEntity<>(new ResponseDto(userGroupService.updateUserGroupMappingById(userGroupMappingUpdateRequestDto), null), HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<ResponseDto> createUserGroupMapping(@Valid @RequestBody UserGroupMappingRequestDto userGroupMappingRequestDto){
+    public ResponseEntity<ResponseDto> createUserGroupMapping(@Valid @RequestBody UserGroupMappingRequestDto userGroupMappingRequestDto) {
         return new ResponseEntity<>(new ResponseDto(userGroupService.createUserGroupMapping(userGroupMappingRequestDto), null), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/user/{userName}/group/{groupId}")
-    public ResponseEntity<ResponseDto> deleteById(@PathVariable String userName, @PathVariable Long groupId){
+    public ResponseEntity<ResponseDto> deleteById(@PathVariable String userName, @PathVariable Long groupId) {
         return new ResponseEntity<>(new ResponseDto(userGroupService.deleteByUserIdAndGroupId(userName, groupId), null), HttpStatus.OK);
     }
 }

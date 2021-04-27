@@ -6,7 +6,9 @@ package com.example.role.constant;
  * @author Siddharth Mehta
  */
 public class Constants {
-    private Constants() {}
+    private Constants() {
+    }
+
     public static final String ROLE_TABLE_NAME = "ROLE_TABLE";
     public static final String GROUP_ROLE_TABLE_NAME = "GROUP_ROLE_MAPPING_TABLE";
 

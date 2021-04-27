@@ -23,7 +23,7 @@ public class ExceptionResponse {
         return timeStamp;
     }
 
-    public Integer getErrorCode(){
+    public Integer getErrorCode() {
         return errorCode;
     }
 

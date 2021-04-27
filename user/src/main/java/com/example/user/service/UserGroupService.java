@@ -12,8 +12,12 @@ import com.example.user.web.dto.responseDto.UserGroupMappingResponseDto;
  */
 public interface UserGroupService {
     AllUserGroupMappingsResponseDto getAllUserGroupMappings();
+
     UserGroupMappingResponseDto getUserGroupMappingById(String userGroupStringId);
+
     UserGroupMappingResponseDto updateUserGroupMappingById(UserGroupMappingUpdateRequestDto userGroupMappingUpdateRequestDto);
+
     UserGroupMappingResponseDto createUserGroupMapping(UserGroupMappingRequestDto userGroupMappingRequestDto);
+
     UserGroupMappingResponseDto deleteByUserIdAndGroupId(String userName, Long groupId);
 }

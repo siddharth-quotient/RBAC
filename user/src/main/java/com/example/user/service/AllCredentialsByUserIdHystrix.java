@@ -28,15 +28,16 @@ public class AllCredentialsByUserIdHystrix {
 
     /**
      * This method is used to fetch set of all groups for a user from Group-Service.
+     *
      * @param userGroupMappingResponseDtos Set of all User-Group-Mappings
      * @return ResponseEntity<GroupList>  response entity of groupList.
      */
     @HystrixCommand(fallbackMethod = "getFallBackAllCredentialsListByUserId",
-        commandProperties = {
-            @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds",value = "2000"),
-            @HystrixProperty(name = "circuitBreaker.sleepWindowInMilliseconds",value = "2000")
-    })
-    public ResponseEntity<AllCredentialList> getAllCredentialListByUserId(Set<UserGroupMappingResponseDto> userGroupMappingResponseDtos){
+            commandProperties = {
+                    @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "2000"),
+                    @HystrixProperty(name = "circuitBreaker.sleepWindowInMilliseconds", value = "2000")
+            })
+    public ResponseEntity<AllCredentialList> getAllCredentialListByUserId(Set<UserGroupMappingResponseDto> userGroupMappingResponseDtos) {
         ResponseEntity<AllCredentialList> allCredentialListResponseEntity = restTemplate.postForEntity("http://group-service/groups/all-credentials/", userGroupMappingResponseDtos, AllCredentialList.class);
         return allCredentialListResponseEntity;
     }
@@ -44,16 +45,17 @@ public class AllCredentialsByUserIdHystrix {
     /**
      * This is a fallback method used to return the user with group ids
      * only since Group-Service is down or timed out. Roles are also set to null.
+     *
      * @param userGroupMappingResponseDtos Set of all User-Group-Mappings
      * @return ResponseEntity<AllCredentialList>  response entity of allCredentialList.
      */
-    public ResponseEntity<AllCredentialList> getFallBackAllCredentialsListByUserId(Set<UserGroupMappingResponseDto> userGroupMappingResponseDtos){
+    public ResponseEntity<AllCredentialList> getFallBackAllCredentialsListByUserId(Set<UserGroupMappingResponseDto> userGroupMappingResponseDtos) {
         AllCredentialList fallbackAllCredentialList = new AllCredentialList();
         Set<GroupResponseDto> groupResponseDtoHashSet = new HashSet<>();
         Set<RoleResponseDto> roleResponseDtoHashSet = new HashSet<>();
 
 
-        if(!userGroupMappingResponseDtos.isEmpty()){
+        if (!userGroupMappingResponseDtos.isEmpty()) {
             userGroupMappingResponseDtos.forEach(userGroupMappingDto -> {
                 groupResponseDtoHashSet.add(new GroupResponseDto(userGroupMappingDto.getGroupId(), null, null,
                         "Group Name Unavailable", "Group Description Unavailable"));

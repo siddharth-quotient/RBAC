@@ -8,5 +8,6 @@ import org.mapstruct.Mapper;
 @Mapper(uses = {DateMapper.class})
 public interface RoleMapper {
     Role roleRequestDtoToRole(RoleRequestDto roleRequestDto);
+
     RoleResponseDto roleToRoleResponseDto(Role role);
 }

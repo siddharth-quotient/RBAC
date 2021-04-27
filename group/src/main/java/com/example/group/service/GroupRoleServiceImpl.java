@@ -52,18 +52,18 @@ public class GroupRoleServiceImpl implements GroupRoleService {
 
     @Override
     public GroupRoleMappingResponseDto getGroupRoleMappingById(Long groupRoleId) {
-        if(groupRoleId==null){
+        if (groupRoleId == null) {
             log.error("[getGroupRoleMappingById] Group-Role Mapping cannot be Null");
             throw new GroupRoleNotFoundException("Group-Role Mapping cannot be Null");
 
         }
 
         Optional<GroupRoleMapping> groupRoleOptional = groupRoleRepository.findById(groupRoleId);
-        if(groupRoleOptional.isPresent()){
+        if (groupRoleOptional.isPresent()) {
             return groupRoleMapper.groupRoleMappingToGroupRoleResponseMappingDto(groupRoleOptional.get());
         }
-        log.error("[getGroupRoleMappingById] Invalid Group-Role Mapping with Id: "+ groupRoleId);
-        throw new GroupRoleNotFoundException("Invalid Group-Role Mapping with Id: "+ groupRoleId);
+        log.error("[getGroupRoleMappingById] Invalid Group-Role Mapping with Id: " + groupRoleId);
+        throw new GroupRoleNotFoundException("Invalid Group-Role Mapping with Id: " + groupRoleId);
     }
 
     @Override
@@ -73,10 +73,10 @@ public class GroupRoleServiceImpl implements GroupRoleService {
 
         Optional<GroupRoleMapping> groupRoleOptional = groupRoleRepository.findById(groupRoleId);
 
-        if(!groupRoleOptional.isPresent()) {
+        if (!groupRoleOptional.isPresent()) {
             log.error("[updateGroupRoleMappingById] Invalid Group-Role Mapping with Id :" + groupRoleId);
             throw new GroupRoleNotFoundException("Invalid Group-Role Mapping with Id :" + groupRoleId);
-        }else{
+        } else {
             GroupRoleMapping groupRoleMapping = groupRoleOptional.get();
 
             Long groupId = groupRoleMappingUpdateRequestDto.getGroupId();
@@ -86,25 +86,25 @@ public class GroupRoleServiceImpl implements GroupRoleService {
             Optional<GroupRoleMapping> dtoGroupRoleMappingOptional = groupRoleRepository
                     .findByGroupIdAndAndRoleId(groupId, roleId);
 
-            if(dtoGroupRoleMappingOptional.isPresent()){
+            if (dtoGroupRoleMappingOptional.isPresent()) {
                 GroupRoleMapping dtoGroupRoleMapping = dtoGroupRoleMappingOptional.get();
-                if(groupRoleMapping.getGroupRoleId()!=dtoGroupRoleMapping.getGroupRoleId()){
-                    log.error("[updateGroupRoleMappingById] GroupId: "+groupId+" and RoleId: "+roleId+" lookup value already exist");
-                    throw new GroupRoleNotUniqueException("GroupId: "+groupId+" and RoleId: "+roleId+" lookup value already exist");
+                if (groupRoleMapping.getGroupRoleId() != dtoGroupRoleMapping.getGroupRoleId()) {
+                    log.error("[updateGroupRoleMappingById] GroupId: " + groupId + " and RoleId: " + roleId + " lookup value already exist");
+                    throw new GroupRoleNotUniqueException("GroupId: " + groupId + " and RoleId: " + roleId + " lookup value already exist");
                 }
             }
 
             /* Check for valid groupId */
-            if(!validateGroupId(groupId)){
-                log.error("[updateGroupRoleMappingById] Invalid Group Id: "+ groupId);
-                throw new GroupNotFoundException("Invalid Group Id: "+ groupId);
+            if (!validateGroupId(groupId)) {
+                log.error("[updateGroupRoleMappingById] Invalid Group Id: " + groupId);
+                throw new GroupNotFoundException("Invalid Group Id: " + groupId);
             }
 
             /*Check for valid roleId*/
             validateRoleForGroupRoleMapping.checkRoleExist(roleId);
 
-            groupRoleMapping.setGroupId( groupRoleMappingUpdateRequestDto.getGroupId() );
-            groupRoleMapping.setRoleId( groupRoleMappingUpdateRequestDto.getRoleId() );
+            groupRoleMapping.setGroupId(groupRoleMappingUpdateRequestDto.getGroupId());
+            groupRoleMapping.setRoleId(groupRoleMappingUpdateRequestDto.getRoleId());
 
             return groupRoleMapper.groupRoleMappingToGroupRoleResponseMappingDto(groupRoleRepository.save(groupRoleMapping));
         }
@@ -119,9 +119,9 @@ public class GroupRoleServiceImpl implements GroupRoleService {
         Long roleId = groupRoleMappingRequestDto.getRoleId();
 
         /* Check for valid groupId */
-        if(!validateGroupId(groupId)){
-            log.error("[createGroupRoleMapping] Invalid Group Id: "+ groupId);
-            throw new GroupNotFoundException("Invalid Group Id: "+ groupId);
+        if (!validateGroupId(groupId)) {
+            log.error("[createGroupRoleMapping] Invalid Group Id: " + groupId);
+            throw new GroupNotFoundException("Invalid Group Id: " + groupId);
         }
 
         /*Check for valid roleId*/
@@ -130,9 +130,9 @@ public class GroupRoleServiceImpl implements GroupRoleService {
         try {
             return groupRoleMapper.groupRoleMappingToGroupRoleResponseMappingDto(groupRoleRepository
                     .save(groupRoleMapper.groupRoleMappingRequestDtoToGroupRoleMapping(groupRoleMappingRequestDto)));
-        }catch (DataIntegrityViolationException ex){
-            log.error("[createGroupRoleMapping] GroupId: "+groupId+" and RoleId: "+roleId+" lookup value already exist");
-            throw new GroupRoleNotUniqueException("GroupId: "+groupId+" and RoleId: "+roleId+" lookup value already exist");
+        } catch (DataIntegrityViolationException ex) {
+            log.error("[createGroupRoleMapping] GroupId: " + groupId + " and RoleId: " + roleId + " lookup value already exist");
+            throw new GroupRoleNotUniqueException("GroupId: " + groupId + " and RoleId: " + roleId + " lookup value already exist");
         }
     }
 
@@ -141,22 +141,22 @@ public class GroupRoleServiceImpl implements GroupRoleService {
     @Transactional
     public GroupRoleMappingResponseDto deleteByGroupIdAndRoleId(Long groupId, Long roleId) {
         Optional<Group> groupOptional = groupRepository.findById(groupId);
-        if(!groupOptional.isPresent()) {
-            log.error("[deleteByGroupIdAndRoleId] Invalid Group Id: "+ groupId);
-            throw new GroupNotFoundException("Invalid Group Id: "+ groupId);
+        if (!groupOptional.isPresent()) {
+            log.error("[deleteByGroupIdAndRoleId] Invalid Group Id: " + groupId);
+            throw new GroupNotFoundException("Invalid Group Id: " + groupId);
         }
 
         Optional<GroupRoleMapping> groupMappingByUserIdAndGroupId = groupRoleRepository.findByGroupIdAndAndRoleId(groupId, roleId);
 
-        if(!groupMappingByUserIdAndGroupId.isPresent()){
-            log.error("[deleteByGroupIdAndRoleId] Invalid Group-Role Mapping with Group Id: "+ groupId+" and Role Id: "+ roleId);
-            throw new GroupRoleNotFoundException("Invalid Group-Role Mapping with Group Id: "+ groupId+" and Role Id: "+ roleId);
+        if (!groupMappingByUserIdAndGroupId.isPresent()) {
+            log.error("[deleteByGroupIdAndRoleId] Invalid Group-Role Mapping with Group Id: " + groupId + " and Role Id: " + roleId);
+            throw new GroupRoleNotFoundException("Invalid Group-Role Mapping with Group Id: " + groupId + " and Role Id: " + roleId);
         }
         groupRoleRepository.deleteByGroupIdAndRoleId(groupId, roleId);
         return groupRoleMapper.groupRoleMappingToGroupRoleResponseMappingDto(groupMappingByUserIdAndGroupId.get());
     }
 
-    public boolean validateGroupId(Long groupId){
+    public boolean validateGroupId(Long groupId) {
         Optional<Group> groupOptional = groupRepository.findById(groupId);
         return (groupOptional.isPresent());
     }

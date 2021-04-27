@@ -23,7 +23,7 @@ public class GroupApplication {
 
     @Bean
     @LoadBalanced
-    public RestTemplate getRestTemplate(){
+    public RestTemplate getRestTemplate() {
         return new RestTemplate(getClientHttpRequestFactory());
     }
 

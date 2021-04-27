@@ -58,17 +58,17 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public GroupResponseDto getGroupById(Long groupId) {
-        if(groupId==null){
+        if (groupId == null) {
             log.error("[getGroupById] Group cannot be null");
             throw new GroupNotFoundException("Group cannot be null");
         }
 
         Optional<Group> groupOptional = groupRepository.findById(groupId);
-        if(groupOptional.isPresent()){
+        if (groupOptional.isPresent()) {
             return groupMapper.groupToGroupResponseDto(groupOptional.get());
         }
-        log.error("[getGroupById] Invalid Group Id: "+ groupId);
-        throw new GroupNotFoundException("Invalid Group Id: "+ groupId);
+        log.error("[getGroupById] Invalid Group Id: " + groupId);
+        throw new GroupNotFoundException("Invalid Group Id: " + groupId);
     }
 
     @Override
@@ -77,18 +77,18 @@ public class GroupServiceImpl implements GroupService {
         Long groupId = groupUpdateRequestDto.getGroupId();
         Optional<Group> groupOptional = groupRepository.findById(groupId);
 
-        if(groupOptional.isPresent()){
+        if (groupOptional.isPresent()) {
             Group group = groupOptional.get();
 
             /*Check if group with given groupName already exists*/
             String dtoGroupName = groupUpdateRequestDto.getGroupName();
             Optional<Group> dtoGroupOptional = groupRepository.findByGroupName(dtoGroupName);
 
-            if(dtoGroupOptional.isPresent()){
+            if (dtoGroupOptional.isPresent()) {
                 Group dtoGroup = dtoGroupOptional.get();
-                if(dtoGroup.getGroupId()!=group.getGroupId()){
-                    log.error("[updateGroupById] Group by the name " + dtoGroupName +" already exists!");
-                    throw new GroupNameNotUniqueException("Group by the name " + dtoGroupName +" already exists!");
+                if (dtoGroup.getGroupId() != group.getGroupId()) {
+                    log.error("[updateGroupById] Group by the name " + dtoGroupName + " already exists!");
+                    throw new GroupNameNotUniqueException("Group by the name " + dtoGroupName + " already exists!");
                 }
             }
             group.setGroupName(groupUpdateRequestDto.getGroupName());
@@ -97,8 +97,8 @@ public class GroupServiceImpl implements GroupService {
             return groupMapper.groupToGroupResponseDto(groupRepository.save(group));
 
         }
-        log.error("[updateGroupById] Invalid Group Id: "+ groupId);
-        throw new GroupNotFoundException("Invalid Group Id: "+ groupId);
+        log.error("[updateGroupById] Invalid Group Id: " + groupId);
+        throw new GroupNotFoundException("Invalid Group Id: " + groupId);
     }
 
     @Override
@@ -107,26 +107,25 @@ public class GroupServiceImpl implements GroupService {
 
         try {
             return groupMapper.groupToGroupResponseDto(groupRepository.save(groupMapper.groupRequestDtoToGroup(groupRequestDto)));
-        }
-        catch (DataIntegrityViolationException ex){
-            log.error("[createGroup] Group by the name " + groupRequestDto.getGroupName() +" already exists!");
-            throw new GroupNameNotUniqueException("Group by the name " + groupRequestDto.getGroupName() +" already exists!");
+        } catch (DataIntegrityViolationException ex) {
+            log.error("[createGroup] Group by the name " + groupRequestDto.getGroupName() + " already exists!");
+            throw new GroupNameNotUniqueException("Group by the name " + groupRequestDto.getGroupName() + " already exists!");
         }
     }
 
     @Override
     @Transactional
     public GroupResponseDto deleteById(Long groupId) {
-        if(groupId==null){
+        if (groupId == null) {
             log.error("[deleteById] Group cannot be null");
             throw new GroupNotFoundException("Group cannot be null");
         }
 
         Optional<Group> groupOptional = groupRepository.findById(groupId);
 
-        if(!groupOptional.isPresent()){
-            log.error("[deleteById] Invalid Group Id: "+ groupId);
-            throw new GroupNotFoundException("Invalid Group Id: "+ groupId);
+        if (!groupOptional.isPresent()) {
+            log.error("[deleteById] Invalid Group Id: " + groupId);
+            throw new GroupNotFoundException("Invalid Group Id: " + groupId);
         }
 
         groupRepository.deleteById(groupId);
@@ -139,8 +138,10 @@ public class GroupServiceImpl implements GroupService {
     }
 
     /*----------------- Roles from Group Id -------------------*/
+
     /**
      * This method is used to get a list of roles for a group.
+     *
      * @param groupId Id of group.
      * @return RolesList object holding group and corresponding roles.
      */
@@ -148,9 +149,9 @@ public class GroupServiceImpl implements GroupService {
     @Transactional
     public RolesList getRolesByGroupId(Long groupId) {
         Optional<Group> groupOptional = groupRepository.findById(groupId);
-        if(!groupOptional.isPresent()){
-            log.error("[getRolesByGroupId] Invalid Group Id: "+ groupId);
-            throw new GroupNotFoundException("Invalid Group Id: "+ groupId);
+        if (!groupOptional.isPresent()) {
+            log.error("[getRolesByGroupId] Invalid Group Id: " + groupId);
+            throw new GroupNotFoundException("Invalid Group Id: " + groupId);
         }
         Group group = groupOptional.get();
 
@@ -160,15 +161,17 @@ public class GroupServiceImpl implements GroupService {
             groupRoleMappingResponseDtos.add(groupRoleMapper.groupRoleMappingToGroupRoleResponseMappingDto(userGroupMappingDto));
         });
 
-        ResponseEntity<RolesList>  rolesListResponseEntity = roleListByGroupIdHystrix.getRoleListByGroupId(groupRoleMappingResponseDtos);
+        ResponseEntity<RolesList> rolesListResponseEntity = roleListByGroupIdHystrix.getRoleListByGroupId(groupRoleMappingResponseDtos);
         RolesList rolesList = rolesListResponseEntity.getBody();
         rolesList.setGroup(groupMapper.groupToGroupResponseDto(group));
         return rolesList;
     }
 
     /*----------------- Groups from User Name -------------------*/
+
     /**
      * This method is used to fulfill the request made from User-Service to get Groups for a User.
+     *
      * @param Set<UserGroupMappingResponseDto> Set of UserGroupMappingResponseDto.
      * @return Set<GroupResponseDto> Set of GroupResponseDto.
      */
@@ -186,6 +189,7 @@ public class GroupServiceImpl implements GroupService {
 
     /**
      * This method is used to fulfill the request made from User-Service to get Groups And Roles for a User.
+     *
      * @param Set<UserGroupMappingResponseDto> Set of UserGroupMappingResponseDto.
      * @return Set<GroupResponseDto> Set of GroupResponseDto.
      */
@@ -199,19 +203,19 @@ public class GroupServiceImpl implements GroupService {
         allCredentialList.setGroups(this.getGroupsByUserId(userGroupMappingResponseDtos));
 
 
-        for(UserGroupMappingResponseDto userGroupMappingResponseDto: userGroupMappingResponseDtos){
+        for (UserGroupMappingResponseDto userGroupMappingResponseDto : userGroupMappingResponseDtos) {
             groupIds.add(userGroupMappingResponseDto.getGroupId());
         }
 
-        for(Long groupId: groupIds){
+        for (Long groupId : groupIds) {
             groupRoleMappings.addAll(groupRoleRepository.findByGroupId(groupId));
         }
 
-        for(GroupRoleMapping groupRoleMapping: groupRoleMappings){
+        for (GroupRoleMapping groupRoleMapping : groupRoleMappings) {
             groupRoleMappingResponseDtos.add(groupRoleMapper.groupRoleMappingToGroupRoleResponseMappingDto(groupRoleMapping));
         }
 
-        ResponseEntity<AllCredentialList>  allCredentialListResponseEntity = allCredentialsByUserIdHystrix.getAllCredentialListByUserId(groupRoleMappingResponseDtos);
+        ResponseEntity<AllCredentialList> allCredentialListResponseEntity = allCredentialsByUserIdHystrix.getAllCredentialListByUserId(groupRoleMappingResponseDtos);
         allCredentialList.setRoles(allCredentialListResponseEntity.getBody().getRoles());
 
         return allCredentialList;

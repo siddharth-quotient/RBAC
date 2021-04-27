@@ -56,7 +56,7 @@ class UserGroupServiceImplTest {
     User userMock2;
 
     @BeforeEach
-    public void setUp(){
+    public void setUp() {
         //Some Mock UserGroupMappingRequestDto
         userGroupMappingRequestDtoMock1 = UserGroupMappingRequestDto.builder()
                 .userGroupId(1L).userId(1L).groupId(1L).build();
@@ -126,7 +126,7 @@ class UserGroupServiceImplTest {
 
     @Test
     @DisplayName("Update a Valid User Group Mapping")
-    void updateUserGroupMappingByIdValid(){
+    void updateUserGroupMappingByIdValid() {
         when(userGroupRepositoryMock.findById(2L)).thenReturn(Optional.of(userGroupMappingMock2));
         when(userGroupRepositoryMock.save(userGroupMappingMock2)).thenReturn(userGroupMappingMock2);
         when(userRepositoryMock.findById(2L)).thenReturn(Optional.of(userMock2));
@@ -146,7 +146,7 @@ class UserGroupServiceImplTest {
 
     @Test
     @DisplayName("Create a Valid User")
-    void createUserValid(){
+    void createUserValid() {
         when(userGroupMapperMock.userGroupMappingRequestDtoToUserGroup(userGroupMappingRequestDtoMock1)).thenReturn(userGroupMappingMock1);
         when(userGroupRepositoryMock.save(userGroupMappingMock1)).thenReturn(userGroupMappingMock1);
         when(userGroupMapperMock.userGroupMappingToUserGroupMappingResponseDto(userGroupMappingMock1)).thenReturn(userGroupMappingResponseDtoMock1);
@@ -162,7 +162,7 @@ class UserGroupServiceImplTest {
 
     @Test
     @DisplayName("Delete a Valid User Group Mapping")
-    void deleteByNameValid(){
+    void deleteByNameValid() {
         when(userRepositoryMock.findByUserName("gyadav")).thenReturn(Optional.of(userMock2));
         when(userGroupRepositoryMock.findUserGroupMappingByUserIdAndGroupId(2L, 2L)).thenReturn(Optional.of(userGroupMappingMock2));
         when(userGroupMapperMock.userGroupMappingToUserGroupMappingResponseDto(userGroupMappingMock2)).thenReturn(userGroupMappingResponseDtoMock2);
@@ -178,7 +178,7 @@ class UserGroupServiceImplTest {
 
     @Test
     @DisplayName("Delete an Invalid User Group Mapping where userName field Null")
-    void deleteByNameWhereNameNull(){
+    void deleteByNameWhereNameNull() {
         Assertions.assertThrows(UserNotFoundException.class, () -> {
             userGroupService.deleteByUserIdAndGroupId(null, 1L);
         });
@@ -186,7 +186,7 @@ class UserGroupServiceImplTest {
 
     @Test
     @DisplayName("Delete an Invalid User Group Mapping where userName and groupId look up doesn't Exist")
-    void deleteByNameWhereNameAndGroupIdDoesntExist(){
+    void deleteByNameWhereNameAndGroupIdDoesntExist() {
         when(userRepositoryMock.findByUserName("gyadav")).thenReturn(Optional.of(userMock2));
         Assertions.assertThrows(UserGroupNotFoundException.class, () -> {
             userGroupService.deleteByUserIdAndGroupId("gyadav", 1L);

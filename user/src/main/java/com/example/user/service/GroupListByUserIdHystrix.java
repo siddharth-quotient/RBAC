@@ -30,15 +30,16 @@ public class GroupListByUserIdHystrix {
 
     /**
      * This method is used to fetch set of all groups for a user from Group-Service.
+     *
      * @param userGroupMappingResponseDtos Set of all User-Group-Mappings
      * @return ResponseEntity<GroupList>  response entity of groupList.
      */
     @HystrixCommand(fallbackMethod = "getFallBackGroupListByUserId",
-        commandProperties = {
-            @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds",value = "2000"),
-            @HystrixProperty(name = "circuitBreaker.sleepWindowInMilliseconds",value = "2000")
-    })
-    public ResponseEntity<GroupsList> getGroupListByUserId(Set<UserGroupMappingResponseDto> userGroupMappingResponseDtos){
+            commandProperties = {
+                    @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "2000"),
+                    @HystrixProperty(name = "circuitBreaker.sleepWindowInMilliseconds", value = "2000")
+            })
+    public ResponseEntity<GroupsList> getGroupListByUserId(Set<UserGroupMappingResponseDto> userGroupMappingResponseDtos) {
         ResponseEntity<GroupsList> groupsListResponseEntity = restTemplate.postForEntity("http://group-service/groups/user-groups/", userGroupMappingResponseDtos, GroupsList.class);
         log.info("Fetching groupList from getGroupListByUserId!");
         return groupsListResponseEntity;
@@ -47,14 +48,15 @@ public class GroupListByUserIdHystrix {
     /**
      * This is a fallback method used to return the user with group ids
      * only since Group-Service is down or timed out.
+     *
      * @param userGroupMappingResponseDtos Set of all User-Group-Mappings
      * @return ResponseEntity<GroupList>  response entity of groupList.
      */
-    public ResponseEntity<GroupsList> getFallBackGroupListByUserId(Set<UserGroupMappingResponseDto> userGroupMappingResponseDtos){
+    public ResponseEntity<GroupsList> getFallBackGroupListByUserId(Set<UserGroupMappingResponseDto> userGroupMappingResponseDtos) {
         GroupsList fallBackGroupList = new GroupsList();
         Set<GroupResponseDto> groupResponseDtoHashSet = new HashSet<>();
 
-        if(!userGroupMappingResponseDtos.isEmpty()){
+        if (!userGroupMappingResponseDtos.isEmpty()) {
             userGroupMappingResponseDtos.forEach(userGroupMappingDto -> {
                 groupResponseDtoHashSet.add(new GroupResponseDto(userGroupMappingDto.getGroupId(), null, null,
                         "Group Name Unavailable", "Group Description Unavailable"));

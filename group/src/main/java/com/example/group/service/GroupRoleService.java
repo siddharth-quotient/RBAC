@@ -12,9 +12,13 @@ import com.example.group.web.dto.responseDto.GroupRoleMappingResponseDto;
  */
 public interface GroupRoleService {
     AllGroupRoleMappingsResponseDto getAllGroupRoleMappings();
+
     GroupRoleMappingResponseDto getGroupRoleMappingById(Long groupRoleId);
+
     GroupRoleMappingResponseDto updateGroupRoleMappingById(GroupRoleMappingUpdateRequestDto groupRoleMappingUpdateRequestDto);
+
     GroupRoleMappingResponseDto createGroupRoleMapping(GroupRoleMappingRequestDto groupRoleMappingRequestDto);
+
     GroupRoleMappingResponseDto deleteByGroupIdAndRoleId(Long groupId, Long roleId);
 
 }

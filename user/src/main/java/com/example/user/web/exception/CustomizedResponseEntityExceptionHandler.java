@@ -26,28 +26,28 @@ import java.util.List;
 public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(UserNotFoundException.class)
-    public final ResponseEntity<ResponseDto> userNotFoundException(Exception userNotFoundException, WebRequest request){
+    public final ResponseEntity<ResponseDto> userNotFoundException(Exception userNotFoundException, WebRequest request) {
         ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), Constants.USER_NOT_FOUND, "User Not Found!", userNotFoundException.getMessage());
 
         return new ResponseEntity<>(new ResponseDto(null, exceptionResponse), HttpStatus.OK);
     }
 
     @ExceptionHandler(GroupNotFoundException.class)
-    public final ResponseEntity<ResponseDto> groupNotFoundException(Exception groupNotFoundException, WebRequest request){
+    public final ResponseEntity<ResponseDto> groupNotFoundException(Exception groupNotFoundException, WebRequest request) {
         ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), Constants.GROUP_NOT_FOUND, "Group Not Found!", groupNotFoundException.getMessage());
 
         return new ResponseEntity<>(new ResponseDto(null, exceptionResponse), HttpStatus.OK);
     }
 
     @ExceptionHandler(RoleNotFoundException.class)
-    public final ResponseEntity<ResponseDto> roleNotFoundException(Exception roleNotFoundException, WebRequest request){
+    public final ResponseEntity<ResponseDto> roleNotFoundException(Exception roleNotFoundException, WebRequest request) {
         ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), Constants.ROLE_NOT_FOUND, "Role Not Found!", roleNotFoundException.getMessage());
 
         return new ResponseEntity<>(new ResponseDto(null, exceptionResponse), HttpStatus.OK);
     }
 
     @ExceptionHandler(UserGroupNotFoundException.class)
-    public final ResponseEntity<ResponseDto> userGroupNotFoundException(Exception userGroupNotFoundException, WebRequest request){
+    public final ResponseEntity<ResponseDto> userGroupNotFoundException(Exception userGroupNotFoundException, WebRequest request) {
         ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), Constants.USER_GROUP_NOT_FOUND, "User-Group Mapping Not Found!", userGroupNotFoundException.getMessage());
 
         return new ResponseEntity<>(new ResponseDto(null, exceptionResponse), HttpStatus.OK);
@@ -59,10 +59,10 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
 
         List<FieldError> fieldErrors = ex.getBindingResult().getFieldErrors();
         StringBuilder errorMessages = new StringBuilder();
-        for(FieldError fieldError : fieldErrors){
-            errorMessages.append(fieldError.getDefaultMessage()+" ");
+        for (FieldError fieldError : fieldErrors) {
+            errorMessages.append(fieldError.getDefaultMessage() + " ");
         }
-        String errorMessage = errorMessages.substring(0, errorMessages.length()-1);
+        String errorMessage = errorMessages.substring(0, errorMessages.length() - 1);
 
         ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), Constants.USER_SERVICE_INVALID_METHOD_ARGUMENT, "Validation Failed!", errorMessage);
 
@@ -72,7 +72,7 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
 
     @ExceptionHandler(UserNameNotUniqueException.class)
     public ResponseEntity<ResponseDto> userNameNotUniqueException(UserNameNotUniqueException userNameNotUniqueException, WebRequest request) {
-        ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), Constants.USER_NAME_DATA_INTEGRITY_VIOLATION, "User Already Exists!" , userNameNotUniqueException.getMessage());
+        ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), Constants.USER_NAME_DATA_INTEGRITY_VIOLATION, "User Already Exists!", userNameNotUniqueException.getMessage());
 
         return new ResponseEntity<>(new ResponseDto(null, exceptionResponse), HttpStatus.OK);
     }
@@ -85,7 +85,7 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
     }
 
     @ExceptionHandler(GroupServiceDownException.class)
-    public final ResponseEntity<ResponseDto> groupServiceDownException(Exception groupServiceDownException, WebRequest request){
+    public final ResponseEntity<ResponseDto> groupServiceDownException(Exception groupServiceDownException, WebRequest request) {
         ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), Constants.GROUP_SERVICE_DOWN, "Cannot Connect To Group Service!", groupServiceDownException.getMessage());
 
         return new ResponseEntity<>(new ResponseDto(null, exceptionResponse), HttpStatus.INTERNAL_SERVER_ERROR);

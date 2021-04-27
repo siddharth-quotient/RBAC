@@ -24,22 +24,22 @@ import java.util.List;
 public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(GroupNotFoundException.class)
-    public final ResponseEntity<ResponseDto> groupNotFoundException(Exception groupNotFoundException, WebRequest request){
-        ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), Constants.GROUP_NOT_FOUND, "Group Not Found!" , groupNotFoundException.getMessage());
+    public final ResponseEntity<ResponseDto> groupNotFoundException(Exception groupNotFoundException, WebRequest request) {
+        ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), Constants.GROUP_NOT_FOUND, "Group Not Found!", groupNotFoundException.getMessage());
 
         return new ResponseEntity<>(new ResponseDto(null, exceptionResponse), HttpStatus.OK);
     }
 
     @ExceptionHandler(RoleNotFoundException.class)
-    public final ResponseEntity<ResponseDto> roleNotFoundException(Exception roleNotFoundException, WebRequest request){
-        ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), Constants.ROLE_NOT_FOUND, "Role Not Found!" , roleNotFoundException.getMessage());
+    public final ResponseEntity<ResponseDto> roleNotFoundException(Exception roleNotFoundException, WebRequest request) {
+        ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), Constants.ROLE_NOT_FOUND, "Role Not Found!", roleNotFoundException.getMessage());
 
         return new ResponseEntity<>(new ResponseDto(null, exceptionResponse), HttpStatus.OK);
     }
 
     @ExceptionHandler(GroupRoleNotFoundException.class)
-    public final ResponseEntity<ResponseDto> groupRoleNotFoundException(Exception groupRoleNotFoundException, WebRequest request){
-        ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), Constants.GROUP_ROLE_NOT_FOUND, "Group-Role Mapping Not Found!" , groupRoleNotFoundException.getMessage());
+    public final ResponseEntity<ResponseDto> groupRoleNotFoundException(Exception groupRoleNotFoundException, WebRequest request) {
+        ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), Constants.GROUP_ROLE_NOT_FOUND, "Group-Role Mapping Not Found!", groupRoleNotFoundException.getMessage());
 
         return new ResponseEntity<>(new ResponseDto(null, exceptionResponse), HttpStatus.OK);
     }
@@ -51,20 +51,20 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
 
         List<FieldError> fieldErrors = ex.getBindingResult().getFieldErrors();
         StringBuilder errorMessages = new StringBuilder();
-        for(FieldError fieldError : fieldErrors){
-            errorMessages.append(fieldError.getDefaultMessage()+" ");
+        for (FieldError fieldError : fieldErrors) {
+            errorMessages.append(fieldError.getDefaultMessage() + " ");
         }
-        String errorMessage = errorMessages.substring(0, errorMessages.length()-1);
+        String errorMessage = errorMessages.substring(0, errorMessages.length() - 1);
 
 
-        ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), Constants.GROUP_SERVICE_INVALID_METHOD_ARGUMENT, "Validation Failed!" , errorMessage);
+        ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), Constants.GROUP_SERVICE_INVALID_METHOD_ARGUMENT, "Validation Failed!", errorMessage);
 
         return new ResponseEntity<>(new ResponseDto(null, exceptionResponse), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(GroupNameNotUniqueException.class)
     public ResponseEntity<ResponseDto> groupNameNotUniqueException(GroupNameNotUniqueException groupNameNotUniqueException, WebRequest request) {
-        ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), Constants.GROUP_NAME_DATA_INTEGRITY_VIOLATION, "Group Already Exists!" , groupNameNotUniqueException.getMessage());
+        ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), Constants.GROUP_NAME_DATA_INTEGRITY_VIOLATION, "Group Already Exists!", groupNameNotUniqueException.getMessage());
 
         return new ResponseEntity<>(new ResponseDto(null, exceptionResponse), HttpStatus.OK);
 
@@ -72,14 +72,14 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
 
     @ExceptionHandler(GroupRoleNotUniqueException.class)
     public ResponseEntity<ResponseDto> groupRoleNotUniqueException(GroupRoleNotUniqueException groupRoleNotUniqueException, WebRequest request) {
-        ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), Constants.GROUP_ROLE_DATA_INTEGRITY_VIOLATION, "Group-Role Mapping Already Exists!" , groupRoleNotUniqueException.getMessage());
+        ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), Constants.GROUP_ROLE_DATA_INTEGRITY_VIOLATION, "Group-Role Mapping Already Exists!", groupRoleNotUniqueException.getMessage());
 
         return new ResponseEntity<>(new ResponseDto(null, exceptionResponse), HttpStatus.OK);
     }
 
     @ExceptionHandler(RoleServiceDownException.class)
-    public final ResponseEntity<ResponseDto> roleServiceDownException(Exception roleServiceDownException, WebRequest request){
-        ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), Constants.ROLE_SERVICE_DOWN, "Cannot Connect To Role Service!" , roleServiceDownException.getMessage());
+    public final ResponseEntity<ResponseDto> roleServiceDownException(Exception roleServiceDownException, WebRequest request) {
+        ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), Constants.ROLE_SERVICE_DOWN, "Cannot Connect To Role Service!", roleServiceDownException.getMessage());
 
         return new ResponseEntity<>(new ResponseDto(null, exceptionResponse), HttpStatus.INTERNAL_SERVER_ERROR);
     }

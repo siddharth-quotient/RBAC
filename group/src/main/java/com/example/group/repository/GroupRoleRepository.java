@@ -15,8 +15,11 @@ import java.util.Set;
 @Repository
 public interface GroupRoleRepository extends JpaRepository<GroupRoleMapping, Long> {
     Set<GroupRoleMapping> findByGroupId(Long groupId);
+
     void deleteByGroupId(Long groupId);
+
     Optional<GroupRoleMapping> findByGroupIdAndAndRoleId(Long groupId, Long roleId);
+
     void deleteByGroupIdAndRoleId(Long groupId, Long roleId);
 
 }

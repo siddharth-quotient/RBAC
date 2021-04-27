@@ -43,7 +43,7 @@ class UserServiceImplTest {
     UserResponseDto userResponseDtoMock2;
 
     @BeforeEach
-    public void setUp(){
+    public void setUp() {
         //Some Mock UserRequest Objects
         userRequestDtoMock1 = UserRequestDto.builder()
                 .userName("smehta").firstName("Sid").lastName("Mehta")
@@ -63,7 +63,7 @@ class UserServiceImplTest {
 
 
         //Couple of Mock UserResponseDto objects
-         userResponseDtoMock1 = UserResponseDto.builder().userId(1L)
+        userResponseDtoMock1 = UserResponseDto.builder().userId(1L)
                 .userName("smehta").firstName("Sid").lastName("Mehta")
                 .build();
         userResponseDtoMock2 = UserResponseDto.builder().userId(2L)
@@ -111,7 +111,7 @@ class UserServiceImplTest {
 
     @Test
     @DisplayName("Update a Valid User")
-    void updateUserByNameValid(){
+    void updateUserByNameValid() {
         when(userRepositoryMock.findByUserName(anyString())).thenReturn(Optional.of(userMock2));
         when(userRepositoryMock.save(userMock2)).thenReturn(userMock2);
         when(userMapperMock.userToUserResponseDto(userMock2)).thenReturn(userResponseDtoMock2);
@@ -127,7 +127,7 @@ class UserServiceImplTest {
 
     @Test
     @DisplayName("Create a Valid User")
-    void createUserValid(){
+    void createUserValid() {
         when(userMapperMock.userRequestDtoToUser(userRequestDtoMock2)).thenReturn(userMock2);
         when(userRepositoryMock.save(userMock2)).thenReturn(userMock2);
         when(userMapperMock.userToUserResponseDto(userMock2)).thenReturn(userResponseDtoMock2);
@@ -140,7 +140,7 @@ class UserServiceImplTest {
 
     @Test
     @DisplayName("Delete a Valid User")
-    void deleteByNameValid(){
+    void deleteByNameValid() {
         when(userRepositoryMock.findByUserName("smehta")).thenReturn(Optional.of(userMock1));
         when(userMapperMock.userToUserResponseDto(userMock1)).thenReturn(userResponseDtoMock1);
 
@@ -153,12 +153,11 @@ class UserServiceImplTest {
 
     @Test
     @DisplayName("Delete an Invalid User with userName field Null or Empty")
-    void deleteByNameWhereNameNull(){
+    void deleteByNameWhereNameNull() {
         Assertions.assertThrows(UserNotFoundException.class, () -> {
             userService.deleteByName(null);
         });
     }
-
 
 
 }

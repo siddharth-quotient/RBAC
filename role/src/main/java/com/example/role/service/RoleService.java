@@ -15,9 +15,13 @@ import java.util.Set;
  */
 public interface RoleService {
     AllRolesResponseDto getAllRoles();
+
     RoleResponseDto getRoleById(Long roleId);
+
     RoleResponseDto updateRoleById(RoleUpdateRequestDto roleUpdateRequestDto);
+
     RoleResponseDto createRole(RoleRequestDto roleRequestDto);
+
     RoleResponseDto deleteById(Long roleId);
 
     /*----------------- Roles from Group Id -------------------*/

@@ -33,40 +33,42 @@ public class RoleController {
     private final RoleService roleService;
 
     @GetMapping
-    public ResponseEntity<ResponseDto> getAllRoles(){
+    public ResponseEntity<ResponseDto> getAllRoles() {
         return new ResponseEntity<>(new ResponseDto(roleService.getAllRoles(), null), HttpStatus.OK);
     }
 
     @GetMapping("/{roleId}")
-    public ResponseEntity<ResponseDto> getRoleById(@PathVariable Long roleId){
+    public ResponseEntity<ResponseDto> getRoleById(@PathVariable Long roleId) {
         return new ResponseEntity<>(new ResponseDto(roleService.getRoleById(roleId), null), HttpStatus.OK);
     }
 
     @PutMapping
-    public ResponseEntity<ResponseDto> updateRoleById(@Valid @RequestBody RoleUpdateRequestDto roleUpdateRequestDto){
+    public ResponseEntity<ResponseDto> updateRoleById(@Valid @RequestBody RoleUpdateRequestDto roleUpdateRequestDto) {
         return new ResponseEntity<>(new ResponseDto(roleService.updateRoleById(roleUpdateRequestDto), null), HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<ResponseDto> createRole(@Valid @RequestBody RoleRequestDto roleRequestDto){
+    public ResponseEntity<ResponseDto> createRole(@Valid @RequestBody RoleRequestDto roleRequestDto) {
         return new ResponseEntity<>(new ResponseDto(roleService.createRole(roleRequestDto), null), HttpStatus.CREATED);
     }
 
     @Transactional
     @DeleteMapping("/{roleId}")
-    public ResponseEntity<ResponseDto> deleteById(@PathVariable Long roleId){
+    public ResponseEntity<ResponseDto> deleteById(@PathVariable Long roleId) {
         return new ResponseEntity<>(new ResponseDto(roleService.deleteById(roleId), null), HttpStatus.OK);
     }
 
     /*----------------- Roles from Group Id -------------------*/
+
     /**
      * This method is an API endpoint used to fulfill request of Group-Service to fetch all Roles for Group.
+     *
      * @param Set<GroupRoleMappingResponseDto> Set of GroupRoleMappingResponseDto.
      * @return ResponseEntity<RolesList> object holding group and corresponding roles.
      */
     @PostMapping("/group-roles")
     public ResponseEntity<RolesList> getRolesByGroupId(@RequestBody Set<GroupRoleMappingResponseDto> groupRoleMappingResponseDtos) throws InterruptedException {
-        RolesList rolesList =new RolesList();
+        RolesList rolesList = new RolesList();
 
         /*To demonstrate timeouts
         Thread.sleep(3000);*/
@@ -76,7 +78,7 @@ public class RoleController {
     }
 
     @GetMapping("/get/{roleId}")
-    public ResponseDto getRoleWithReturnResponseDto(@PathVariable Long roleId){
+    public ResponseDto getRoleWithReturnResponseDto(@PathVariable Long roleId) {
         return new ResponseDto(roleService.getRoleById(roleId), null);
     }
 }

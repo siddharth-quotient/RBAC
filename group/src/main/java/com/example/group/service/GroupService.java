@@ -13,9 +13,13 @@ import java.util.Set;
  */
 public interface GroupService {
     AllGroupsResponseDto getAllGroups();
+
     GroupResponseDto getGroupById(Long groupId);
+
     GroupResponseDto updateGroupById(GroupUpdateRequestDto groupUpdateRequestDto);
+
     GroupResponseDto createGroup(GroupRequestDto groupRequestDto);
+
     GroupResponseDto deleteById(Long groupId);
 
     /*----------------- Roles from Group Id -------------------*/

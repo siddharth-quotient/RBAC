@@ -6,7 +6,9 @@ package com.example.group.constant;
  * @author Siddharth Mehta
  */
 public class Constants {
-    private Constants() {}
+    private Constants() {
+    }
+
     public static final String GROUP_TABLE_NAME = "GROUP_TABLE";
     public static final String USER_GROUP_TABLE_NAME = "USER_GROUP_MAPPING_TABLE";
     public static final String GROUP_ROLE_TABLE_NAME = "GROUP_ROLE_MAPPING_TABLE";

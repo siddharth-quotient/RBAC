@@ -26,8 +26,8 @@ public class GroupRoleMapping {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long groupRoleId;
 
-    @Column(name="group_id")
+    @Column(name = "group_id")
     private Long groupId;
-    @Column(name="role_id")
+    @Column(name = "role_id")
     private Long roleId;
 }

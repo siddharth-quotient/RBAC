@@ -23,18 +23,16 @@ public class ValidateGroupForUserGroupMapping {
         restTemplate.setErrorHandler(groupRestTemplateResponseErrorHandler);
 
         try {
-            ResponseDto responseDto= restTemplate.getForObject("http://group-service/groups/get/" + groupId,
+            ResponseDto responseDto = restTemplate.getForObject("http://group-service/groups/get/" + groupId,
                     ResponseDto.class);
-            if(responseDto.getError()!=null){
+            if (responseDto.getError() != null) {
                 log.error("[checkGroupExist] Group does not exist!");
-                throw new GroupNotFoundException("Invalid Group Id: "+groupId);
+                throw new GroupNotFoundException("Invalid Group Id: " + groupId);
             }
-        }
-        catch (IllegalStateException illegalStateException) {
+        } catch (IllegalStateException illegalStateException) {
             log.error("[checkGroupExist] Group Service Down!");
             throw new GroupServiceDownException("Group Service Down!");
-        }
-        catch (RestClientException restClientException){
+        } catch (RestClientException restClientException) {
             log.error("[checkGroupExist] Group Service acting poorly, timed out!");
             throw new GroupServiceDownException("Group Service acting poorly, timed out!");
         }

@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 import java.util.Date;
 
 /**
- *Provides consistent Error Message format across the entire application
+ * Provides consistent Error Message format across the entire application
  *
  * @author Siddharth Mehta
  */
@@ -23,7 +23,7 @@ public class ExceptionResponse {
         return timeStamp;
     }
 
-    public Integer getErrorCode(){
+    public Integer getErrorCode() {
         return errorCode;
     }
 

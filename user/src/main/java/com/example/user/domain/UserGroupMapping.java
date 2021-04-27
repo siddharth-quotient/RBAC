@@ -18,16 +18,16 @@ import javax.persistence.*;
 @Entity
 @Table(
         name = Constants.USER_GROUP_TABLE_NAME,
-        uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id" ,"group_id"})}
+        uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "group_id"})}
 )
 public class UserGroupMapping {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userGroupId;
 
-    @Column(name="user_id")
+    @Column(name = "user_id")
     private Long userId;
-    @Column(name="group_id")
+    @Column(name = "group_id")
     private Long groupId;
 
 }

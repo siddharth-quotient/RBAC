@@ -26,7 +26,7 @@ import java.util.List;
 public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(RoleNotFoundException.class)
-    public final ResponseEntity<ResponseDto> roleNotFoundException(Exception roleNotFoundException, WebRequest request){
+    public final ResponseEntity<ResponseDto> roleNotFoundException(Exception roleNotFoundException, WebRequest request) {
         ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), Constants.ROLE_NOT_FOUND, "Role Not Found!", roleNotFoundException.getMessage());
 
         return new ResponseEntity<>(new ResponseDto(null, exceptionResponse), HttpStatus.OK);
@@ -38,10 +38,10 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
 
         List<FieldError> fieldErrors = ex.getBindingResult().getFieldErrors();
         StringBuilder errorMessages = new StringBuilder();
-        for(FieldError fieldError : fieldErrors){
-            errorMessages.append(fieldError.getDefaultMessage()+" ");
+        for (FieldError fieldError : fieldErrors) {
+            errorMessages.append(fieldError.getDefaultMessage() + " ");
         }
-        String errorMessage = errorMessages.substring(0, errorMessages.length()-1);
+        String errorMessage = errorMessages.substring(0, errorMessages.length() - 1);
 
         ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), Constants.ROLE_SERVICE_INVALID_METHOD_ARGUMENT, "Validation Failed!", errorMessage);
 

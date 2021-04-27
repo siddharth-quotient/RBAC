@@ -24,27 +24,27 @@ public class GroupRoleController {
     private final GroupRoleService groupRoleService;
 
     @GetMapping
-    public ResponseEntity<ResponseDto> getAllGroupRoles(){
+    public ResponseEntity<ResponseDto> getAllGroupRoles() {
         return new ResponseEntity<>(new ResponseDto(groupRoleService.getAllGroupRoleMappings(), null), HttpStatus.OK);
     }
 
     @GetMapping("/{groupRoleId}")
-    public ResponseEntity<ResponseDto> getGroupRoleMappingById(@PathVariable Long groupRoleId){
+    public ResponseEntity<ResponseDto> getGroupRoleMappingById(@PathVariable Long groupRoleId) {
         return new ResponseEntity<>(new ResponseDto(groupRoleService.getGroupRoleMappingById(groupRoleId), null), HttpStatus.OK);
     }
 
     @PutMapping
-    public ResponseEntity<ResponseDto> updateGroupRoleMappingById(@Valid @RequestBody GroupRoleMappingUpdateRequestDto groupRoleMappingUpdateRequestDto){
+    public ResponseEntity<ResponseDto> updateGroupRoleMappingById(@Valid @RequestBody GroupRoleMappingUpdateRequestDto groupRoleMappingUpdateRequestDto) {
         return new ResponseEntity<>(new ResponseDto(groupRoleService.updateGroupRoleMappingById(groupRoleMappingUpdateRequestDto), null), HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<ResponseDto> createGroupRoleMapping(@Valid @RequestBody GroupRoleMappingRequestDto groupRoleMappingRequestDto){
+    public ResponseEntity<ResponseDto> createGroupRoleMapping(@Valid @RequestBody GroupRoleMappingRequestDto groupRoleMappingRequestDto) {
         return new ResponseEntity<>(new ResponseDto(groupRoleService.createGroupRoleMapping(groupRoleMappingRequestDto), null), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/group/{groupId}/role/{roleId}")
-    public ResponseEntity<ResponseDto> deleteById(@PathVariable Long groupId, @PathVariable Long roleId){
+    public ResponseEntity<ResponseDto> deleteById(@PathVariable Long groupId, @PathVariable Long roleId) {
         return new ResponseEntity<>(new ResponseDto(groupRoleService.deleteByGroupIdAndRoleId(groupId, roleId), null), HttpStatus.OK);
     }
 

@@ -29,20 +29,20 @@ public class RoleListByGroupIdHystrix {
 
     @HystrixCommand(fallbackMethod = "getFallBackRoleListByGroupId",
             commandProperties = {
-            @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds",value = "2000"),
-            @HystrixProperty(name = "circuitBreaker.sleepWindowInMilliseconds",value = "2000")
-    })
-    public ResponseEntity<RolesList> getRoleListByGroupId(Set<GroupRoleMappingResponseDto> groupRoleMappingResponseDtos){
+                    @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "2000"),
+                    @HystrixProperty(name = "circuitBreaker.sleepWindowInMilliseconds", value = "2000")
+            })
+    public ResponseEntity<RolesList> getRoleListByGroupId(Set<GroupRoleMappingResponseDto> groupRoleMappingResponseDtos) {
         ResponseEntity<RolesList> rolesListResponseEntity = restTemplate.postForEntity("http://role-service/roles/group-roles/", groupRoleMappingResponseDtos, RolesList.class);
         log.info("Fetching roleList from getRoleListByGroupId!");
         return rolesListResponseEntity;
     }
 
-    public ResponseEntity<RolesList> getFallBackRoleListByGroupId(Set<GroupRoleMappingResponseDto> groupRoleMappingResponseDtos){
+    public ResponseEntity<RolesList> getFallBackRoleListByGroupId(Set<GroupRoleMappingResponseDto> groupRoleMappingResponseDtos) {
         RolesList fallBackRolesList = new RolesList();
         Set<RoleResponseDto> roleResponseDtoHashSet = new HashSet<>();
 
-        if(!groupRoleMappingResponseDtos.isEmpty()){
+        if (!groupRoleMappingResponseDtos.isEmpty()) {
             groupRoleMappingResponseDtos.forEach(groupRoleMappingDto -> {
                 roleResponseDtoHashSet.add(new RoleResponseDto(groupRoleMappingDto.getRoleId(), null, null,
                         "Role Name Unavailable", "Role Description Unavailable"));

@@ -116,7 +116,7 @@ class UserGroupControllerTest {
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
         ObjectWriter ow = mapper.writer().withDefaultPrettyPrinter();
-        String requestJson=ow.writeValueAsString(validUserGroupMapping1);
+        String requestJson = ow.writeValueAsString(validUserGroupMapping1);
 
         mockMvc.perform(put("/user-groups")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -135,7 +135,7 @@ class UserGroupControllerTest {
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
         ObjectWriter ow = mapper.writer().withDefaultPrettyPrinter();
-        String requestJson=ow.writeValueAsString(validUserGroupMappingUpdateRequestDto1);
+        String requestJson = ow.writeValueAsString(validUserGroupMappingUpdateRequestDto1);
 
         mockMvc.perform(post("/user-groups")
                 .contentType(MediaType.APPLICATION_JSON)

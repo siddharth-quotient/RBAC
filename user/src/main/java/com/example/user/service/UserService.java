@@ -13,9 +13,13 @@ import com.example.user.web.dto.responseDto.UserResponseDto;
  */
 public interface UserService {
     AllUsersResponseDto getAllUsers();
+
     UserResponseDto getUserByName(String userName);
+
     UserResponseDto updateUserByName(UserRequestDto userRequestDto);
+
     UserResponseDto createUser(UserRequestDto userRequestDto);
+
     UserResponseDto deleteByName(String userName);
 
     /*----------------- Groups from UserName -------------------*/
@@ -28,5 +32,5 @@ public interface UserService {
     String checkRoleIdForUserName(String userName, Long roleId);
 
     /*-------------- Groups and Roles from UserName ----------------*/
-   AllCredentialList getGroupsAndRolesByUserName(String userName);
+    AllCredentialList getGroupsAndRolesByUserName(String userName);
 }

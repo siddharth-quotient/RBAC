@@ -8,5 +8,6 @@ import org.mapstruct.Mapper;
 @Mapper(uses = {DateMapper.class})
 public interface GroupMapper {
     Group groupRequestDtoToGroup(GroupRequestDto groupRequestDto);
+
     GroupResponseDto groupToGroupResponseDto(Group group);
 }

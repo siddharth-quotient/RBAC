@@ -21,9 +21,11 @@ public class UserGroupServiceImpl implements UserGroupService {
     private final GroupRoleRepository groupRoleRepository;
 
     /*-------------- Check if a User has a Role ---------------*/
+
     /**
      * This method is used to fulfill the request made from User-Service to check if User has Role permission
      * It will fetch all groupIds for user.
+     *
      * @param userId Id of User
      * @return Set<Long> Set of groupIds.
      */
@@ -45,10 +47,10 @@ public class UserGroupServiceImpl implements UserGroupService {
      * @return Boolean Boolean value to denote if User has Role permission
      */
     public Boolean getRoleIdsForGroupIds(Set<Long> groupIds, Long roleId) {
-        for(Long groupId : groupIds){
+        for (Long groupId : groupIds) {
             Set<GroupRoleMapping> groupRoleRepositoryByGroupId = groupRoleRepository.findByGroupId(groupId);
-            for(GroupRoleMapping groupRoleMapping : groupRoleRepositoryByGroupId){
-                if(groupRoleMapping.getRoleId()==(roleId)){
+            for (GroupRoleMapping groupRoleMapping : groupRoleRepositoryByGroupId) {
+                if (groupRoleMapping.getRoleId() == (roleId)) {
                     return true;
                 }
             }

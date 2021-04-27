@@ -6,7 +6,9 @@ package com.example.user.constant;
  * @author Siddharth Mehta
  */
 public class Constants {
-    private Constants() {}
+    private Constants() {
+    }
+
     public static final String USER_TABLE_NAME = "USER_TABLE";
     public static final String USER_GROUP_TABLE_NAME = "USER_GROUP_MAPPING_TABLE";
 

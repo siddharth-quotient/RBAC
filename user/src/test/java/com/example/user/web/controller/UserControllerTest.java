@@ -113,7 +113,7 @@ class UserControllerTest {
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
         ObjectWriter ow = mapper.writer().withDefaultPrettyPrinter();
-        String requestJson=ow.writeValueAsString(validUser1);
+        String requestJson = ow.writeValueAsString(validUser1);
 
         mockMvc.perform(put("/users")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -132,7 +132,7 @@ class UserControllerTest {
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
         ObjectWriter ow = mapper.writer().withDefaultPrettyPrinter();
-        String requestJson=ow.writeValueAsString(validUser1);
+        String requestJson = ow.writeValueAsString(validUser1);
 
         mockMvc.perform(post("/users")
                 .contentType(MediaType.APPLICATION_JSON)
